@@ -1,0 +1,35 @@
+.question-border {
+    border: 1px solid #000;
+    margin-bottom: 15px;
+    background-color: #fffbd6;
+}
+
+.question-wording {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 22px;
+    margin-left: 20px;
+}
+
+.option-label {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
+    align-items: center;
+}
+
+.option-container {
+    margin: 15px 0;
+}
+
+.option-container:hover {
+    background-color: #8eece4;
+}
+
+
+
+
+
+
