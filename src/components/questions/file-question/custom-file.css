@@ -1,23 +1,24 @@
 .custom-file-label {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #e2fdf5;
+    background-color: #0f428e;
     border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin: 0 0 15px 20px;
-    font-family: "Inter", sans-serif;
+    margin: 0 0 15px 25px;
+    font-family: "Roboto Flex", sans-serif;
     font-weight: 400;
     font-size: 16px;
+    color: #fff;
 }
 
 .custom-file-label:hover {
-    background-color: #8cedb7;
+    background-color: #2b7bf3;
 }
 
 .error-message, .name-message {
-    font-family: "Inter", sans-serif;
+    font-family: "Roboto Flex", sans-serif;
     font-weight: 300;
     font-size: 16px;
     margin-left: 10px;
