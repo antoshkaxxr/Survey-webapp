@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import '../question-style.css';
 import './custom-url.css';
 
 type UrlQuestionProps = {
     question: string;
     questionId: number;
+    onAnswerChange: (questionId: number, question: string, answer: string) => void;
 };
 
-function UrlQuestion({ question, questionId }: UrlQuestionProps) {
+function UrlQuestion({ question, questionId, onAnswerChange }: UrlQuestionProps) {
     const [url, setUrl] = useState('');
     const [error, setError] = useState('');
 
@@ -23,7 +24,7 @@ function UrlQuestion({ question, questionId }: UrlQuestionProps) {
         return urlPattern.test(value);
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newUrl = e.target.value;
         setUrl(newUrl);
 
@@ -31,6 +32,7 @@ function UrlQuestion({ question, questionId }: UrlQuestionProps) {
             setError('Введите корректный URL');
         } else {
             setError('');
+            onAnswerChange(questionId, question, newUrl);
         }
     };
 

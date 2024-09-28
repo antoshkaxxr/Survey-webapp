@@ -1,15 +1,22 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import '../question-style.css';
-import './custom-select.css'
+import './custom-select.css';
 
 type SelectQuestionProps = {
     question: string;
     options: string[];
     questionId: number;
+    onAnswerChange: (questionId: number, question: string, answer: string) => void;
 };
 
-function SelectQuestion({ question, options, questionId }: SelectQuestionProps) {
+function SelectQuestion({ question, options, questionId, onAnswerChange }: SelectQuestionProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+    const handleOptionChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        const option = event.target.value;
+        setSelectedOption(option);
+        onAnswerChange(questionId, question, option);
+    };
 
     return (
         <div className={'question-border'}>
@@ -17,7 +24,7 @@ function SelectQuestion({ question, options, questionId }: SelectQuestionProps) 
             <select
                 className={'option-select'}
                 value={selectedOption || ''}
-                onChange={(e) => setSelectedOption(e.target.value)}
+                onChange={handleOptionChange}
             >
                 <option value="" disabled>Выберите ответ</option>
                 {options.map((option, index) => (

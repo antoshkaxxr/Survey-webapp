@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-slider.css';
 
@@ -7,13 +7,21 @@ type SliderQuestionProps = {
     min: number;
     max: number;
     questionId: number;
+    onAnswerChange: (questionId: number, question: string, answer: string) => void;
 }
 
-function SliderQuestion({ question, min, max, questionId }: SliderQuestionProps) {
-    const [value, setValue] = useState<number>(5);
+function SliderQuestion({ question, min, max, questionId, onAnswerChange }: SliderQuestionProps) {
+    const initialValue = Math.ceil((max - min) / 2);
+    const [value, setValue] = useState<number>(initialValue);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(Number(event.target.value));
+    useEffect(() => {
+        onAnswerChange(questionId, question, String(initialValue));
+    }, [questionId, question, initialValue, onAnswerChange]);
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const newValue = event.target.value;
+        setValue(Number(newValue));
+        onAnswerChange(questionId, question, newValue);
     };
 
     return (
