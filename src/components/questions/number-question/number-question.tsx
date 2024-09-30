@@ -9,12 +9,12 @@ type NumberQuestionProps = {
 }
 
 function NumberQuestion({ question, questionId, onAnswerChange }: NumberQuestionProps) {
-    const [answer, setAnswer] = useState<number>();
+    const [answer, setAnswer] = useState<string>(''); // Инициализируем как пустую строку
 
     const handleNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const answer = event.target.value;
-        setAnswer(Number(answer));
-        onAnswerChange(questionId, question, answer);
+        const answerValue = event.target.value;
+        setAnswer(answerValue); // Сохраняем строку
+        onAnswerChange(questionId, question, answerValue); // Передаем строку
     };
 
     return (

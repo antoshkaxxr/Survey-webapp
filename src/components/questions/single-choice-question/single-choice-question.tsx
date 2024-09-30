@@ -22,19 +22,17 @@ function SingleChoiceQuestion({question, options, questionId, onAnswerChange}: S
         <div className={'question-border'}>
             <h3 className={'question-wording'}>{question}</h3>
             {options.map((option, index) => (
-                <>
-                    <label className={'radio-label'}>
-                        <input
-                            type="radio"
-                            className={'custom-radio'}
-                            id={`${questionId}-option-${index}`}
-                            value={option}
-                            checked={selectedOption === option}
-                            onChange={handleOptionChange}
-                        />
-                        <span className={'radio-value'}>{option}</span>
-                    </label>
-                </>
+                <label key={index} className={'radio-label'}>
+                    <input
+                        type="radio"
+                        className={'custom-radio'}
+                        id={`${questionId}-option-${index}`}
+                        value={option}
+                        checked={selectedOption === option}
+                        onChange={handleOptionChange}
+                    />
+                    <span className={'radio-value'}>{option}</span>
+                </label>
             ))}
         </div>
     );
