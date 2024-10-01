@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-number.css';
 
@@ -6,16 +6,28 @@ type NumberQuestionProps = {
     question: string;
     questionId: number;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
+    reset: boolean;
 }
 
-function NumberQuestion({ question, questionId, onAnswerChange }: NumberQuestionProps) {
-    const [answer, setAnswer] = useState<string>(''); // Инициализируем как пустую строку
+function NumberQuestion({ question, questionId, onAnswerChange, reset }: NumberQuestionProps) {
+    const [answer, setAnswer] = useState<string>('');
 
     const handleNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
         const answerValue = event.target.value;
-        setAnswer(answerValue); // Сохраняем строку
-        onAnswerChange(questionId, question, answerValue); // Передаем строку
+        setAnswer(answerValue);
+        onAnswerChange(questionId, question, answerValue);
     };
+
+    const handleClearNumber = () => {
+        setAnswer('');
+        onAnswerChange(questionId, question, '');
+    };
+
+    useEffect(() => {
+        if (reset) {
+            setAnswer('');
+        }
+    }, [reset]);
 
     return (
         <div className={'question-border'}>
@@ -28,6 +40,11 @@ function NumberQuestion({ question, questionId, onAnswerChange }: NumberQuestion
                 value={answer}
                 onChange={handleNumberChange}
             />
+            {answer && (
+                <button onClick={handleClearNumber} className={'clear-button'}>
+                    Очистить число
+                </button>
+            )}
         </div>
     );
 }

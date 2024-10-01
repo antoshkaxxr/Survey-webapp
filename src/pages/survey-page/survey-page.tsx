@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import SingleChoiceQuestion from "../../components/questions/single-choice-question/single-choice-question.tsx";
 import MultipleChoiceQuestion from "../../components/questions/multiple-choice-question/multiple-choice-question.tsx";
 import TextQuestion from "../../components/questions/text-question/text-question.tsx";
@@ -9,94 +10,219 @@ import UrlQuestion from "../../components/questions/url-question/url-question.ts
 import FileQuestion from "../../components/questions/file-question/file-question.tsx";
 import SelectQuestion from "../../components/questions/select-question/select-question.tsx";
 import SliderQuestion from "../../components/questions/slider-question/slider-question.tsx";
+import './custom-servey.scss';
+
+interface Question {
+    type: string;
+    questionId: number;
+    question: string;
+    options?: string[];
+    min?: number;
+    max?: number;
+}
+
+interface SurveyData {
+    Name: string;
+    Survey: Question[];
+}
 
 function SurveyPage() {
-    const [answers, setAnswers] = useState({});
+    const { id } = useParams<{ id: string }>();
+    const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
+    const [answers, setAnswers] = useState<{ [key: number]: { question: string; answer: string } }>({});
+    const [reset, setReset] = useState(false);
+
+    useEffect(() => {
+        const fetchSurvey = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/user/jenoshima42@despair.com/survey/${id}`);
+                if (!response.ok) {
+                    throw new Error('Ошибка при получении данных опроса');
+                }
+                const data = await response.json();
+                setSurveyData(data);
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        };
+
+        fetchSurvey();
+    }, [id]);
 
     const handleAnswerChange = (questionId: number, question: string, answer: string) => {
-        setAnswers(prevAnswers => ({
-            ...prevAnswers,
-            [questionId]: {
-                question: question,
-                answer: answer
+        setAnswers(prevAnswers => {
+            const newAnswers = { ...prevAnswers };
+
+            if (answer === '') {
+                delete newAnswers[questionId];
+            } else {
+                newAnswers[questionId] = {
+                    question: question,
+                    answer: answer
+                };
             }
-        }));
+
+            return newAnswers;
+        });
     };
 
+    const handleSubmit = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/user/jenoshima42@despair.com/survey/${id}/answer`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(answers),
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при отправке ответов');
+            }
+
+            const result = await response.json();
+            console.log('Ответы успешно отправлены:', result);
+            alert('Ваши ответы успешно отправлены!');
+        } catch (error) {
+            console.error('Ошибка:', error);
+            alert('Произошла ошибка при отправке ответов. Попробуйте еще раз.');
+        }
+    };
+
+    const handleClear = () => {
+        setAnswers({});
+        setReset(true);
+        setTimeout(() => setReset(false), 0);
+    };
+
+    if (!surveyData) {
+        return <div>Загрузка опроса...</div>;
+    }
+
     return (
-        <>
-            <h1>Преподаватели МатМеха</h1>
-
-            <SingleChoiceQuestion
-                question={'Кто такой Хлопин?'}
-                options={['Историк', 'Физик', 'Математик', 'Биолог']}
-                questionId={1111}
-                onAnswerChange={handleAnswerChange}
-            />
-
-            <MultipleChoiceQuestion
-                question={'Кто такой Косолобов?'}
-                options={['Машина', 'Математик', 'Физик', 'Препод']}
-                questionId={2222}
-                onAnswerChange={handleAnswerChange}
-            />
-
-            <TextQuestion
-                question={'Что Вы думаете о практиках по терверу/матстату?'}
-                questionId={3333}
-                onAnswerChange={handleAnswerChange}
-            />
-
-            <NumberQuestion
-                question={'На каком Вы курсе? Введите только цифру'}
-                questionId={4444}
-                onAnswerChange={handleAnswerChange}
-            />
-
-            <YesNoQuestion
-                question={'Вам нравится Ваша секция по физкультуре?'}
-                questionId={5555}
-                onAnswerChange={handleAnswerChange}
-            />
-
-            <DateQuestion
-                question={'Укажите Вашу дату рождения:'}
-                questionId={6666}
-                onAnswerChange={handleAnswerChange}
-            />
-
-            <UrlQuestion
-                question={'Предоставьте ссылку на Ваш проект на GitLab'}
-                questionId={7777}
-                onAnswerChange={handleAnswerChange}
-            />
-
-            <FileQuestion
-                question={'Прикрепите базу ответов по БЖД'}
-                questionId={8888}
-                onAnswerChange={handleAnswerChange}
-            />
-
-            <SelectQuestion
-                question={'Выберите Вашу страну проживания'}
-                options={['Россия', 'США', 'Япония', 'Китай', 'Франция']}
-                questionId={9999}
-                onAnswerChange={handleAnswerChange}
-            />
-
-            <SliderQuestion
-                question={'Оцените от 1 до 10 МатМех'}
-                min={1}
-                max={10}
-                questionId={11111}
-                onAnswerChange={handleAnswerChange}
-            />
+        <div>
+            <h1>{surveyData.Name}</h1>
+            {surveyData.Survey.map(question => {
+                switch (question.type) {
+                    case 'single-choice-question':
+                        return (
+                            <SingleChoiceQuestion
+                                key={question.questionId}
+                                question={question.question}
+                                options={question.options || []}
+                                questionId={question.questionId}
+                                onAnswerChange={handleAnswerChange}
+                                reset={reset}
+                            />
+                        );
+                    case 'multiple-choice-question':
+                        return (
+                            <MultipleChoiceQuestion
+                                key={question.questionId}
+                                question={question.question}
+                                options={question.options || []}
+                                questionId={question.questionId}
+                                onAnswerChange={handleAnswerChange}
+                                reset={reset}
+                            />
+                        );
+                    case 'text-question':
+                        return (
+                            <TextQuestion
+                                key={question.questionId}
+                                question={question.question}
+                                questionId={question.questionId}
+                                onAnswerChange={handleAnswerChange}
+                                reset={reset}
+                            />
+                        );
+                    case 'number-question':
+                        return (
+                            <NumberQuestion
+                                key={question.questionId}
+                                question={question.question}
+                                questionId={question.questionId}
+                                onAnswerChange={handleAnswerChange}
+                                reset={reset}
+                            />
+                        );
+                    case 'yes-no-question':
+                        return (
+                            <YesNoQuestion
+                                key={question.questionId}
+                                question={question.question}
+                                questionId={question.questionId}
+                                onAnswerChange={handleAnswerChange}
+                                reset={reset}
+                            />
+                        );
+                    case 'date-question':
+                        return (
+                            <DateQuestion
+                                key={question.questionId}
+                                question={question.question}
+                                questionId={question.questionId}
+                                onAnswerChange={handleAnswerChange}
+                                reset={reset}
+                            />
+                        );
+                    case 'url-question':
+                        return (
+                            <UrlQuestion
+                                key={question.questionId}
+                                question={question.question}
+                                questionId={question.questionId}
+                                onAnswerChange={handleAnswerChange}
+                                reset={reset}
+                            />
+                        );
+                    case 'file-question':
+                        return (
+                            <FileQuestion
+                                key={question.questionId}
+                                question={question.question}
+                                questionId={question.questionId}
+                                onAnswerChange={handleAnswerChange}
+                                reset={reset}
+                            />
+                        );
+                    case 'select-question':
+                        return (
+                            <SelectQuestion
+                                key={question.questionId}
+                                question={question.question}
+                                options={question.options || []}
+                                questionId={question.questionId}
+                                onAnswerChange={handleAnswerChange}
+                                reset={reset}
+                            />
+                        );
+                    case 'slider-question':
+                        return (
+                            <SliderQuestion
+                                key={question.questionId}
+                                question={question.question}
+                                min={question.min || 1}
+                                max={question.max || 10}
+                                questionId={question.questionId}
+                                onAnswerChange={handleAnswerChange}
+                                reset={reset}
+                            />
+                        );
+                    default:
+                        return <div key={question.questionId}>Неизвестный тип вопроса</div>;
+                }
+            })}
 
             <div>
-                <h2>Ответы:</h2>
-                <pre>{JSON.stringify(answers, null, 2)}</pre>
+                <button className={'send-button'} onClick={handleSubmit}>
+                    Отправить
+                </button>
+                <button className={'delete-button'} onClick={handleClear}>
+                    Очистить всё
+                </button>
             </div>
-        </>
+        </div>
     );
 }
 

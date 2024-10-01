@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-text.css';
 
@@ -6,9 +6,10 @@ type TextQuestionProps = {
     question: string;
     questionId: number;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
+    reset: boolean;
 }
 
-function TextQuestion({ question, questionId, onAnswerChange }: TextQuestionProps) {
+function TextQuestion({ question, questionId, onAnswerChange, reset }: TextQuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -16,6 +17,17 @@ function TextQuestion({ question, questionId, onAnswerChange }: TextQuestionProp
         setAnswer(answer);
         onAnswerChange(questionId, question, answer);
     };
+
+    const handleClearText = () => {
+        setAnswer('');
+        onAnswerChange(questionId, question, '');
+    };
+
+    useEffect(() => {
+        if (reset) {
+            setAnswer('');
+        }
+    }, [reset]);
 
     return (
         <div className={'question-border'}>
@@ -28,7 +40,13 @@ function TextQuestion({ question, questionId, onAnswerChange }: TextQuestionProp
                 value={answer}
                 onChange={handleTextChange}
             />
+            {answer && (
+                <button onClick={handleClearText} className={'clear-button'}>
+                    Очистить текст
+                </button>
+            )}
         </div>
+
     );
 }
 

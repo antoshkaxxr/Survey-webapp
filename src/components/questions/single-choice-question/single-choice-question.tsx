@@ -1,15 +1,16 @@
-import {ChangeEvent, useState} from 'react';
-import '../question-style.css'
-import './custom-radio.css'
+import { ChangeEvent, useEffect, useState } from 'react';
+import '../question-style.css';
+import './custom-radio.css';
 
 type SingleChoiceQuestionProps = {
     question: string;
     options: string[];
     questionId: number;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
+    reset: boolean;
 }
 
-function SingleChoiceQuestion({question, options, questionId, onAnswerChange}: SingleChoiceQuestionProps) {
+function SingleChoiceQuestion({ question, options, questionId, onAnswerChange, reset }: SingleChoiceQuestionProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -17,6 +18,17 @@ function SingleChoiceQuestion({question, options, questionId, onAnswerChange}: S
         setSelectedOption(answer);
         onAnswerChange(questionId, question, answer);
     };
+
+    const handleClearSelection = () => {
+        setSelectedOption(null);
+        onAnswerChange(questionId, question, '');
+    };
+
+    useEffect(() => {
+        if (reset) {
+            setSelectedOption(null);
+        }
+    }, [reset]);
 
     return (
         <div className={'question-border'}>
@@ -34,6 +46,11 @@ function SingleChoiceQuestion({question, options, questionId, onAnswerChange}: S
                     <span className={'radio-value'}>{option}</span>
                 </label>
             ))}
+            {selectedOption && (
+                <button onClick={handleClearSelection} className={'clear-button'}>
+                    Очистить выбор
+                </button>
+            )}
         </div>
     );
 }

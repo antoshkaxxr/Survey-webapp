@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-date.css';
 
@@ -6,9 +6,10 @@ type DateQuestionProps = {
     question: string;
     questionId: number;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
+    reset: boolean;
 }
 
-function DateQuestion({ question, questionId, onAnswerChange }: DateQuestionProps) {
+function DateQuestion({ question, questionId, onAnswerChange, reset }: DateQuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -16,6 +17,17 @@ function DateQuestion({ question, questionId, onAnswerChange }: DateQuestionProp
         setAnswer(answer);
         onAnswerChange(questionId, question, answer);
     };
+
+    const handleClearDate = () => {
+        setAnswer('');
+        onAnswerChange(questionId, question, '');
+    };
+
+    useEffect(() => {
+        if (reset) {
+            setAnswer('');
+        }
+    }, [reset]);
 
     return (
         <div className={'question-border'}>
@@ -27,6 +39,11 @@ function DateQuestion({ question, questionId, onAnswerChange }: DateQuestionProp
                 value={answer}
                 onChange={handleDateChange}
             />
+            {answer && (
+                <button onClick={handleClearDate} className={'clear-button'}>
+                    Очистить дату
+                </button>
+            )}
         </div>
     );
 }

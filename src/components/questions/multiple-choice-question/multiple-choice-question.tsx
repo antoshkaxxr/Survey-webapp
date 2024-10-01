@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import '../question-style.css';
 import './custom-checkbox.css';
 
@@ -7,9 +7,10 @@ type MultipleChoiceQuestionProps = {
     options: string[];
     questionId: number;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
+    reset: boolean;
 }
 
-function MultipleChoiceQuestion({ question, options, questionId, onAnswerChange }: MultipleChoiceQuestionProps) {
+function MultipleChoiceQuestion({ question, options, questionId, onAnswerChange, reset }: MultipleChoiceQuestionProps) {
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
     const handleOptionChange = (option: string) => {
@@ -20,6 +21,17 @@ function MultipleChoiceQuestion({ question, options, questionId, onAnswerChange 
         setSelectedOptions(updatedOptions);
         onAnswerChange(questionId, question, updatedOptions.join(', '));
     };
+
+    const handleClearSelection = () => {
+        setSelectedOptions([]);
+        onAnswerChange(questionId, question, '');
+    };
+
+    useEffect(() => {
+        if (reset) {
+            setSelectedOptions([]);
+        }
+    }, [reset]);
 
     return (
         <div className={'question-border'}>
@@ -37,6 +49,11 @@ function MultipleChoiceQuestion({ question, options, questionId, onAnswerChange 
                     <span className={'checkbox-value'}>{option}</span>
                 </label>
             ))}
+            {selectedOptions.length !== 0 && (
+                <button onClick={handleClearSelection} className={'clear-button'}>
+                    Очистить выбор
+                </button>
+            )}
         </div>
     );
 }

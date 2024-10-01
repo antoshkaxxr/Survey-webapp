@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-file.css';
 
@@ -6,9 +6,10 @@ type FileQuestionProps = {
     question: string;
     questionId: number;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
+    reset: boolean;
 }
 
-function FileQuestion({ question, questionId, onAnswerChange }: FileQuestionProps) {
+function FileQuestion({ question, questionId, onAnswerChange, reset }: FileQuestionProps) {
     const [file, setFile] = useState<File>();
     const [error, setError] = useState('');
 
@@ -17,6 +18,9 @@ function FileQuestion({ question, questionId, onAnswerChange }: FileQuestionProp
 
         if (selectedFile) {
             if (selectedFile.size > 10 * 1024 * 1024) {
+                if (file) {
+                    setFile(undefined);
+                }
                 setError('Размер файла не должен превышать 10 МБ.');
             } else {
                 setFile(selectedFile);
@@ -25,6 +29,17 @@ function FileQuestion({ question, questionId, onAnswerChange }: FileQuestionProp
             }
         }
     }
+
+    const handleClearFile = () => {
+        setFile(undefined);
+        onAnswerChange(questionId, question, '');
+    };
+
+    useEffect(() => {
+        if (reset) {
+            setFile(undefined);
+        }
+    }, [reset]);
 
     return (
         <div className="question-border">
@@ -40,6 +55,11 @@ function FileQuestion({ question, questionId, onAnswerChange }: FileQuestionProp
             </label>
             {error && <span className={'error-message'}>{error}</span>}
             {file && <span className={'name-message'}>{file.name}</span>}
+            {file && (
+                <button onClick={handleClearFile} className={'clear-button'}>
+                    Очистить файл
+                </button>
+            )}
         </div>
     );
 }

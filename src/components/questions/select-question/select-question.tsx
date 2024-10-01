@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-select.css';
 
@@ -7,15 +7,27 @@ type SelectQuestionProps = {
     options: string[];
     questionId: number;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
+    reset: boolean;
 };
 
-function SelectQuestion({ question, options, questionId, onAnswerChange }: SelectQuestionProps) {
+function SelectQuestion({ question, options, questionId, onAnswerChange, reset }: SelectQuestionProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     const handleOptionChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const option = event.target.value;
         setSelectedOption(option);
         onAnswerChange(questionId, question, option);
+    };
+
+    useEffect(() => {
+        if (reset) {
+            setSelectedOption(null);
+        }
+    }, [reset]);
+
+    const handleClearSelection = () => {
+        setSelectedOption(null);
+        onAnswerChange(questionId, question, '');
     };
 
     return (
@@ -33,6 +45,11 @@ function SelectQuestion({ question, options, questionId, onAnswerChange }: Selec
                     </option>
                 ))}
             </select>
+            {selectedOption && (
+                <button onClick={handleClearSelection} className={'clear-button'}>
+                    Очистить выбор
+                </button>
+            )}
         </div>
     );
 }

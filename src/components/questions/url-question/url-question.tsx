@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-url.css';
 
@@ -6,9 +6,10 @@ type UrlQuestionProps = {
     question: string;
     questionId: number;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
+    reset: boolean;
 };
 
-function UrlQuestion({ question, questionId, onAnswerChange }: UrlQuestionProps) {
+function UrlQuestion({ question, questionId, onAnswerChange, reset }: UrlQuestionProps) {
     const [url, setUrl] = useState('');
     const [error, setError] = useState('');
 
@@ -36,6 +37,19 @@ function UrlQuestion({ question, questionId, onAnswerChange }: UrlQuestionProps)
         }
     };
 
+    const handleClearUrl = () => {
+        setUrl('');
+        setError('');
+        onAnswerChange(questionId, question, '');
+    };
+
+    useEffect(() => {
+        if (reset) {
+            setUrl('');
+            setError('');
+        }
+    }, [reset]);
+
     return (
         <div className={'question-border'}>
             <h3 className={'question-wording'}>{question}</h3>
@@ -47,6 +61,11 @@ function UrlQuestion({ question, questionId, onAnswerChange }: UrlQuestionProps)
                 onChange={handleChange}
             />
             {error && <span className='error-message'>{error}</span>}
+            {url && (
+                <button onClick={handleClearUrl} className={'clear-button'}>
+                    Очистить поле
+                </button>
+            )}
         </div>
     );
 }

@@ -1,0 +1,30 @@
+.send-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0f428e;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    font-family: "Roboto Flex", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #fff;
+
+    &:hover {
+        background-color: #2b7bf3;
+    }
+}
+
+.delete-button {
+    @extend .send-button;
+    background-color: #c0392b;
+    border: 1px solid #a93226;
+    margin-left: 15px;
+
+    &:hover {
+        background-color: #e74c3c;
+    }
+}
