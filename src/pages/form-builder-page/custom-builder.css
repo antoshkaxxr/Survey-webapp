@@ -7,3 +7,48 @@
     background-color: #e2fdf5;
 }
 
+.question-item {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.arrows {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+    gap: 3px;
+}
+
+.arrows button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.question-item:hover .arrows button {
+    opacity: 1;
+}
+
+.arrows button img {
+    filter: brightness(0) saturate(100%) invert(26%) sepia(80%) saturate(2600%) hue-rotate(205deg) brightness(94%) contrast(95%);
+    transition: filter 0.3s;
+}
+
+.arrows button:hover img {
+    filter: brightness(0) saturate(100%) invert(17%) sepia(100%) saturate(2000%) hue-rotate(205deg) brightness(90%) contrast(90%);
+}
+
+.arrows button:disabled img {
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.arrows button:disabled:hover img {
+    filter: grayscale(100%);
+    cursor: not-allowed;
+}
+
+

@@ -1,0 +1,29 @@
+.question-types-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.question-type-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+
+}
+
+.question-type-item:hover {
+    background-color: #f0f0f0;
+}
+
+.question-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 20px;
+}
+
+
+

@@ -10,7 +10,7 @@ const Question: React.FC<QuestionProps> = ({ question, type }) => {
     return (
         <div className="question-container">
             <h3>{question}</h3>
-            <p>Тип вопроса: {type?.replace(/-/g, ' ')}</p>
+            <p>Тип вопроса: {type}</p>
         </div>
     );
 };

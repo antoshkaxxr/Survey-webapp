@@ -1,43 +1,50 @@
-import React from 'react';
 import '../modal.css';
+import './question-type-modal.css';
 
-interface QuestionTypeModalProps {
+type QuestionTypeModalProps = {
     isOpen: boolean;
     onClose: () => void;
     onSelect: (type: string) => void;
 }
 
-const QuestionTypeModal: React.FC<QuestionTypeModalProps> = ({ isOpen, onClose, onSelect }) => {
-    if (!isOpen) return null;
+const questionTypes = [
+    { name: "Одиночный выбор", icon: "/icons/single-choice.svg" },
+    { name: "Множественный выбор", icon: "/icons/multiple-choice.svg" },
+    { name: "Текст", icon: "/icons/text.svg" },
+    { name: "Целое число", icon: "/icons/integer.svg" },
+    { name: "Да/Нет", icon: "/icons/yes-no.svg" },
+    { name: "Дата", icon: "/icons/date.svg" },
+    { name: "Ссылка", icon: "/icons/link.svg" },
+    { name: "Файл", icon: "/icons/file.svg" },
+    { name: "Выпадающий список", icon: "/icons/dropdown.svg" },
+    { name: "Шкала", icon: "/icons/scale.svg" }
+];
 
-    const questionTypes = [
-        "single-choice-question",
-        "multiple-choice-question",
-        "text-question",
-        "number-question",
-        "yes-no-question",
-        "date-question",
-        "url-question",
-        "file-question",
-        "select-question",
-        "slider-question"
-    ];
+function QuestionTypeModal({ isOpen, onClose, onSelect }: QuestionTypeModalProps) {
+    if (!isOpen) return null;
 
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <h2>Выберите тип вопроса</h2>
-                <ul>
-                    {questionTypes.map((type) => (
-                        <li key={type} onClick={() => { onSelect(type); onClose(); }}>
-                            {type.replace(/-/g, ' ')}
-                        </li>
+                <button className="close-button" onClick={onClose} aria-label="Закрыть">
+                    &times;
+                </button>
+                <h2 className={'requested-action'}>Выберите тип вопроса:</h2>
+                <div className="question-types-container">
+                    {questionTypes.map(({ name, icon }) => (
+                        <div
+                            key={name}
+                            className="question-type-item"
+                            onClick={() => { onSelect(name); onClose(); }}
+                        >
+                            <img src={icon} alt={`${name} иконка`} className="question-icon" />
+                            {name}
+                        </div>
                     ))}
-                </ul>
-                <button onClick={onClose}>Закрыть</button>
+                </div>
             </div>
         </div>
     );
-};
+}
 
 export default QuestionTypeModal;

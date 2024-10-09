@@ -1,0 +1,70 @@
+.question-input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.option-input {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.option-input input {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 80%;
+    box-sizing: border-box;
+}
+
+.option-input button {
+    margin-left: 10px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.option-input button:hover {
+    background: #c0392b;
+}
+
+.add-button {
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.add-button:hover {
+    background: #cabdbc;
+}
+
+.save-button {
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+    margin-top: 25px;
+}
+
+.save-button:hover {
+    background: #2980b9;
+}
