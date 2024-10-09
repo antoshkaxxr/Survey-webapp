@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import '../modal.css'
+import React, { useEffect, useState } from 'react';
+import '../modal.css';
 
 interface QuestionInputModalProps {
     isOpen: boolean;
@@ -11,6 +11,13 @@ interface QuestionInputModalProps {
 const QuestionInputModal: React.FC<QuestionInputModalProps> = ({ isOpen, onClose, questionType, onSubmit }) => {
     const [question, setQuestion] = useState<string>('');
     const [options, setOptions] = useState<string>('');
+
+    useEffect(() => {
+        if (isOpen) {
+            setQuestion('');
+            setOptions('');
+        }
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
