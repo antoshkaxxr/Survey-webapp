@@ -1,63 +1,21 @@
-function FormBuilderPage() {
+import React, { useState } from 'react';
+import QuestionTypeModal from '../../components/parts-of-builder-survey/question-type-modal/question-type-modal';
+import './custom-builder.css';
+
+const FormBuilderPage: React.FC = () => {
+    const [isModalOpen, setModalOpen] = useState<boolean>(false);
+    const [_, setSelectedQuestionType] = useState<string | null>(null);
+
+    const handleSelectQuestionType = (type: string) => {
+        setSelectedQuestionType(type);
+        console.log('Выбранный тип вопроса:', type); // Логика для обработки выбранного вопроса
+    };
+
     const handleSubmit = async () => {
         const data = {
             Name: "Преподаватели Радиофака",
             Survey: [
-                {
-                    type: "single-choice-question",
-                    questionId: 1111,
-                    question: "Кто такой Хлопин?",
-                    options: ["Историк", "Физик", "Математик", "Биолог"]
-                },
-                {
-                    type: "multiple-choice-question",
-                    questionId: 2222,
-                    question: "Кто такой Косолобов?",
-                    options: ["Машина", "Математик", "Физик", "Препод"]
-                },
-                {
-                    type: "text-question",
-                    questionId: 3333,
-                    question: "Что Вы думаете о практиках по терверу/матстату?"
-                },
-                {
-                    type: "number-question",
-                    questionId: 4444,
-                    question: "На каком Вы курсе? Введите только цифру"
-                },
-                {
-                    type: "yes-no-question",
-                    questionId: 5555,
-                    question: "Вам нравится Ваша секция по физкультуре?"
-                },
-                {
-                    type: "date-question",
-                    questionId: 6666,
-                    question: "Укажите Вашу дату рождения:"
-                },
-                {
-                    type: "url-question",
-                    questionId: 7777,
-                    question: "Предоставьте ссылку на Ваш проект на GitLab"
-                },
-                {
-                    type: "file-question",
-                    questionId: 8888,
-                    question: "Прикрепите базу ответов по БЖД"
-                },
-                {
-                    type: "select-question",
-                    questionId: 9999,
-                    question: "Выберите Вашу страну проживания",
-                    options: ["Россия", "США", "Япония", "Китай", "Франция"]
-                },
-                {
-                    type: "slider-question",
-                    questionId: 11111,
-                    question: "Оцените от 1 до 10 МатМех",
-                    min: 1,
-                    max: 10
-                }
+                // Ваши вопросы
             ]
         };
 
@@ -82,11 +40,18 @@ function FormBuilderPage() {
     };
 
     return (
-        <>
-            <h1>This is a page where forms will be created</h1>
-            <button onClick={handleSubmit}>Отправить опрос</button>
-        </>
+        <div className={'builder-survey'}>
+            <h1>Конструктор форм</h1>
+            <p>Введите название формы:</p>
+            <button className={'adder'} onClick={() => setModalOpen(true)}></button>
+            <button className={'submit'} onClick={handleSubmit}>Отправить опрос</button>
+            <QuestionTypeModal
+                isOpen={isModalOpen}
+                onClose={() => setModalOpen(false)}
+                onSelect={handleSelectQuestionType}
+            />
+        </div>
     );
-}
+};
 
 export default FormBuilderPage;

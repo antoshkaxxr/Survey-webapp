@@ -1,0 +1,9 @@
+.adder {
+    width: auto;
+    height: 100px;
+    background: url(/src/images/plus.png) no-repeat center;
+    background-size: contain;
+    font-size : 0;
+    background-color: #e2fdf5;
+}
+
