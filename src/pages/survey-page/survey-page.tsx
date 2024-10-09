@@ -10,7 +10,7 @@ import UrlQuestion from "../../components/questions/url-question/url-question.ts
 import FileQuestion from "../../components/questions/file-question/file-question.tsx";
 import SelectQuestion from "../../components/questions/select-question/select-question.tsx";
 import SliderQuestion from "../../components/questions/slider-question/slider-question.tsx";
-import './custom-servey.scss';
+import './custom-survey.scss';
 
 interface Question {
     type: string;

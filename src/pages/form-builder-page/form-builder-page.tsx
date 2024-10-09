@@ -1,7 +1,7 @@
 function FormBuilderPage() {
     const handleSubmit = async () => {
         const data = {
-            Name: "Преподаватели МатМеха",
+            Name: "Преподаватели Радиофака",
             Survey: [
                 {
                     type: "single-choice-question",
