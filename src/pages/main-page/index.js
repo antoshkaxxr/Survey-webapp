@@ -1,5 +1,10 @@
+function createParticle() {
 
-  const canvas = document.getElementById('canvas');
+  
+  const canvas = document.createElement('canvas');
+    canvas.id = 'canvas';
+    document.body.appendChild(canvas); // Добавляем canvas в body (или другой контейнер)
+
   const ctx = canvas.getContext('2d');
 
   let width = canvas.width = window.innerWidth;
@@ -86,7 +91,6 @@
 
       this.x += this.velocityX;
       this.y += this.velocityY;
-
       if (this.x + this.size > width || this.x - this.size < 0) {
         this.velocityX *= -1;
         this.targetAngularSpeed *= -1; // Изменяем целевую угловую скорость при столкновении с границей
@@ -139,14 +143,18 @@
 
   window.addEventListener('resize', handleResize);
 
-  function animate() {
+  async function animate() {
     ctx.clearRect(0, 0, width, height);
-    particles.forEach(particle => {
+    for (const particle of particles) {
       particle.draw();
       particle.update();
-    });
+    }
     requestAnimationFrame(animate);
   }
 
   init();
   animate();
+}
+
+export default createParticle();
+

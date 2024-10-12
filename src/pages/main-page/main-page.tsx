@@ -1,15 +1,14 @@
 import './styles.css';
-import './index.js';
+
+
+import "../../pages/main-page/index.js";
 
 function MainPage() {
+    
     return (
         <>
-            
-            
-            <canvas id="canvas"></canvas>
             <h1>Welcome!</h1>
             <h2>This is a main page</h2>
-
         </>
     );
     
