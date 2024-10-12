@@ -1,7 +1,7 @@
 import './styles.css';
 
 
-import "../../pages/main-page/index.js";
+import "../../work-with-emojis/add_emojis.js";
 
 function MainPage() {
     
