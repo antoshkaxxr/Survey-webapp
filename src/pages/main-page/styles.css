@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: #222;
+  touch-action: manipulation; 
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+
+
+h1, h2 {
+
+  position: relative;
+  z-index: 1; /* Убедитесь, что контент выше канваса */
+  color: white; /* Цвет текста */
+  text-align: center; /* Центрирование текста */
+  top: 50%; /* Смещение вниз на 50% */
+  transform: translateY(-50%); /* Центрирование по вертикали */
+}
