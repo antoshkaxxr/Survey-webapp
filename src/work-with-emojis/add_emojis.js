@@ -25,7 +25,7 @@ function createParticle() {
     });
 
     window.addEventListener('touchmove', (event) => {
-      event.preventDefault();
+      //event.preventDefault();
       mouse.x = event.touches[0].clientX;
       mouse.y = event.touches[0].clientY;
       mouse.isMoving = true;
@@ -139,6 +139,7 @@ function createParticle() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
       init();
+      // скорее всего init надо белать не всегда
     }
 
     window.addEventListener('resize', handleResize);
