@@ -1,6 +1,6 @@
 function createParticle() {
 
-  if (window.location.pathname === '/') {
+  if (window.location.pathname === '/' && document.getElementById('canvas') === null) {
     const canvas = document.createElement('canvas');
     canvas.id = 'canvas';
     document.body.appendChild(canvas); // Добавляем canvas в body (или другой контейнер)
