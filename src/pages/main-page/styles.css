@@ -17,6 +17,7 @@ canvas {
   margin: 20px 0; /* отступы сверху и снизу */
   text-align: center; /* центрирование текста */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* теневой эффект */
+  backdrop-filter: blur(4px);
 }
 
 .WelcomeText {
