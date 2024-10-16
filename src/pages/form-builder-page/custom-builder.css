@@ -1,10 +1,51 @@
-.adder {
-    width: auto;
-    height: 100px;
-    background: url(/src/images/plus.png) no-repeat center;
-    background-size: contain;
-    font-size : 0;
-    background-color: #e2fdf5;
+.form-title-container {
+    margin-bottom: 20px;
+}
+
+.form-title-input {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-title-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.theme-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.theme-selector button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.theme-selector button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.theme-selector button.active {
+    background-color: #0056b3;
+    font-weight: bold;
+}
+
+.theme-selector button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
 .question-item {
@@ -30,15 +71,16 @@
 
 .question-item:hover .arrows button {
     opacity: 1;
+    background: #a69e9e;
 }
 
 .arrows button img {
-    filter: brightness(0) saturate(100%) invert(26%) sepia(80%) saturate(2600%) hue-rotate(205deg) brightness(94%) contrast(95%);
+    filter: brightness(0%) invert(0%);
     transition: filter 0.3s;
 }
 
 .arrows button:hover img {
-    filter: brightness(0) saturate(100%) invert(17%) sepia(100%) saturate(2000%) hue-rotate(205deg) brightness(90%) contrast(90%);
+    filter: brightness(0%) invert(100%);
 }
 
 .arrows button:disabled img {
@@ -49,6 +91,34 @@
 .arrows button:disabled:hover img {
     filter: grayscale(100%);
     cursor: not-allowed;
+}
+
+.add-question-button,
+.save-survey-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.add-question-button:hover,
+.save-survey-button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.save-survey-button {
+    background-color: #007bff;
+}
+
+.save-survey-button:hover {
+    background-color: #0056b3;
 }
 
 

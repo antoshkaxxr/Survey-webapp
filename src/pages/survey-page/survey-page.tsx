@@ -23,6 +23,11 @@ interface Question {
 
 interface SurveyData {
     Name: string;
+    Theme: {
+        name: string;
+        theme: string;
+        url: string;
+    }
     Survey: Question[];
 }
 
@@ -41,6 +46,12 @@ function SurveyPage() {
                 }
                 const data = await response.json();
                 setSurveyData(data);
+
+                if (data.Theme) {
+                    document.body.style.backgroundImage = `${data.Theme.url}`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundRepeat = 'no-repeat';
+                }
             } catch (error) {
                 console.error('Ошибка:', error);
             }
@@ -104,7 +115,7 @@ function SurveyPage() {
             <h1>{surveyData.Name}</h1>
             {surveyData.Survey.map(question => {
                 switch (question.type) {
-                    case 'single-choice-question':
+                    case 'Одиночный выбор':
                         return (
                             <SingleChoiceQuestion
                                 key={question.questionId}
@@ -115,7 +126,7 @@ function SurveyPage() {
                                 reset={reset}
                             />
                         );
-                    case 'multiple-choice-question':
+                    case 'Множественный выбор':
                         return (
                             <MultipleChoiceQuestion
                                 key={question.questionId}
@@ -126,7 +137,7 @@ function SurveyPage() {
                                 reset={reset}
                             />
                         );
-                    case 'text-question':
+                    case 'Текст':
                         return (
                             <TextQuestion
                                 key={question.questionId}
@@ -136,7 +147,7 @@ function SurveyPage() {
                                 reset={reset}
                             />
                         );
-                    case 'number-question':
+                    case 'Целое число':
                         return (
                             <NumberQuestion
                                 key={question.questionId}
@@ -146,7 +157,7 @@ function SurveyPage() {
                                 reset={reset}
                             />
                         );
-                    case 'yes-no-question':
+                    case 'Да/Нет':
                         return (
                             <YesNoQuestion
                                 key={question.questionId}
@@ -156,7 +167,7 @@ function SurveyPage() {
                                 reset={reset}
                             />
                         );
-                    case 'date-question':
+                    case 'Дата':
                         return (
                             <DateQuestion
                                 key={question.questionId}
@@ -166,7 +177,7 @@ function SurveyPage() {
                                 reset={reset}
                             />
                         );
-                    case 'url-question':
+                    case 'Ссылка':
                         return (
                             <UrlQuestion
                                 key={question.questionId}
@@ -176,7 +187,7 @@ function SurveyPage() {
                                 reset={reset}
                             />
                         );
-                    case 'file-question':
+                    case 'Файл':
                         return (
                             <FileQuestion
                                 key={question.questionId}
@@ -186,7 +197,7 @@ function SurveyPage() {
                                 reset={reset}
                             />
                         );
-                    case 'select-question':
+                    case 'Выпадающий список':
                         return (
                             <SelectQuestion
                                 key={question.questionId}
@@ -197,7 +208,7 @@ function SurveyPage() {
                                 reset={reset}
                             />
                         );
-                    case 'slider-question':
+                    case 'Шкала':
                         return (
                             <SliderQuestion
                                 key={question.questionId}

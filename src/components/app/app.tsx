@@ -28,7 +28,11 @@ function App() {
                     element={<FormBuilderPage />}
                 />
                 <Route
-                    path={AppRoute.Survey}
+                    path={AppRoute.FormBuilderEdit}
+                    element={<FormBuilderPage />}
+                />
+                <Route
+                    path={AppRoute.SurveyId}
                     element={<SurveyPage />}
                 />
             </Routes>

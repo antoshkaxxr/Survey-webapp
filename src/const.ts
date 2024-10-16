@@ -1,7 +1,9 @@
 export enum AppRoute {
     FormBuilder = '/editor',
+    FormBuilderEdit = '/editor/:id',
     Login = '/login',
     Root = '/',
-    Survey = '/survey/:id',
+    Survey = '/survey',
+    SurveyId = '/survey/:id',
     MySurveys = '/my-surveys'
 }

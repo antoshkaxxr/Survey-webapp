@@ -41,7 +41,7 @@ function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
     };
 
     const handleSubmit = () => {
-        onSubmit(question, questionType?.includes('выбор') ? options : undefined);
+        onSubmit(question, questionType?.includes('выбор') || questionType?.includes('список') ? options : undefined);
         onClose();
     };
 
@@ -61,7 +61,7 @@ function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder="Вопрос"
                 />
-                {questionType?.includes('выбор') && (
+                {(questionType?.includes('выбор') || questionType?.includes('список')) && (
                     <>
                         <h2 className={'requested-action'}>
                             {initialOptions.length > 0 ? 'Отредактируйте варианты ответов:' : 'Введите варианты ответов:'}
