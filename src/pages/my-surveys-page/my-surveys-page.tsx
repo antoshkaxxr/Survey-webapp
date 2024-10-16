@@ -50,6 +50,7 @@ function MySurveysPage() {
         };
 
         fetchSurveys();
+        document.body.style.backgroundImage = '';
     }, []);
 
     const copyToClipboard = (surveyId: number) => {
