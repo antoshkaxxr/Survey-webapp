@@ -155,7 +155,7 @@ function FormBuilderPage() {
 
     return (
         <div className={'builder-survey'}>
-            <h1>Конструктор форм</h1>
+            <h1>Конструктор опросов</h1>
             <div className="form-title-container">
                 <input
                     type="text"
