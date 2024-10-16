@@ -1,0 +1,140 @@
+
+
+.login-box {
+    background: rgba(255, 255, 255, 0.7); /* Полупрозрачный фон */
+    backdrop-filter: blur(10px); /* Эффект размытия */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+    margin-top: 100px;
+    
+}
+
+
+.login-input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Полупрозрачная граница */
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.5); /* Полупрозрачный фон */
+    transition: border 0.3s, background-color 0.3s;
+}
+
+.login-input:focus {
+    border-color: #007BFF;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.8); /* Более яркий фон при фокусе */
+}
+
+.login-submit {
+    background-color: rgba(0, 123, 255, 0.7); /* Полупрозрачный фон */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    width: calc(100% - 10px);
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Добавляем тень */
+}
+
+.login-submit:hover {
+    background-color: rgba(0, 86, 179, 0.8); /* Более яркий цвет при наведении */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 123, 255, 0.5); /* Тень при наведении */
+}
+
+.social-login {
+    margin-top: 20px;
+}
+
+.google-login-submit,
+.github-login-submit,
+.vk-login-submit {
+    background-color: rgba(255, 255, 255, 0.7); /* Полупрозрачный фон */
+    color: #333;
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Полупрозрачная граница */
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    width: calc(100% - 10px);
+    margin: 5px 0; /* Отступ для пространства */
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Добавляем тень */
+}
+
+.google-login-submit:hover,
+.github-login-submit:hover,
+.vk-login-submit:hover {
+    background-color: rgba(245, 245, 245, 0.8); /* Более яркий цвет при наведении */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Тень при наведении */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+
+
+/*  */
+/*  */
+
+
+.login-box2{
+    user-select:none;
+    max-width: 300px;
+    margin: 5rem auto;
+
+    background-color: #282c34;
+    background: linear-gradient(0deg, rgb(103, 131, 186) 0%, rgba(197, 179, 212, 0.5) 100%);
+    box-shadow: 0 7px 20px 5px #00000088;
+    border-radius: .7rem;
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    overflow: hidden;
+    transition: .5s all;
+    text-align: center;
+
+    
+
+    .main{
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      padding: 1rem;
+
+
+
+    }
+    ::before{
+      position: fixed;
+      content: "";
+      box-shadow: 0 0 100px 40px #ffffff08;
+      top: -10%;
+      left: -100%;
+      transform: rotate(-45deg);
+      height: 60rem;
+      transition: .7s all;
+    }
+    &:hover{
+
+      box-shadow: 0 7px 50px 10px #000000aa;
+      transform: scale(1.015);
+      filter: brightness(1.3);
+      ::before{
+        filter: brightness(.5);
+        top: -100%;
+        left: 200%;
+      }
+    }
+  }
