@@ -5,7 +5,7 @@ import LoginPage from "../../pages/login-page/login-page";
 import FormBuilderPage from "../../pages/form-builder-page/form-builder-page";
 import SurveyPage from "../../pages/survey-page/survey-page";
 import MySurveysPage from "../../pages/my-surveys-page/my-surveys-page";
-
+import Moving from "../../pages/Moving/moving-page";
 
 function App() {
     return (
@@ -34,6 +34,10 @@ function App() {
                 <Route
                     path={AppRoute.SurveyId}
                     element={<SurveyPage />}
+                />
+                <Route
+                    path={AppRoute.Moving}
+                    element={<Moving />}
                 />
             </Routes>
         </BrowserRouter>
