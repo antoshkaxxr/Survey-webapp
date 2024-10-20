@@ -2,20 +2,21 @@ import './styles.css';
 
 
 import "../../work-with-emojis/add_emojis.js";
+import {AppRoute} from "../../const.ts";
 
 function MainPage() {
-    
+
     return (
         <>
             <div className="WelcomeButton-container">
-                <a href="/login">
-                    <button className="WelcomeTransparent-btn">Log in</button>
+                <a href={AppRoute.Login}>
+                    <button className="WelcomeTransparent-btn">Войти</button>
                 </a>
-                <a href="/my-surveys">
-                    <button className="WelcomeTransparent-btn">Sign up</button>
+                <a href={AppRoute.MySurveys}>
+                    <button className="WelcomeTransparent-btn">Мои опросы</button>
                 </a>
-                <a href="/editor">
-                    <button className="WelcomeWhite-btn">Create form</button>
+                <a href={AppRoute.FormBuilder}>
+                    <button className="WelcomeWhite-btn">Создать опрос</button>
                 </a>
             </div>
             <h1 className="WelcomeText">Welcome!</h1>
@@ -41,15 +42,14 @@ function MainPage() {
                 <p>Information</p>
                 <p>Information</p>
                 <p>Information</p>
-                
+
             </div>
-            
+
         </>
     );
-    
+
 }
 
 
 export default MainPage;
-
 
