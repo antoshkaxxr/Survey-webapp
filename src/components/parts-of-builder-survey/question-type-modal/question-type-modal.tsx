@@ -1,7 +1,7 @@
 import '../modal.css';
 import './question-type-modal.css';
 
-type QuestionTypeModalProps = {
+interface QuestionTypeModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSelect: (type: string) => void;

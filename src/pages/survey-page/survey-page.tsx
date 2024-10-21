@@ -12,25 +12,6 @@ import SelectQuestion from "../../components/questions/select-question/select-qu
 import SliderQuestion from "../../components/questions/slider-question/slider-question.tsx";
 import './custom-survey.scss';
 
-interface Question {
-    type: string;
-    questionId: number;
-    question: string;
-    options?: string[];
-    min?: number;
-    max?: number;
-}
-
-interface SurveyData {
-    Name: string;
-    Theme: {
-        name: string;
-        theme: string;
-        url: string;
-    }
-    Survey: Question[];
-}
-
 function SurveyPage() {
     const { id } = useParams<{ id: string }>();
     const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
@@ -91,8 +72,6 @@ function SurveyPage() {
                 throw new Error('Ошибка при отправке ответов');
             }
 
-            const result = await response.json();
-            console.log('Ответы успешно отправлены:', result);
             alert('Ваши ответы успешно отправлены!');
         } catch (error) {
             console.error('Ошибка:', error);
@@ -113,15 +92,13 @@ function SurveyPage() {
     return (
         <div>
             <h1>{surveyData.Name}</h1>
-            {surveyData.Survey.map(question => {
-                switch (question.type) {
+            {surveyData.Survey.map(questionInfo => {
+                switch (questionInfo.type) {
                     case 'Одиночный выбор':
                         return (
                             <SingleChoiceQuestion
-                                key={question.questionId}
-                                question={question.question}
-                                options={question.options || []}
-                                questionId={question.questionId}
+                                key={questionInfo.questionId}
+                                questionInfo={questionInfo}
                                 onAnswerChange={handleAnswerChange}
                                 reset={reset}
                             />
@@ -129,10 +106,8 @@ function SurveyPage() {
                     case 'Множественный выбор':
                         return (
                             <MultipleChoiceQuestion
-                                key={question.questionId}
-                                question={question.question}
-                                options={question.options || []}
-                                questionId={question.questionId}
+                                key={questionInfo.questionId}
+                                questionInfo={questionInfo}
                                 onAnswerChange={handleAnswerChange}
                                 reset={reset}
                             />
@@ -140,9 +115,8 @@ function SurveyPage() {
                     case 'Текст':
                         return (
                             <TextQuestion
-                                key={question.questionId}
-                                question={question.question}
-                                questionId={question.questionId}
+                                key={questionInfo.questionId}
+                                questionInfo={questionInfo}
                                 onAnswerChange={handleAnswerChange}
                                 reset={reset}
                             />
@@ -150,9 +124,8 @@ function SurveyPage() {
                     case 'Целое число':
                         return (
                             <NumberQuestion
-                                key={question.questionId}
-                                question={question.question}
-                                questionId={question.questionId}
+                                key={questionInfo.questionId}
+                                questionInfo={questionInfo}
                                 onAnswerChange={handleAnswerChange}
                                 reset={reset}
                             />
@@ -160,9 +133,8 @@ function SurveyPage() {
                     case 'Да/Нет':
                         return (
                             <YesNoQuestion
-                                key={question.questionId}
-                                question={question.question}
-                                questionId={question.questionId}
+                                key={questionInfo.questionId}
+                                questionInfo = {questionInfo}
                                 onAnswerChange={handleAnswerChange}
                                 reset={reset}
                             />
@@ -170,9 +142,8 @@ function SurveyPage() {
                     case 'Дата':
                         return (
                             <DateQuestion
-                                key={question.questionId}
-                                question={question.question}
-                                questionId={question.questionId}
+                                key={questionInfo.questionId}
+                                questionInfo={questionInfo}
                                 onAnswerChange={handleAnswerChange}
                                 reset={reset}
                             />
@@ -180,9 +151,8 @@ function SurveyPage() {
                     case 'Ссылка':
                         return (
                             <UrlQuestion
-                                key={question.questionId}
-                                question={question.question}
-                                questionId={question.questionId}
+                                key={questionInfo.questionId}
+                                questionInfo={questionInfo}
                                 onAnswerChange={handleAnswerChange}
                                 reset={reset}
                             />
@@ -190,9 +160,8 @@ function SurveyPage() {
                     case 'Файл':
                         return (
                             <FileQuestion
-                                key={question.questionId}
-                                question={question.question}
-                                questionId={question.questionId}
+                                key={questionInfo.questionId}
+                                questionInfo={questionInfo}
                                 onAnswerChange={handleAnswerChange}
                                 reset={reset}
                             />
@@ -200,10 +169,8 @@ function SurveyPage() {
                     case 'Выпадающий список':
                         return (
                             <SelectQuestion
-                                key={question.questionId}
-                                question={question.question}
-                                options={question.options || []}
-                                questionId={question.questionId}
+                                key={questionInfo.questionId}
+                                questionInfo={questionInfo}
                                 onAnswerChange={handleAnswerChange}
                                 reset={reset}
                             />
@@ -211,17 +178,14 @@ function SurveyPage() {
                     case 'Шкала':
                         return (
                             <SliderQuestion
-                                key={question.questionId}
-                                question={question.question}
-                                min={question.min || 1}
-                                max={question.max || 10}
-                                questionId={question.questionId}
+                                key={questionInfo.questionId}
+                                questionInfo={questionInfo}
                                 onAnswerChange={handleAnswerChange}
                                 reset={reset}
                             />
                         );
                     default:
-                        return <div key={question.questionId}>Неизвестный тип вопроса</div>;
+                        return <div key={questionInfo.questionId}>Неизвестный тип вопроса</div>;
                 }
             })}
 

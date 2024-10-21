@@ -5,37 +5,22 @@ import QuestionInputModal from '../../components/parts-of-builder-survey/questio
 import Question from '../../components/parts-of-builder-survey/question/question';
 import './custom-builder.css';
 import {AppRoute} from "../../const.ts";
+import SurveyTitle from "../../components/parts-of-builder-survey/survey-title/survey-title.tsx";
+import ThemeSelector from "../../components/parts-of-builder-survey/theme-selector/theme-selector.tsx";
+import EmptyQuestionItem from "../../components/parts-of-builder-survey/empty-question-item/empty-question-item.tsx";
+import QuestionButtons from "../../components/parts-of-builder-survey/question-buttons/question-buttons.tsx";
 
-interface SurveyQuestion {
-    question: string;
-    type: string | null;
-    options?: string[];
-    questionId: string;
-}
-
-interface Theme {
-    name: string;
-    theme: string;
-    url: string;
-}
-
-function FormBuilderPage() {
-    const { id } = useParams<{ id: string }>(); // Получаем id из параметров маршрута
+function SurveyBuilderPage() {
+    const { id } = useParams<{ id: string }>();
     const [isTypeModalOpen, setTypeModalOpen] = useState<boolean>(false);
     const [isInputModalOpen, setInputModalOpen] = useState<boolean>(false);
     const [selectedQuestionType, setSelectedQuestionType] = useState<string | null>(null);
     const [questions, setQuestions] = useState<SurveyQuestion[]>([]);
     const [editIndex, setEditIndex] = useState<number | null>(null);
-    const [formTitle, setFormTitle] = useState<string>('');
+    const [surveyTitle, setSurveyTitle] = useState<string>('');
     const [backgroundImage, setBackgroundImage] = useState<Theme>(
         { name: 'Стандартная тема', theme: 'default', url: 'url(/images/default.jpg)' }
     );
-
-    const themes = [
-        { name: 'Стандартная тема', theme: 'default', url: 'url(/images/default.jpg)' },
-        { name: 'Небоскребы', theme: 'theme1', url: 'url(/images/theme1.jpg)' },
-        { name: 'Водная гладь', theme: 'theme2', url: 'url(/images/theme2.jpg)' }
-    ];
 
     useEffect(() => {
         if (id) {
@@ -46,7 +31,7 @@ function FormBuilderPage() {
                         throw new Error('Ошибка при загрузке опроса');
                     }
                     const data = await response.json();
-                    setFormTitle(data.Name);
+                    setSurveyTitle(data.Name);
                     setQuestions(data.Survey);
                     setBackgroundImage(data.Theme);
                 } catch (error) {
@@ -57,10 +42,6 @@ function FormBuilderPage() {
             fetchSurvey();
         }
     }, [id]);
-
-    const handleSelectTheme = (theme: Theme) => {
-        setBackgroundImage(theme);
-    };
 
     const handleSelectQuestionType = (type: string) => {
         setSelectedQuestionType(type);
@@ -93,34 +74,9 @@ function FormBuilderPage() {
         setSelectedQuestionType(null);
     };
 
-    const handleEditQuestion = (index: number) => {
-        setEditIndex(index);
-        setSelectedQuestionType(questions[index].type);
-        setInputModalOpen(true);
-    };
-
-    const handleMoveUp = (index: number) => {
-        if (index === 0) return;
-        const newQuestions = [...questions];
-        [newQuestions[index], newQuestions[index - 1]] = [newQuestions[index - 1], newQuestions[index]];
-        setQuestions(newQuestions);
-    };
-
-    const handleMoveDown = (index: number) => {
-        if (index === questions.length - 1) return;
-        const newQuestions = [...questions];
-        [newQuestions[index], newQuestions[index + 1]] = [newQuestions[index + 1], newQuestions[index]];
-        setQuestions(newQuestions);
-    };
-
-    const handleDeleteQuestion = (index: number) => {
-        const updatedQuestions = questions.filter((_, i) => i !== index);
-        setQuestions(updatedQuestions);
-    };
-
     const handleSubmit = async () => {
         const data = {
-            Name: formTitle,
+            Name: surveyTitle,
             Theme: backgroundImage,
             Survey: questions
         };
@@ -156,35 +112,11 @@ function FormBuilderPage() {
     return (
         <div className={'builder-survey'}>
             <h1>Конструктор опросов</h1>
-            <div className="form-title-container">
-                <input
-                    type="text"
-                    value={formTitle}
-                    onChange={(e) => setFormTitle(e.target.value)}
-                    placeholder="Название формы"
-                    className="form-title-input"
-                />
-            </div>
-            <div className="theme-selector">
-                {themes.map(theme => (
-                    <button
-                        key={theme.name}
-                        onClick={() => handleSelectTheme(theme)}
-                        className={backgroundImage.name === theme.name ? 'active' : ''}
-                    >
-                        {theme.name}
-                    </button>
-                ))}
-            </div>
+            <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
+            <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} />
             <div className="questions-list" style={{ backgroundImage: backgroundImage.url, backgroundSize: 'cover' }}>
                 {questions.length === 0 &&
-                    <div key={'question-item-0'} className="question-item">
-                        <Question
-                            question={'Добавьте Ваш первый вопрос'}
-                            type={'на выбор из списка'}
-                            theme={backgroundImage.theme}
-                        />
-                    </div>
+                    <EmptyQuestionItem theme={backgroundImage.theme} />
                 }
                 {questions.length > 0 && questions.map((q, index) => (
                     <div key={index} className="question-item">
@@ -193,20 +125,13 @@ function FormBuilderPage() {
                             type={q.type}
                             theme={backgroundImage.theme}
                         />
-                        <div className={'arrows'}>
-                            <button onClick={() => handleEditQuestion(index)}>
-                                <img src="/icons/edit.svg" alt="Редактировать" />
-                            </button>
-                            <button onClick={() => handleMoveUp(index)} disabled={index === 0}>
-                                <img src="/icons/arrow-up-circle.svg" alt="Переместить вверх" />
-                            </button>
-                            <button onClick={() => handleMoveDown(index)} disabled={index === questions.length - 1}>
-                                <img src="/icons/arrow-down-circle.svg" alt="Переместить вниз" />
-                            </button>
-                            <button onClick={() => handleDeleteQuestion(index)}>
-                                <img src="/icons/trash-solid.svg" alt="Удалить" />
-                            </button>
-                        </div>
+                        <QuestionButtons
+                            index={index} setEditIndex={setEditIndex}
+                            setSelectedQuestionType={setSelectedQuestionType}
+                            questions={questions}
+                            setInputModalOpen={setInputModalOpen}
+                            setQuestions={setQuestions}
+                        />
                     </div>
                 ))}
             </div>
@@ -234,4 +159,4 @@ function FormBuilderPage() {
     );
 }
 
-export default FormBuilderPage;
+export default SurveyBuilderPage;

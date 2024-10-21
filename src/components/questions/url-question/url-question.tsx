@@ -3,13 +3,12 @@ import '../question-style.css';
 import './custom-url.css';
 
 type UrlQuestionProps = {
-    question: string;
-    questionId: number;
+    questionInfo: Question;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
     reset: boolean;
 };
 
-function UrlQuestion({ question, questionId, onAnswerChange, reset }: UrlQuestionProps) {
+function UrlQuestion({ questionInfo, onAnswerChange, reset }: UrlQuestionProps) {
     const [url, setUrl] = useState('');
     const [error, setError] = useState('');
 
@@ -33,14 +32,14 @@ function UrlQuestion({ question, questionId, onAnswerChange, reset }: UrlQuestio
             setError('Введите корректный URL');
         } else {
             setError('');
-            onAnswerChange(questionId, question, newUrl);
+            onAnswerChange(questionInfo.questionId, questionInfo.question, newUrl);
         }
     };
 
     const handleClearUrl = () => {
         setUrl('');
         setError('');
-        onAnswerChange(questionId, question, '');
+        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
     };
 
     useEffect(() => {
@@ -52,10 +51,10 @@ function UrlQuestion({ question, questionId, onAnswerChange, reset }: UrlQuestio
 
     return (
         <div className={'question-border'}>
-            <h3 className={'question-wording'}>{question}</h3>
+            <h3 className={'question-wording'}>{questionInfo.question}</h3>
             <input
                 type={'url'}
-                id={`${questionId}`}
+                id={`${questionInfo.questionId}`}
                 className={'url-input'}
                 value={url}
                 onChange={handleChange}

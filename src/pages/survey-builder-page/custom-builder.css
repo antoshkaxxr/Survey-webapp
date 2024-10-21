@@ -1,0 +1,39 @@
+.question-item {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.question-item:hover .question-buttons button {
+    opacity: 1;
+    background: #a69e9e;
+}
+
+.add-question-button,
+.save-survey-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.add-question-button:hover,
+.save-survey-button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.save-survey-button {
+    background-color: #007bff;
+}
+
+.save-survey-button:hover {
+    background-color: #0056b3;
+}
+
+

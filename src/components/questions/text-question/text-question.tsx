@@ -3,24 +3,23 @@ import '../question-style.css';
 import './custom-text.css';
 
 type TextQuestionProps = {
-    question: string;
-    questionId: number;
+    questionInfo: Question;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
     reset: boolean;
 }
 
-function TextQuestion({ question, questionId, onAnswerChange, reset }: TextQuestionProps) {
+function TextQuestion({ questionInfo, onAnswerChange, reset }: TextQuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const answer = event.target.value;
         setAnswer(answer);
-        onAnswerChange(questionId, question, answer);
+        onAnswerChange(questionInfo.questionId, questionInfo.question, answer);
     };
 
     const handleClearText = () => {
         setAnswer('');
-        onAnswerChange(questionId, question, '');
+        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
     };
 
     useEffect(() => {
@@ -31,9 +30,9 @@ function TextQuestion({ question, questionId, onAnswerChange, reset }: TextQuest
 
     return (
         <div className={'question-border'}>
-            <h3 className={'question-wording'}>{question}</h3>
+            <h3 className={'question-wording'}>{questionInfo.question}</h3>
             <textarea
-                id={`${questionId}`}
+                id={`${questionInfo.questionId}`}
                 className={'text-input'}
                 rows={5}
                 placeholder={'Введите текст...'}

@@ -3,52 +3,49 @@ import '../question-style.css';
 import './custom-slider.css';
 
 type SliderQuestionProps = {
-    question: string;
-    min: number;
-    max: number;
-    questionId: number;
+    questionInfo: Question;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
     reset: boolean;
 }
 
-function SliderQuestion({ question, min, max, questionId, onAnswerChange, reset }: SliderQuestionProps) {
-    const [value, setValue] = useState<number>(min);
+function SliderQuestion({ questionInfo, onAnswerChange, reset }: SliderQuestionProps) {
+    const [value, setValue] = useState<number>(questionInfo.min || 1);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const newValue = Number(event.target.value);
         setValue(newValue);
-        onAnswerChange(questionId, question, String(newValue));
+        onAnswerChange(questionInfo.questionId, questionInfo.question, String(newValue));
     };
 
     const handleClearSelection = () => {
-        setValue(min);
-        onAnswerChange(questionId, question, '');
+        setValue(questionInfo.min || 1);
+        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
     };
 
     useEffect(() => {
         if (reset) {
-            setValue(min);
+            setValue(questionInfo.min || 1);
         }
-    }, [reset, min]);
+    }, [reset, questionInfo.min]);
 
     return (
         <div className={'question-border'}>
-            <h3 className={'question-wording'}>{question}</h3>
+            <h3 className={'question-wording'}>{questionInfo.question}</h3>
             <div className="slider-container">
-                <span className="slider-label">{min}</span>
+                <span className="slider-label">{questionInfo.min}</span>
                 <input
-                    id={`${questionId}`}
+                    id={`${questionInfo.questionId}`}
                     className={'slider-input'}
                     type="range"
-                    min={min}
-                    max={max}
+                    min={questionInfo.min}
+                    max={questionInfo.max}
                     value={value}
                     onChange={handleChange}
                 />
-                <span className="slider-label">{max}</span>
+                <span className="slider-label">{questionInfo.max}</span>
             </div>
             <div className={'slider-message'}>Выбранное значение: {value}</div>
-            {value !== min && (
+            {value !== questionInfo.min && (
                 <button onClick={handleClearSelection} className={'clear-button'}>
                     Очистить выбор
                 </button>

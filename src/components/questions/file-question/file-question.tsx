@@ -3,13 +3,12 @@ import '../question-style.css';
 import './custom-file.css';
 
 type FileQuestionProps = {
-    question: string;
-    questionId: number;
+    questionInfo: Question;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
     reset: boolean;
 }
 
-function FileQuestion({ question, questionId, onAnswerChange, reset }: FileQuestionProps) {
+function FileQuestion({ questionInfo, onAnswerChange, reset }: FileQuestionProps) {
     const [file, setFile] = useState<File>();
     const [error, setError] = useState('');
 
@@ -25,14 +24,14 @@ function FileQuestion({ question, questionId, onAnswerChange, reset }: FileQuest
             } else {
                 setFile(selectedFile);
                 setError('');
-                onAnswerChange(questionId, question, selectedFile.name);
+                onAnswerChange(questionInfo.questionId, questionInfo.question, selectedFile.name);
             }
         }
     }
 
     const handleClearFile = () => {
         setFile(undefined);
-        onAnswerChange(questionId, question, '');
+        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
     };
 
     useEffect(() => {
@@ -43,14 +42,14 @@ function FileQuestion({ question, questionId, onAnswerChange, reset }: FileQuest
 
     return (
         <div className="question-border">
-            <h3 className="question-wording">{question}</h3>
+            <h3 className="question-wording">{questionInfo.question}</h3>
             <input
                 type="file"
-                id={`file-input-${questionId}`}
+                id={`file-input-${questionInfo.questionId}`}
                 onChange={handleFileChange}
                 style={{display: 'none'}}
             />
-            <label htmlFor={`file-input-${questionId}`} className="custom-file-label">
+            <label htmlFor={`file-input-${questionInfo.questionId}`} className="custom-file-label">
                 Выбрать файл
             </label>
             {error && <span className={'error-message'}>{error}</span>}

@@ -1,0 +1,30 @@
+.theme-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.theme-selector button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.theme-selector button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.theme-selector button.active {
+    background-color: #0056b3;
+    font-weight: bold;
+}
+
+.theme-selector button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

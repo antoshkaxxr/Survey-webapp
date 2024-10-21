@@ -1,0 +1,34 @@
+.question-buttons {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+    gap: 3px;
+}
+
+.question-buttons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.question-buttons button img {
+    filter: brightness(0%) invert(0%);
+    transition: filter 0.3s;
+}
+
+.question-buttons button:hover img {
+    filter: brightness(0%) invert(100%);
+}
+
+.question-buttons button:disabled img {
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.question-buttons button:disabled:hover img {
+    filter: grayscale(100%);
+    cursor: not-allowed;
+}

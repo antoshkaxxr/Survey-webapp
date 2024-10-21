@@ -3,25 +3,23 @@ import '../question-style.css';
 import './custom-radio.css';
 
 type SingleChoiceQuestionProps = {
-    question: string;
-    options: string[];
-    questionId: number;
+    questionInfo: Question;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
     reset: boolean;
 }
 
-function SingleChoiceQuestion({ question, options, questionId, onAnswerChange, reset }: SingleChoiceQuestionProps) {
+function SingleChoiceQuestion({ questionInfo, onAnswerChange, reset }: SingleChoiceQuestionProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
         const answer = event.target.value;
         setSelectedOption(answer);
-        onAnswerChange(questionId, question, answer);
+        onAnswerChange(questionInfo.questionId, questionInfo.question, answer);
     };
 
     const handleClearSelection = () => {
         setSelectedOption(null);
-        onAnswerChange(questionId, question, '');
+        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
     };
 
     useEffect(() => {
@@ -32,13 +30,13 @@ function SingleChoiceQuestion({ question, options, questionId, onAnswerChange, r
 
     return (
         <div className={'question-border'}>
-            <h3 className={'question-wording'}>{question}</h3>
-            {options.map((option, index) => (
+            <h3 className={'question-wording'}>{questionInfo.question}</h3>
+            {questionInfo.options && questionInfo.options.map((option, index) => (
                 <label key={index} className={'radio-label'}>
                     <input
                         type="radio"
                         className={'custom-radio'}
-                        id={`${questionId}-option-${index}`}
+                        id={`${questionInfo.questionId}-option-${index}`}
                         value={option}
                         checked={selectedOption === option}
                         onChange={handleOptionChange}

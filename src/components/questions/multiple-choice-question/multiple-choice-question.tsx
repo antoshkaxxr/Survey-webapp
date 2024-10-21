@@ -3,14 +3,12 @@ import '../question-style.css';
 import './custom-checkbox.css';
 
 type MultipleChoiceQuestionProps = {
-    question: string;
-    options: string[];
-    questionId: number;
+    questionInfo: Question;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
     reset: boolean;
 }
 
-function MultipleChoiceQuestion({ question, options, questionId, onAnswerChange, reset }: MultipleChoiceQuestionProps) {
+function MultipleChoiceQuestion({ questionInfo, onAnswerChange, reset }: MultipleChoiceQuestionProps) {
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
     const handleOptionChange = (option: string) => {
@@ -19,12 +17,12 @@ function MultipleChoiceQuestion({ question, options, questionId, onAnswerChange,
             : [...selectedOptions, option];
 
         setSelectedOptions(updatedOptions);
-        onAnswerChange(questionId, question, updatedOptions.join(', '));
+        onAnswerChange(questionInfo.questionId, questionInfo.question, updatedOptions.join(', '));
     };
 
     const handleClearSelection = () => {
         setSelectedOptions([]);
-        onAnswerChange(questionId, question, '');
+        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
     };
 
     useEffect(() => {
@@ -35,13 +33,13 @@ function MultipleChoiceQuestion({ question, options, questionId, onAnswerChange,
 
     return (
         <div className={'question-border'}>
-            <h3 className={'question-wording'}>{question}</h3>
-            {options.map((option, index) => (
+            <h3 className={'question-wording'}>{questionInfo.question}</h3>
+            {questionInfo.options && questionInfo.options.map((option, index) => (
                 <label key={index} className={'checkbox-label'}>
                     <input
                         type="checkbox"
                         className={'custom-checkbox'}
-                        id={`${questionId}-option-${index}`}
+                        id={`${questionInfo.questionId}-option-${index}`}
                         value={option}
                         checked={selectedOptions.includes(option)}
                         onChange={() => handleOptionChange(option)}

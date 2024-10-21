@@ -3,24 +3,23 @@ import '../question-style.css';
 import './custom-number.css';
 
 type NumberQuestionProps = {
-    question: string;
-    questionId: number;
+    questionInfo: Question;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
     reset: boolean;
 }
 
-function NumberQuestion({ question, questionId, onAnswerChange, reset }: NumberQuestionProps) {
+function NumberQuestion({ questionInfo, onAnswerChange, reset }: NumberQuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
         const answerValue = event.target.value;
         setAnswer(answerValue);
-        onAnswerChange(questionId, question, answerValue);
+        onAnswerChange(questionInfo.questionId, questionInfo.question, answerValue);
     };
 
     const handleClearNumber = () => {
         setAnswer('');
-        onAnswerChange(questionId, question, '');
+        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
     };
 
     useEffect(() => {
@@ -31,10 +30,10 @@ function NumberQuestion({ question, questionId, onAnswerChange, reset }: NumberQ
 
     return (
         <div className={'question-border'}>
-            <h3 className={'question-wording'}>{question}</h3>
+            <h3 className={'question-wording'}>{questionInfo.question}</h3>
             <input
                 type={'number'}
-                id={`${questionId}`}
+                id={`${questionInfo.questionId}`}
                 className={'number-input'}
                 placeholder={'Введите число...'}
                 value={answer}
