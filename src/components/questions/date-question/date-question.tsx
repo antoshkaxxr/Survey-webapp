@@ -2,13 +2,7 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-date.css';
 
-type DateQuestionProps = {
-    questionInfo: Question;
-    onAnswerChange: (questionId: number, question: string, answer: string) => void;
-    reset: boolean;
-}
-
-function DateQuestion({ questionInfo, onAnswerChange, reset }: DateQuestionProps) {
+function DateQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {

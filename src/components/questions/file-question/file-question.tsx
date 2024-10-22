@@ -2,13 +2,7 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-file.css';
 
-type FileQuestionProps = {
-    questionInfo: Question;
-    onAnswerChange: (questionId: number, question: string, answer: string) => void;
-    reset: boolean;
-}
-
-function FileQuestion({ questionInfo, onAnswerChange, reset }: FileQuestionProps) {
+function FileQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [file, setFile] = useState<File>();
     const [error, setError] = useState('');
 

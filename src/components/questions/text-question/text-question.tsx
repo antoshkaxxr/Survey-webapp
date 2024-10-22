@@ -2,13 +2,7 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-text.css';
 
-type TextQuestionProps = {
-    questionInfo: Question;
-    onAnswerChange: (questionId: number, question: string, answer: string) => void;
-    reset: boolean;
-}
-
-function TextQuestion({ questionInfo, onAnswerChange, reset }: TextQuestionProps) {
+function TextQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {

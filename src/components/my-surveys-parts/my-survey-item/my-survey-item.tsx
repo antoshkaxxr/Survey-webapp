@@ -12,8 +12,6 @@ interface MySurveyItemProps {
 }
 
 export default function MySurveyItem({surveyId, surveyName, setSurveyData} : MySurveyItemProps) {
-    console.log(surveyId);
-    console.log(surveyName);
     return (
         <div className={'survey-container'}>
             <div className="survey-header">

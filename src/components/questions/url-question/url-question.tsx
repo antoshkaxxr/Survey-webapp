@@ -2,13 +2,7 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-url.css';
 
-type UrlQuestionProps = {
-    questionInfo: Question;
-    onAnswerChange: (questionId: number, question: string, answer: string) => void;
-    reset: boolean;
-};
-
-function UrlQuestion({ questionInfo, onAnswerChange, reset }: UrlQuestionProps) {
+function UrlQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [url, setUrl] = useState('');
     const [error, setError] = useState('');
 

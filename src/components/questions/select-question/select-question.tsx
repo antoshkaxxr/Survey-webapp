@@ -2,13 +2,7 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-select.css';
 
-type SelectQuestionProps = {
-    questionInfo: Question;
-    onAnswerChange: (questionId: number, question: string, answer: string) => void;
-    reset: boolean;
-};
-
-function SelectQuestion({ questionInfo, onAnswerChange, reset }: SelectQuestionProps) {
+function SelectQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     const handleOptionChange = (event: ChangeEvent<HTMLSelectElement>) => {

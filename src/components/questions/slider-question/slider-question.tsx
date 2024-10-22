@@ -2,13 +2,7 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-slider.css';
 
-type SliderQuestionProps = {
-    questionInfo: Question;
-    onAnswerChange: (questionId: number, question: string, answer: string) => void;
-    reset: boolean;
-}
-
-function SliderQuestion({ questionInfo, onAnswerChange, reset }: SliderQuestionProps) {
+function SliderQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [value, setValue] = useState<number>(questionInfo.min || 1);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

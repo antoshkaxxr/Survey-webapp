@@ -2,13 +2,7 @@ import {useEffect, useState} from 'react';
 import '../question-style.css';
 import './custom-checkbox.css';
 
-type MultipleChoiceQuestionProps = {
-    questionInfo: Question;
-    onAnswerChange: (questionId: number, question: string, answer: string) => void;
-    reset: boolean;
-}
-
-function MultipleChoiceQuestion({ questionInfo, onAnswerChange, reset }: MultipleChoiceQuestionProps) {
+function MultipleChoiceQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
     const handleOptionChange = (option: string) => {

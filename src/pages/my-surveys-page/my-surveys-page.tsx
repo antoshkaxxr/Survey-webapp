@@ -17,7 +17,7 @@ function MySurveysPage() {
                 }
                 let data: Survey[] = await response.json();
                 const parsedData: ParsedSurvey[] = data.map((survey) => ({
-                    surveyId: survey.surveyId,
+                    surveyId: survey.id,
                     parsedSurvey: JSON.parse(survey.survey)
                 }));
                 setSurveyData(parsedData);

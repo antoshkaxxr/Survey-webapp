@@ -2,13 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import '../question-style.css';
 import './custom-radio.css';
 
-type SingleChoiceQuestionProps = {
-    questionInfo: Question;
-    onAnswerChange: (questionId: number, question: string, answer: string) => void;
-    reset: boolean;
-}
-
-function SingleChoiceQuestion({ questionInfo, onAnswerChange, reset }: SingleChoiceQuestionProps) {
+function SingleChoiceQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {

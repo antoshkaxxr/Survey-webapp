@@ -7,8 +7,14 @@ interface Question {
     max?: number;
 }
 
+interface QuestionProps {
+    questionInfo: Question;
+    onAnswerChange: (questionId: number, question: string, answer: string) => void;
+    reset: boolean;
+}
+
 interface Survey {
-    surveyId: number;
+    id: number;
     survey: string;
 }
 
@@ -35,15 +41,6 @@ interface SurveyQuestion {
     type: string | null;
     options?: string[];
     questionId: string;
-}
-
-interface Question {
-    type: string;
-    questionId: number;
-    question: string;
-    options?: string[];
-    min?: number;
-    max?: number;
 }
 
 interface SurveyData {

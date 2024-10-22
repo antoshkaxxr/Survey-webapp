@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import SingleChoiceQuestion from "../../components/questions/single-choice-question/single-choice-question.tsx";
-import MultipleChoiceQuestion from "../../components/questions/multiple-choice-question/multiple-choice-question.tsx";
-import TextQuestion from "../../components/questions/text-question/text-question.tsx";
-import NumberQuestion from "../../components/questions/number-question/number-question.tsx";
-import YesNoQuestion from "../../components/questions/yes-no-question/yes-no-question.tsx";
-import DateQuestion from "../../components/questions/date-question/date-question.tsx";
-import UrlQuestion from "../../components/questions/url-question/url-question.tsx";
-import FileQuestion from "../../components/questions/file-question/file-question.tsx";
-import SelectQuestion from "../../components/questions/select-question/select-question.tsx";
-import SliderQuestion from "../../components/questions/slider-question/slider-question.tsx";
 import './custom-survey.scss';
+import {componentMap} from "../../const.ts";
 
 function SurveyPage() {
     const { id } = useParams<{ id: string }>();
@@ -93,102 +84,16 @@ function SurveyPage() {
         <div>
             <h1>{surveyData.Name}</h1>
             {surveyData.Survey.map(questionInfo => {
-                switch (questionInfo.type) {
-                    case 'Одиночный выбор':
-                        return (
-                            <SingleChoiceQuestion
-                                key={questionInfo.questionId}
-                                questionInfo={questionInfo}
-                                onAnswerChange={handleAnswerChange}
-                                reset={reset}
-                            />
-                        );
-                    case 'Множественный выбор':
-                        return (
-                            <MultipleChoiceQuestion
-                                key={questionInfo.questionId}
-                                questionInfo={questionInfo}
-                                onAnswerChange={handleAnswerChange}
-                                reset={reset}
-                            />
-                        );
-                    case 'Текст':
-                        return (
-                            <TextQuestion
-                                key={questionInfo.questionId}
-                                questionInfo={questionInfo}
-                                onAnswerChange={handleAnswerChange}
-                                reset={reset}
-                            />
-                        );
-                    case 'Целое число':
-                        return (
-                            <NumberQuestion
-                                key={questionInfo.questionId}
-                                questionInfo={questionInfo}
-                                onAnswerChange={handleAnswerChange}
-                                reset={reset}
-                            />
-                        );
-                    case 'Да/Нет':
-                        return (
-                            <YesNoQuestion
-                                key={questionInfo.questionId}
-                                questionInfo = {questionInfo}
-                                onAnswerChange={handleAnswerChange}
-                                reset={reset}
-                            />
-                        );
-                    case 'Дата':
-                        return (
-                            <DateQuestion
-                                key={questionInfo.questionId}
-                                questionInfo={questionInfo}
-                                onAnswerChange={handleAnswerChange}
-                                reset={reset}
-                            />
-                        );
-                    case 'Ссылка':
-                        return (
-                            <UrlQuestion
-                                key={questionInfo.questionId}
-                                questionInfo={questionInfo}
-                                onAnswerChange={handleAnswerChange}
-                                reset={reset}
-                            />
-                        );
-                    case 'Файл':
-                        return (
-                            <FileQuestion
-                                key={questionInfo.questionId}
-                                questionInfo={questionInfo}
-                                onAnswerChange={handleAnswerChange}
-                                reset={reset}
-                            />
-                        );
-                    case 'Выпадающий список':
-                        return (
-                            <SelectQuestion
-                                key={questionInfo.questionId}
-                                questionInfo={questionInfo}
-                                onAnswerChange={handleAnswerChange}
-                                reset={reset}
-                            />
-                        );
-                    case 'Шкала':
-                        return (
-                            <SliderQuestion
-                                key={questionInfo.questionId}
-                                questionInfo={questionInfo}
-                                onAnswerChange={handleAnswerChange}
-                                reset={reset}
-                            />
-                        );
-                    default:
-                        return <div key={questionInfo.questionId}>Неизвестный тип вопроса</div>;
-                }
+                const QuestionComponent = componentMap[questionInfo.type];
+                return (
+                    <QuestionComponent
+                        key={questionInfo.questionId}
+                        questionInfo={questionInfo}
+                        onAnswerChange={handleAnswerChange}
+                        reset={reset}
+                    />
+                );
             })}
-
             <div>
                 <button className={'send-button'} onClick={handleSubmit}>
                     Отправить
