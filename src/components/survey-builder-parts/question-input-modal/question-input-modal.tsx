@@ -11,7 +11,7 @@ type QuestionInputModalProps = {
     initialOptions?: string[];
 }
 
-function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
+export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                                 initialQuestion = '', initialOptions = [] }: QuestionInputModalProps) {
 
     const [question, setQuestion] = useState<string>(initialQuestion);
@@ -95,5 +95,3 @@ function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         </div>
     );
 }
-
-export default QuestionInputModal;

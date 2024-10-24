@@ -6,7 +6,7 @@ interface QuestionProps {
     theme: string;
 }
 
-export default function Question({ question, type, theme } : QuestionProps) {
+export function Question({ question, type, theme } : QuestionProps) {
     return (
         <div className={`question-container-${theme}`}>
             <h2 className={`question-h3-${theme}`}>{question}</h2>

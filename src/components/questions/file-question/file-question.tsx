@@ -2,7 +2,7 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-file.css';
 
-function FileQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function FileQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [file, setFile] = useState<File>();
     const [error, setError] = useState('');
 
@@ -56,5 +56,3 @@ function FileQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
         </div>
     );
 }
-
-export default FileQuestion;

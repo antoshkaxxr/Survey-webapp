@@ -1,7 +1,7 @@
 import {AppRoute} from "../../../const.ts";
 import {Link} from "react-router-dom";
 
-export default function PreviewButton({surveyId} : ButtonProps) {
+export function PreviewButton({surveyId} : ButtonProps) {
     return (
         <Link to={`${AppRoute.Survey}/${surveyId}`}>
             <button>

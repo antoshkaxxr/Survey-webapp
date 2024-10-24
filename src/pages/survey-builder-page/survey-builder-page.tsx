@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import {Link, useParams} from 'react-router-dom';
-import QuestionTypeModal from '../../components/survey-builder-parts/question-type-modal/question-type-modal';
-import QuestionInputModal from '../../components/survey-builder-parts/question-input-modal/question-input-modal';
-import Question from '../../components/survey-builder-parts/question/question';
+import {QuestionTypeModal} from '../../components/survey-builder-parts/question-type-modal/question-type-modal';
+import {QuestionInputModal} from '../../components/survey-builder-parts/question-input-modal/question-input-modal';
+import {Question} from '../../components/survey-builder-parts/question/question';
 import './custom-builder.css';
 import {AppRoute} from "../../const.ts";
-import SurveyTitle from "../../components/survey-builder-parts/survey-title/survey-title.tsx";
-import ThemeSelector from "../../components/survey-builder-parts/theme-selector/theme-selector.tsx";
-import EmptyQuestionItem from "../../components/survey-builder-parts/empty-question-item/empty-question-item.tsx";
-import QuestionButtons from "../../components/survey-builder-parts/question-buttons/question-buttons.tsx";
+import {SurveyTitle} from "../../components/survey-builder-parts/survey-title/survey-title.tsx";
+import {ThemeSelector} from "../../components/survey-builder-parts/theme-selector/theme-selector.tsx";
+import {EmptyQuestionItem} from "../../components/survey-builder-parts/empty-question-item/empty-question-item.tsx";
+import {QuestionButtons} from "../../components/survey-builder-parts/question-buttons/question-buttons.tsx";
 
-function SurveyBuilderPage() {
+export function SurveyBuilderPage() {
     const { id } = useParams<{ id: string }>();
     const [isTypeModalOpen, setTypeModalOpen] = useState<boolean>(false);
     const [isInputModalOpen, setInputModalOpen] = useState<boolean>(false);
@@ -158,5 +158,3 @@ function SurveyBuilderPage() {
         </div>
     );
 }
-
-export default SurveyBuilderPage;

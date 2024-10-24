@@ -2,7 +2,7 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-select.css';
 
-function SelectQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function SelectQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     const handleOptionChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -45,5 +45,3 @@ function SelectQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) 
         </div>
     );
 }
-
-export default SelectQuestion;

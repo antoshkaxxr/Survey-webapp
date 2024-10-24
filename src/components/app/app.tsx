@@ -1,13 +1,12 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {AppRoute} from "../../const";
-import MainPage from "../../pages/main-page/main-page";
-import LoginPage from "../../pages/login-page/login-page";
-import SurveyBuilderPage from "../../pages/survey-builder-page/survey-builder-page.tsx";
-import SurveyPage from "../../pages/survey-page/survey-page";
-import MySurveysPage from "../../pages/my-surveys-page/my-surveys-page";
+import {MainPage} from "../../pages/main-page/main-page";
+import {LoginPage} from "../../pages/login-page/login-page";
+import {SurveyBuilderPage} from "../../pages/survey-builder-page/survey-builder-page.tsx";
+import {SurveyPage} from "../../pages/survey-page/survey-page";
+import {MySurveysPage} from "../../pages/my-surveys-page/my-surveys-page";
 
-
-function App() {
+export function App() {
     return (
         <BrowserRouter>
             <Routes>
@@ -39,5 +38,3 @@ function App() {
         </BrowserRouter>
     );
 }
-
-export default App;

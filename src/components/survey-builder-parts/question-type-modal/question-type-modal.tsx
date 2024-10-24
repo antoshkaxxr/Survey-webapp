@@ -20,7 +20,7 @@ const questionTypes = [
     { name: "Шкала", icon: "/icons/scale.svg" }
 ];
 
-function QuestionTypeModal({ isOpen, onClose, onSelect }: QuestionTypeModalProps) {
+export function QuestionTypeModal({ isOpen, onClose, onSelect }: QuestionTypeModalProps) {
     if (!isOpen) return null;
 
     return (
@@ -46,5 +46,3 @@ function QuestionTypeModal({ isOpen, onClose, onSelect }: QuestionTypeModalProps
         </div>
     );
 }
-
-export default QuestionTypeModal;

@@ -4,8 +4,7 @@ import './styles.css';
 import "../../work-with-emojis/add_emojis.js";
 import {AppRoute} from "../../const.ts";
 
-function MainPage() {
-
+export function MainPage() {
     return (
         <>
             <div className="WelcomeButton-container">
@@ -47,9 +46,6 @@ function MainPage() {
 
         </>
     );
-
 }
 
-
-export default MainPage;
 

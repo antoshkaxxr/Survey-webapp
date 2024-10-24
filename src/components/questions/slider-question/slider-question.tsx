@@ -2,7 +2,7 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-slider.css';
 
-function SliderQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function SliderQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [value, setValue] = useState<number>(questionInfo.min || 1);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -47,5 +47,3 @@ function SliderQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) 
         </div>
     );
 }
-
-export default SliderQuestion;

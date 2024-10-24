@@ -6,7 +6,7 @@ interface ArrowDownProps {
     setQuestions: React.Dispatch<React.SetStateAction<SurveyQuestion[]>>;
 }
 
-export default function ArrayDown({index, questions, setQuestions}: ArrowDownProps) {
+export function ArrayDown({index, questions, setQuestions}: ArrowDownProps) {
     const handleMoveDown = (index: number) => {
         if (index === questions.length - 1) return;
         const newQuestions = [...questions];

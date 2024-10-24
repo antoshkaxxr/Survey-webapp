@@ -1,4 +1,4 @@
-export default function CopyButton({surveyId}: ButtonProps) {
+export function CopyButton({surveyId}: ButtonProps) {
     const copyToClipboard = (surveyId: number) => {
         navigator.clipboard.writeText(`http://localhost:3000/survey/${surveyId}`).then(() => {
             alert("Ссылка на опрос скопирована в буфер обмена!");

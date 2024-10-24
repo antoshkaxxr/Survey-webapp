@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppRoute } from "../../const.ts";
 import './custom-my-surveys.css';
-import MySurveyItem from "../../components/my-surveys-parts/my-survey-item/my-survey-item.tsx";
+import {MySurveyItem} from "../../components/my-surveys-parts/my-survey-item/my-survey-item.tsx";
 
-function MySurveysPage() {
+export function MySurveysPage() {
     const [surveyData, setSurveyData] = useState<ParsedSurvey[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -53,5 +53,3 @@ function MySurveysPage() {
         </div>
     );
 }
-
-export default MySurveysPage;

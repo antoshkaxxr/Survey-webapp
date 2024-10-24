@@ -6,7 +6,7 @@ interface ArrowUpProps {
     setQuestions: React.Dispatch<React.SetStateAction<SurveyQuestion[]>>;
 }
 
-export default function ArrowUp({index, questions, setQuestions}: ArrowUpProps) {
+export function ArrowUp({index, questions, setQuestions}: ArrowUpProps) {
     const handleMoveUp = (index: number) => {
         if (index === 0) return;
         const newQuestions = [...questions];

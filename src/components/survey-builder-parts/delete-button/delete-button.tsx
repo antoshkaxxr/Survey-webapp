@@ -6,7 +6,7 @@ interface DeleteButtonProps {
     setQuestions: React.Dispatch<React.SetStateAction<SurveyQuestion[]>>;
 }
 
-export default function DeleteButton({index, questions, setQuestions}: DeleteButtonProps) {
+export function DeleteButton({index, questions, setQuestions}: DeleteButtonProps) {
     const handleDeleteQuestion = (index: number) => {
         const updatedQuestions = questions.filter((_, i) => i !== index);
         setQuestions(updatedQuestions);

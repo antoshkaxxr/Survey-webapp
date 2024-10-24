@@ -6,7 +6,7 @@ interface SurveyTitleProps {
     setSurveyTitle: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function SurveyTitle({surveyTitle, setSurveyTitle}: SurveyTitleProps) {
+export function SurveyTitle({surveyTitle, setSurveyTitle}: SurveyTitleProps) {
     return (
         <div className="survey-title-container">
             <input

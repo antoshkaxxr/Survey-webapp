@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import './custom-survey.scss';
 import {componentMap} from "../../const.ts";
 
-function SurveyPage() {
+export function SurveyPage() {
     const { id } = useParams<{ id: string }>();
     const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
     const [answers, setAnswers] = useState<{ [key: number]: { question: string; answer: string } }>({});
@@ -105,5 +105,3 @@ function SurveyPage() {
         </div>
     );
 }
-
-export default SurveyPage;

@@ -1,4 +1,4 @@
-export default function AccessButton({surveyId} : ButtonProps) {
+export function AccessButton({surveyId} : ButtonProps) {
     const handleAccess = (surveyId: number) => {
         alert(`Доступ к опросу с ID ${surveyId}`);
     };

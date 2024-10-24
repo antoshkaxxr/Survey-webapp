@@ -1,10 +1,10 @@
-import Question from "../question/question.tsx";
+import {Question} from "../question/question.tsx";
 
 interface EmptyQuestionItemProps {
     theme: string;
 }
 
-export default function EmptyQuestionItem({theme} : EmptyQuestionItemProps) {
+export function EmptyQuestionItem({theme} : EmptyQuestionItemProps) {
     return (
         <div key={'question-item-0'} className={'question-item'}>
             <Question

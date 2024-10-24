@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import '../question-style.css';
 import './custom-radio.css';
 
-function SingleChoiceQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function SingleChoiceQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -46,5 +46,3 @@ function SingleChoiceQuestion({ questionInfo, onAnswerChange, reset }: QuestionP
         </div>
     );
 }
-
-export default SingleChoiceQuestion;

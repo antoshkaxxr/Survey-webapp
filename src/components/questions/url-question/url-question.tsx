@@ -2,7 +2,7 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-url.css';
 
-function UrlQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function UrlQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [url, setUrl] = useState('');
     const [error, setError] = useState('');
 
@@ -62,5 +62,3 @@ function UrlQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
         </div>
     );
 }
-
-export default UrlQuestion;

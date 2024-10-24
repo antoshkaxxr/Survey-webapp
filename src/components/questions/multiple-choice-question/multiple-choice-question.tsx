@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import '../question-style.css';
 import './custom-checkbox.css';
 
-function MultipleChoiceQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
     const handleOptionChange = (option: string) => {
@@ -49,5 +49,3 @@ function MultipleChoiceQuestion({ questionInfo, onAnswerChange, reset }: Questio
         </div>
     );
 }
-
-export default MultipleChoiceQuestion;

@@ -2,7 +2,7 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-number.css';
 
-function NumberQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function NumberQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -41,5 +41,3 @@ function NumberQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) 
         </div>
     );
 }
-
-export default NumberQuestion;

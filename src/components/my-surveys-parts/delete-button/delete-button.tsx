@@ -5,7 +5,7 @@ interface DeleteButtonProps {
     setSurveyData: React.Dispatch<React.SetStateAction<ParsedSurvey[]>>;
 }
 
-export default function DeleteButton({surveyId, setSurveyData} : DeleteButtonProps) {
+export function DeleteButton({surveyId, setSurveyData} : DeleteButtonProps) {
     const handleDelete = async (surveyId: number) => {
         const confirmDeletion = window.confirm("Вы уверены, что хотите удалить этот опрос?");
         if (confirmDeletion) {

@@ -1,9 +1,9 @@
 import './question-buttons-styles.css';
-import EditButton from "../edit-button/edit-button.tsx";
+import {EditButton} from "../edit-button/edit-button.tsx";
 import React from "react";
-import ArrowUp from "../arrow-up/arrow-up.tsx";
-import ArrayDown from "../arrow-down/arrow-down.tsx";
-import DeleteButton from "../delete-button/delete-button.tsx";
+import {ArrowUp} from "../arrow-up/arrow-up.tsx";
+import {ArrayDown} from "../arrow-down/arrow-down.tsx";
+import {DeleteButton} from "../delete-button/delete-button.tsx";
 
 interface QuestionButtonsProps {
     index: number;
@@ -14,7 +14,7 @@ interface QuestionButtonsProps {
     setQuestions: React.Dispatch<React.SetStateAction<SurveyQuestion[]>>;
 }
 
-export default function QuestionButtons({index, setEditIndex, setSelectedQuestionType, questions, setInputModalOpen, setQuestions}: QuestionButtonsProps) {
+export function QuestionButtons({index, setEditIndex, setSelectedQuestionType, questions, setInputModalOpen, setQuestions}: QuestionButtonsProps) {
     return (
         <div className={'question-buttons'}>
             <EditButton

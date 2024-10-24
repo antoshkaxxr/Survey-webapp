@@ -6,7 +6,7 @@ interface ThemeSelectorProps {
     setBackgroundImage: React.Dispatch<React.SetStateAction<Theme>>;
 }
 
-export default function ThemeSelector({backgroundImage, setBackgroundImage}: ThemeSelectorProps) {
+export function ThemeSelector({backgroundImage, setBackgroundImage}: ThemeSelectorProps) {
     const themes = [
         { name: 'Стандартная тема', theme: 'default', url: 'url(/images/default.jpg)' },
         { name: 'Небоскребы', theme: 'theme1', url: 'url(/images/theme1.jpg)' },

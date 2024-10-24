@@ -2,7 +2,7 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import '../question-style.css';
 import './custom-text.css';
 
-function TextQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function TextQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -42,5 +42,3 @@ function TextQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
 
     );
 }
-
-export default TextQuestion;

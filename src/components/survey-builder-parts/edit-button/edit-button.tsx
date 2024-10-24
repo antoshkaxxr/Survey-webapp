@@ -8,7 +8,7 @@ interface EditButtonProps {
     setInputModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function EditButton({index, setEditIndex, setSelectedQuestionType, questions, setInputModalOpen}: EditButtonProps) {
+export function EditButton({index, setEditIndex, setSelectedQuestionType, questions, setInputModalOpen}: EditButtonProps) {
     const handleEditQuestion = (index: number) => {
         setEditIndex(index);
         setSelectedQuestionType(questions[index].type);

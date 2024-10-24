@@ -1,6 +1,6 @@
-import SingleChoiceQuestion from "../single-choice-question/single-choice-question.tsx";
+import {SingleChoiceQuestion} from "../single-choice-question/single-choice-question.tsx";
 
-function YesNoQuestion({questionInfo, onAnswerChange, reset}: QuestionProps) {
+export function YesNoQuestion({questionInfo, onAnswerChange, reset}: QuestionProps) {
     questionInfo.options = ['Да', 'Нет'];
     return (
         <SingleChoiceQuestion
@@ -10,5 +10,3 @@ function YesNoQuestion({questionInfo, onAnswerChange, reset}: QuestionProps) {
         />
     );
 }
-
-export default YesNoQuestion;

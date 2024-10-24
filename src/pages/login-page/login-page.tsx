@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './styles.css';
 
 
-function LoginPage() {
+export function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -61,7 +61,7 @@ function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <button className="login-submit" onClick={handleLogin}>Войти</button>
-                
+
                 <div className="social-login">
                     <h2 className="login-h2">Или войдите через:</h2>
                     <button className="google-login-submit" onClick={handleGoogleLogin}>Google</button>
@@ -76,7 +76,7 @@ function LoginPage() {
             {/* ну можно попробовать но анимация скорей раздражает -_- */}
             {/* <div className="login-box2">
                 <div className='main'>
-                   
+
                         <h1 className="login-h1"> This is a login page</h1>
                         <input
                             className='login-input'
@@ -100,11 +100,9 @@ function LoginPage() {
                             <button className="github-login-submit" onClick={handleGithubLogin}>GitHub</button>
                             <button className="vk-login-submit" onClick={handleVkLogin}>VK</button>
                         </div>
-                    
+
                 </div>
             </div> */}
         </>
     );
 }
-
-export default LoginPage;
