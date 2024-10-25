@@ -1,7 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './SurveyPage.scss';
-import {componentMap} from "../../const.ts";
+import {ComponentMap} from "../../const/ComponentMap.ts";
+
+interface SurveyData {
+    Name: string;
+    Theme: {
+        name: string;
+        theme: string;
+        url: string;
+    }
+    Survey: Question[];
+}
 
 export function SurveyPage() {
     const { id } = useParams<{ id: string }>();
@@ -84,7 +94,7 @@ export function SurveyPage() {
         <div>
             <h1>{surveyData.Name}</h1>
             {surveyData.Survey.map(questionInfo => {
-                const QuestionComponent = componentMap[questionInfo.type];
+                const QuestionComponent = ComponentMap[questionInfo.type];
                 return (
                     <QuestionComponent
                         key={questionInfo.questionId}

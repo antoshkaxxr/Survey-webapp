@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AppRoute } from "../../const.ts";
+import { AppRoute } from "../../const/AppRoute.ts";
 import './MySurveysPage.css';
 import {MySurveyItem} from "../../components/my-surveys-parts/MySurveyItem/MySurveyItem.tsx";
+
+interface Survey {
+    id: number;
+    survey: string;
+}
 
 export function MySurveysPage() {
     const [surveyData, setSurveyData] = useState<ParsedSurvey[]>([]);

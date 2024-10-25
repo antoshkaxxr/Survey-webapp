@@ -1,5 +1,5 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {AppRoute} from "../../const";
+import {AppRoute} from "../../const/AppRoute.ts";
 import {MainPage} from "../../pages/MainPage/MainPage.tsx";
 import {LoginPage} from "../../pages/LoginPage/LoginPage.tsx";
 import {SurveyBuilderPage} from "../../pages/SurveyBuilderPage/SurveyBuilderPage.tsx";

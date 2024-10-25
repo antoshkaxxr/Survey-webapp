@@ -4,7 +4,7 @@ import {QuestionTypeModal} from '../../components/survey-builder-parts/QuestionT
 import {QuestionInputModal} from '../../components/survey-builder-parts/QuestionInputModal/QuestionInputModal.tsx';
 import {Question} from '../../components/survey-builder-parts/Question/Question.tsx';
 import './SurveyBuilderPage.css';
-import {AppRoute} from "../../const.ts";
+import {AppRoute} from "../../const/AppRoute.ts";
 import {SurveyTitle} from "../../components/survey-builder-parts/SurveyTitle/SurveyTitle.tsx";
 import {ThemeSelector} from "../../components/survey-builder-parts/ThemeSelector/ThemeSelector.tsx";
 import {EmptyQuestionItem} from "../../components/survey-builder-parts/EmptyQuestionItem/EmptyQuestionItem.tsx";
