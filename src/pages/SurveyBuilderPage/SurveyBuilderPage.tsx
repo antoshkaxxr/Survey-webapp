@@ -9,6 +9,7 @@ import {SurveyTitle} from "../../components/survey-builder-parts/SurveyTitle/Sur
 import {ThemeSelector} from "../../components/survey-builder-parts/ThemeSelector/ThemeSelector.tsx";
 import {EmptyQuestionItem} from "../../components/survey-builder-parts/EmptyQuestionItem/EmptyQuestionItem.tsx";
 import {QuestionButtons} from "../../components/survey-builder-parts/QuestionButtons/QuestionButtons.tsx";
+import {IP_ADDRESS} from "../../config.ts";
 
 export function SurveyBuilderPage() {
     const { id } = useParams<{ id: string }>();
@@ -26,7 +27,7 @@ export function SurveyBuilderPage() {
         if (id) {
             const fetchSurvey = async () => {
                 try {
-                    const response = await fetch(`http://localhost:8080/user/jenoshima42@despair.com/survey/${id}`);
+                    const response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}`);
                     if (!response.ok) {
                         throw new Error('Ошибка при загрузке опроса');
                     }
@@ -84,7 +85,7 @@ export function SurveyBuilderPage() {
         try {
             let response;
             if (id) {
-                response = await fetch(`http://localhost:8080/survey/${id}`, {
+                response = await fetch(`http://${IP_ADDRESS}:8080/survey/${id}`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
@@ -92,7 +93,7 @@ export function SurveyBuilderPage() {
                     body: JSON.stringify(data),
                 });
             } else {
-                response = await fetch('http://localhost:8080/user/jenoshima42@despair.com/survey', {
+                response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

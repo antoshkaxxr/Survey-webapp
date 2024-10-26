@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AppRoute } from "../../const/AppRoute.ts";
 import './MySurveysPage.css';
 import {MySurveyItem} from "../../components/my-surveys-parts/MySurveyItem/MySurveyItem.tsx";
+import {IP_ADDRESS} from "../../config.ts";
 
 interface Survey {
     id: number;
@@ -16,7 +17,7 @@ export function MySurveysPage() {
     useEffect(() => {
         const fetchSurveys = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/user/jenoshima42@despair.com/surveys`);
+                const response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/surveys`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }

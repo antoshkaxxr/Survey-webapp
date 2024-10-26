@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './LoginPage.css';
+import {IP_ADDRESS} from "../../config.ts";
 
 
 export function LoginPage() {
@@ -8,7 +9,7 @@ export function LoginPage() {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('http://localhost:8080/user/' + email, {
+            const response = await fetch(`http://${IP_ADDRESS}:8080/user/${email}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

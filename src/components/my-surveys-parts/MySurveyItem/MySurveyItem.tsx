@@ -1,6 +1,7 @@
 import React from "react";
 import {AppRoute} from "../../../const/AppRoute.ts";
 import {Link} from "react-router-dom";
+import {IP_ADDRESS} from "../../../config.ts";
 
 interface MySurveyItemProps {
     surveyId: number;
@@ -55,7 +56,7 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData} : MySurveyIte
         const confirmDeletion = window.confirm("Вы уверены, что хотите удалить этот опрос?");
         if (confirmDeletion) {
             try {
-                const response = await fetch(`http://localhost:8080/survey/${surveyId}`, {
+                const response = await fetch(`http://${IP_ADDRESS}:8080/survey/${surveyId}`, {
                     method: 'DELETE',
                 });
 

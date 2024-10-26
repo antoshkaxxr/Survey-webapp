@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './SurveyPage.scss';
 import {ComponentMap} from "../../const/ComponentMap.ts";
+import {IP_ADDRESS} from "../../config.ts";
 
 interface SurveyData {
     Name: string;
@@ -22,7 +23,7 @@ export function SurveyPage() {
     useEffect(() => {
         const fetchSurvey = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/user/jenoshima42@despair.com/survey/${id}`);
+                const response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
@@ -61,7 +62,7 @@ export function SurveyPage() {
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/user/jenoshima42@despair.com/survey/${id}/answer`, {
+            const response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}/answer`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
