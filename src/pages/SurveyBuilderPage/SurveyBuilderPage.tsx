@@ -14,7 +14,7 @@ export function SurveyBuilderPage() {
     const { id } = useParams<{ id: string }>();
     const [isTypeModalOpen, setTypeModalOpen] = useState<boolean>(false);
     const [isInputModalOpen, setInputModalOpen] = useState<boolean>(false);
-    const [selectedQuestionType, setSelectedQuestionType] = useState<string | null>(null);
+    const [selectedQuestionType, setSelectedQuestionType] = useState<number>(0);
     const [questions, setQuestions] = useState<SurveyQuestion[]>([]);
     const [editIndex, setEditIndex] = useState<number | null>(null);
     const [surveyTitle, setSurveyTitle] = useState<string>('');
@@ -43,7 +43,7 @@ export function SurveyBuilderPage() {
         }
     }, [id]);
 
-    const handleSelectQuestionType = (type: string) => {
+    const handleSelectQuestionType = (type: number) => {
         setSelectedQuestionType(type);
         setInputModalOpen(true);
         setTypeModalOpen(false);
@@ -71,7 +71,7 @@ export function SurveyBuilderPage() {
         }
 
         setInputModalOpen(false);
-        setSelectedQuestionType(null);
+        setSelectedQuestionType(0);
     };
 
     const handleSubmit = async () => {

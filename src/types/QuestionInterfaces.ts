@@ -1,5 +1,5 @@
 interface Question {
-    type: string;
+    type: number;
     questionId: number;
     question: string;
     options?: string[];
@@ -15,7 +15,7 @@ interface QuestionProps {
 
 interface SurveyQuestion {
     question: string;
-    type: string | null;
+    type: number;
     options?: string[];
     questionId: string;
 }

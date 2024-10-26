@@ -8,7 +8,7 @@ import {DeleteButton} from "../DeleteButton/DeleteButton.tsx";
 interface QuestionButtonsProps {
     index: number;
     setEditIndex: React.Dispatch<React.SetStateAction<number | null>>;
-    setSelectedQuestionType: React.Dispatch<React.SetStateAction<string | null>>;
+    setSelectedQuestionType: React.Dispatch<React.SetStateAction<number>>;
     questions: SurveyQuestion[];
     setInputModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setQuestions: React.Dispatch<React.SetStateAction<SurveyQuestion[]>>;

@@ -94,7 +94,7 @@ export function SurveyPage() {
         <div>
             <h1>{surveyData.Name}</h1>
             {surveyData.Survey.map(questionInfo => {
-                const QuestionComponent = ComponentMap[questionInfo.type];
+                const QuestionComponent = ComponentMap[questionInfo.type].component;
                 return (
                     <QuestionComponent
                         key={questionInfo.questionId}

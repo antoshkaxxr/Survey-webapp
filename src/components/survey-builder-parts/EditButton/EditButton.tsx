@@ -3,7 +3,7 @@ import React from "react";
 interface EditButtonProps {
     index: number;
     setEditIndex: React.Dispatch<React.SetStateAction<number | null>>;
-    setSelectedQuestionType: React.Dispatch<React.SetStateAction<string | null>>;
+    setSelectedQuestionType: React.Dispatch<React.SetStateAction<number>>;
     questions: SurveyQuestion[];
     setInputModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

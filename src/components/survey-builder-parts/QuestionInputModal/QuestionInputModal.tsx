@@ -5,11 +5,13 @@ import './QuestionInputModal.css';
 type QuestionInputModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    questionType: string | null;
+    questionType: number;
     onSubmit: (question: string, options?: string[]) => void;
     initialQuestion?: string;
     initialOptions?: string[];
 }
+
+const optionQuestionTypes = [1, 2, 9];
 
 export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                                 initialQuestion = '', initialOptions = [] }: QuestionInputModalProps) {
@@ -41,7 +43,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
     };
 
     const handleSubmit = () => {
-        onSubmit(question, questionType?.includes('выбор') || questionType?.includes('список') ? options : undefined);
+        onSubmit(question, optionQuestionTypes.includes(questionType) ? options : undefined);
         onClose();
     };
 
@@ -61,7 +63,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder="Вопрос"
                 />
-                {(questionType?.includes('выбор') || questionType?.includes('список')) && (
+                {optionQuestionTypes.includes(questionType) && (
                     <>
                         <h2 className={'requested-action'}>
                             {initialOptions.length > 0 ? 'Отредактируйте варианты ответов:' : 'Введите варианты ответов:'}
