@@ -9,6 +9,7 @@ import {SurveyTitle} from "../../components/survey-builder-parts/SurveyTitle/Sur
 import {ThemeSelector} from "../../components/survey-builder-parts/ThemeSelector/ThemeSelector.tsx";
 import {EmptyQuestionItem} from "../../components/survey-builder-parts/EmptyQuestionItem/EmptyQuestionItem.tsx";
 import {QuestionButtons} from "../../components/survey-builder-parts/QuestionButtons/QuestionButtons.tsx";
+import {ColorPanel} from '../../components/survey-builder-parts/ColorPanel/ColorPanel.tsx';
 import {IP_ADDRESS} from "../../config.ts";
 
 export function SurveyBuilderPage() {
@@ -22,6 +23,7 @@ export function SurveyBuilderPage() {
     const [backgroundImage, setBackgroundImage] = useState<Theme>(
         { name: 'Стандартная тема', theme: 'default', url: 'url(/images/default.jpg)' }
     );
+    const [selectedColor, setSelectedColor] = useState<string>('#FFFFFF');
 
     useEffect(() => {
         if (id) {
@@ -113,9 +115,13 @@ export function SurveyBuilderPage() {
     return (
         <div className={'builder-survey'}>
             <h1>Конструктор опросов</h1>
+
+            <ColorPanel selectedColor={selectedColor} setSelectedColor={setSelectedColor}/>
+
+            
+            {/* <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} /> */}
+            <div  className="questions-list" style={{ backgroundColor: selectedColor, backgroundSize: 'cover' }}>
             <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
-            <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} />
-            <div className="questions-list" style={{ backgroundImage: backgroundImage.url, backgroundSize: 'cover' }}>
                 {questions.length === 0 &&
                     <EmptyQuestionItem theme={backgroundImage.theme} />
                 }

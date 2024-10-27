@@ -13,7 +13,7 @@ export function SurveyTitle({surveyTitle, setSurveyTitle}: SurveyTitleProps) {
                 type="text"
                 value={surveyTitle}
                 onChange={(e) => setSurveyTitle(e.target.value)}
-                placeholder="Название формы"
+                placeholder="Без названия"
                 className="survey-title-input"
             />
         </div>
