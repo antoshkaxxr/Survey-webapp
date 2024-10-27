@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable, DropResult, DragStart } from 'react-beautiful-dnd';
 import './styles.css';
 
 interface MoveBox {
@@ -15,20 +15,34 @@ const initialBoxes: MoveBox[] = [
 
 const Moving: React.FC = () => {
     const [boxes, setBoxes] = useState<MoveBox[]>(initialBoxes);
+    const [isCardDragDisabled, setIsCardDragDisabled] = useState(false);
+    const [isListDragDisabled, setIsListDragDisabled] = useState(false);
+
+    const handleOnDragStart = (start: DragStart) => {
+        const { type } = start;
+        if (type === "card") {
+            setIsListDragDisabled(true);
+        }
+        if (type === "list") {
+            setIsCardDragDisabled(true);
+        }
+    };
 
     const onDragEnd = (result: DropResult) => {
         if (!result.destination) {
             return;
         }
+        setIsCardDragDisabled(false);
+        setIsListDragDisabled(false);
+
         const reorderedBoxes = Array.from(boxes);
         const [removed] = reorderedBoxes.splice(result.source.index, 1);
         reorderedBoxes.splice(result.destination.index, 0, removed);
-        
         setBoxes(reorderedBoxes);
     };
 
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext onDragStart={handleOnDragStart} onDragEnd={onDragEnd}>
             <Droppable droppableId="droppable">
                 {(provided) => (
                     <div
@@ -37,7 +51,7 @@ const Moving: React.FC = () => {
                         ref={provided.innerRef}
                     >
                         {boxes.map((box, index) => (
-                            <Draggable key={box.id} draggableId={box.id} index={index}>
+                            <Draggable key={box.id} draggableId={box.id} index={index} isDragDisabled={isCardDragDisabled}>
                                 {(provided) => (
                                     <div
                                         className="move-box"
@@ -59,3 +73,4 @@ const Moving: React.FC = () => {
 }
 
 export default Moving;
+
