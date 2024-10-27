@@ -34,6 +34,10 @@ export function App() {
                     path={AppRoute.SurveyId}
                     element={<SurveyPage />}
                 />
+                {/* <Route
+                    path={AppRoute.Moving}
+                    element={<Moving />}
+                /> */}
             </Routes>
         </BrowserRouter>
     );

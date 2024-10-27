@@ -5,5 +5,6 @@ export enum AppRoute {
     Root = '/',
     Survey = '/survey',
     SurveyId = '/survey/:id',
-    MySurveys = '/my-surveys'
+    MySurveys = '/my-surveys',
+    Moving = '/moving'
 }
