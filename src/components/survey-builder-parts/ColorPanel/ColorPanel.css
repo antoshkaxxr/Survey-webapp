@@ -1,8 +1,16 @@
-
-
 .color-panel {
-    width: 200px; /* Ширина панели */
-    background-color: #f0f0f0; /* Цвет фона панели */
-    padding: 20px;
-    border-right: 1px solid #ddd; /* Тонкая граница */
+    display: flex;
+    align-items: center;
+}
+
+.color-input {
+    border: none; /* Убирает рамку */
+
+    height: 40px; /* Высота input */
+}
+
+.color-hex {
+    margin-left: 10px; /* Отступ между input и текстом */
+    font-size: 16px; /* Размер шрифта */
+    color: #000; /* Цвет текста */
 }

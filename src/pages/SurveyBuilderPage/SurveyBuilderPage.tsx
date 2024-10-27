@@ -23,7 +23,9 @@ export function SurveyBuilderPage() {
     const [backgroundImage, setBackgroundImage] = useState<Theme>(
         { name: 'Стандартная тема', theme: 'default', url: 'url(/images/default.jpg)' }
     );
-    const [selectedColor, setSelectedColor] = useState<string>('#FFFFFF');
+    const [BackgroundSelectedColor, BackgroundSetSelectedColor] = useState<string>('#D9D9D9');
+    const [QuestionSelectedColor, QuestionSetSelectedColor] = useState<string>('#FFFFFF');
+    const [TextSelectedColor, TextSetSelectedColor] = useState<string>('#000000');
 
     useEffect(() => {
         if (id) {
@@ -116,22 +118,28 @@ export function SurveyBuilderPage() {
         <div className={'builder-survey'}>
             <h1>Конструктор опросов</h1>
 
-            <ColorPanel selectedColor={selectedColor} setSelectedColor={setSelectedColor}/>
+            <ColorPanel selectedColor={BackgroundSelectedColor} setSelectedColor={BackgroundSetSelectedColor}/>
+            <ColorPanel selectedColor={QuestionSelectedColor} setSelectedColor={QuestionSetSelectedColor}/>
+            <ColorPanel selectedColor={TextSelectedColor} setSelectedColor={TextSetSelectedColor}/>
 
             
-            {/* <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} /> */}
-            <div  className="questions-list" style={{ backgroundColor: selectedColor, backgroundSize: 'cover' }}>
+            <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} />
+            <div  className="questions-list" style={{ backgroundColor: BackgroundSelectedColor, backgroundSize: 'cover' }}>
             <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
                 {questions.length === 0 &&
                     <EmptyQuestionItem theme={backgroundImage.theme} />
                 }
                 {questions.length > 0 && questions.map((q, index) => (
                     <div key={index} className="question-item">
-                        <Question
-                            question={q.question}
-                            type={q.type}
-                            theme={backgroundImage.theme}
-                        />
+                        <div className='question-container' style={{ backgroundColor: QuestionSelectedColor}}>
+                            <Question
+                                question={q.question}
+                                type={q.type}
+                                theme={backgroundImage.theme}
+                                textColor={TextSelectedColor}
+                            />
+                        </div>
+                        
                         <QuestionButtons
                             index={index} setEditIndex={setEditIndex}
                             setSelectedQuestionType={setSelectedQuestionType}
