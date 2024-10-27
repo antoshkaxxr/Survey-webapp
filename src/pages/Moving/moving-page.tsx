@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DragDropContext, Droppable, Draggable, DropResult, DragStart } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import './styles.css';
 
 interface MoveBox {
@@ -15,25 +15,9 @@ const initialBoxes: MoveBox[] = [
 
 const Moving: React.FC = () => {
     const [boxes, setBoxes] = useState<MoveBox[]>(initialBoxes);
-    const [isCardDragDisabled, setIsCardDragDisabled] = useState(false);
-    const [isListDragDisabled, setIsListDragDisabled] = useState(false);
-
-    const handleOnDragStart = (start: DragStart) => {
-        const { type } = start;
-        if (type === "card") {
-            setIsListDragDisabled(true);
-        }
-        if (type === "list") {
-            setIsCardDragDisabled(true);
-        }
-    };
 
     const onDragEnd = (result: DropResult) => {
-        if (!result.destination) {
-            return;
-        }
-        setIsCardDragDisabled(false);
-        setIsListDragDisabled(false);
+        if (!result.destination) return;
 
         const reorderedBoxes = Array.from(boxes);
         const [removed] = reorderedBoxes.splice(result.source.index, 1);
@@ -41,25 +25,26 @@ const Moving: React.FC = () => {
         setBoxes(reorderedBoxes);
     };
 
+    const handleInputChange = (index: number, value: string) => {
+        const updatedBoxes = [...boxes];
+        updatedBoxes[index].content = value;
+        setBoxes(updatedBoxes);
+    };
+
     return (
-        <DragDropContext onDragStart={handleOnDragStart} onDragEnd={onDragEnd}>
+        <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="droppable">
                 {(provided) => (
-                    <div
-                        className="dropzone"
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                    >
+                    <div className="dropzone" {...provided.droppableProps} ref={provided.innerRef}>
                         {boxes.map((box, index) => (
-                            <Draggable key={box.id} draggableId={box.id} index={index} isDragDisabled={isCardDragDisabled}>
+                            <Draggable key={box.id} draggableId={box.id} index={index}>
                                 {(provided) => (
-                                    <div
-                                        className="move-box"
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                    >
-                                        <p>{box.content}</p>
+                                    <div className="move-box" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                        <input 
+                                            type="text" 
+                                            value={box.content} 
+                                            onChange={(e) => handleInputChange(index, e.target.value)} 
+                                        />
                                     </div>
                                 )}
                             </Draggable>
@@ -70,7 +55,6 @@ const Moving: React.FC = () => {
             </Droppable>
         </DragDropContext>
     );
-}
+};
 
 export default Moving;
-
