@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
-import {Link, useParams} from 'react-router-dom';
-import {QuestionTypeModal} from '../../components/survey-builder-parts/QuestionTypeModal/QuestionTypeModal.tsx';
-import {QuestionInputModal} from '../../components/survey-builder-parts/QuestionInputModal/QuestionInputModal.tsx';
-import {Question} from '../../components/survey-builder-parts/Question/Question.tsx';
+import { Link, useParams } from 'react-router-dom';
+import { QuestionTypeModal } from '../../components/survey-builder-parts/QuestionTypeModal/QuestionTypeModal.tsx';
+import { QuestionInputModal } from '../../components/survey-builder-parts/QuestionInputModal/QuestionInputModal.tsx';
+import { Question } from '../../components/survey-builder-parts/Question/Question.tsx';
 import './SurveyBuilderPage.css';
-import {AppRoute} from "../../const/AppRoute.ts";
-import {SurveyTitle} from "../../components/survey-builder-parts/SurveyTitle/SurveyTitle.tsx";
-import {ThemeSelector} from "../../components/survey-builder-parts/ThemeSelector/ThemeSelector.tsx";
-import {EmptyQuestionItem} from "../../components/survey-builder-parts/EmptyQuestionItem/EmptyQuestionItem.tsx";
-import {QuestionButtons} from "../../components/survey-builder-parts/QuestionButtons/QuestionButtons.tsx";
-import {ColorPanel} from '../../components/survey-builder-parts/ColorPanel/ColorPanel.tsx';
-import {IP_ADDRESS} from "../../config.ts";
+import { AppRoute } from "../../const/AppRoute.ts";
+import { SurveyTitle } from "../../components/survey-builder-parts/SurveyTitle/SurveyTitle.tsx";
+import { ThemeSelector } from "../../components/survey-builder-parts/ThemeSelector/ThemeSelector.tsx";
+import { EmptyQuestionItem } from "../../components/survey-builder-parts/EmptyQuestionItem/EmptyQuestionItem.tsx";
+import { QuestionButtons } from "../../components/survey-builder-parts/QuestionButtons/QuestionButtons.tsx";
+import { ColorPanel } from '../../components/survey-builder-parts/ColorPanel/ColorPanel.tsx';
+import { IP_ADDRESS } from "../../config.ts";
 
 export function SurveyBuilderPage() {
     const { id } = useParams<{ id: string }>();
@@ -21,7 +21,7 @@ export function SurveyBuilderPage() {
     const [editIndex, setEditIndex] = useState<number | null>(null);
     const [surveyTitle, setSurveyTitle] = useState<string>('');
     const [backgroundImage, setBackgroundImage] = useState<Theme>(
-        { name: 'Стандартная тема', theme: 'default', url: 'url(/images/default.jpg)' }
+        { name: 'Стандартная тема', url: 'url(/images/default.jpg)' }
     );
     const [BackgroundSelectedColor, BackgroundSetSelectedColor] = useState<string>('#D9D9D9');
     const [QuestionSelectedColor, QuestionSetSelectedColor] = useState<string>('#FFFFFF');
@@ -118,28 +118,30 @@ export function SurveyBuilderPage() {
         <div className={'builder-survey'}>
             <h1>Конструктор опросов</h1>
 
-            <ColorPanel selectedColor={BackgroundSelectedColor} setSelectedColor={BackgroundSetSelectedColor}/>
-            <ColorPanel selectedColor={QuestionSelectedColor} setSelectedColor={QuestionSetSelectedColor}/>
-            <ColorPanel selectedColor={TextSelectedColor} setSelectedColor={TextSetSelectedColor}/>
+            <ColorPanel selectedColor={BackgroundSelectedColor} setSelectedColor={BackgroundSetSelectedColor} />
+            <ColorPanel selectedColor={QuestionSelectedColor} setSelectedColor={QuestionSetSelectedColor} />
+            <ColorPanel selectedColor={TextSelectedColor} setSelectedColor={TextSetSelectedColor} />
 
-            
+
             <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} />
-            <div  className="questions-list" style={{ backgroundColor: BackgroundSelectedColor, backgroundSize: 'cover' }}>
-            <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
+            <div className='cover' style={{ backgroundImage: backgroundImage.url, backgroundSize: 'cover', height: 100 }}></div>
+            <div className="questions-list" style={{ backgroundColor: BackgroundSelectedColor, backgroundSize: 'cover' }}>
+            
+                <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
                 {questions.length === 0 &&
-                    <EmptyQuestionItem theme={backgroundImage.theme} />
+                    <EmptyQuestionItem />
                 }
                 {questions.length > 0 && questions.map((q, index) => (
                     <div key={index} className="question-item">
-                        <div className='question-container' style={{ backgroundColor: QuestionSelectedColor}}>
+                        <div className='question-container' style={{ backgroundColor: QuestionSelectedColor }}>
                             <Question
                                 question={q.question}
                                 type={q.type}
-                                theme={backgroundImage.theme}
+                                
                                 textColor={TextSelectedColor}
                             />
                         </div>
-                        
+
                         <QuestionButtons
                             index={index} setEditIndex={setEditIndex}
                             setSelectedQuestionType={setSelectedQuestionType}
