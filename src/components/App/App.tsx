@@ -5,7 +5,6 @@ import {LoginPage} from "../../pages/LoginPage/LoginPage.tsx";
 import {SurveyBuilderPage} from "../../pages/SurveyBuilderPage/SurveyBuilderPage.tsx";
 import {SurveyPage} from "../../pages/SurveyPage/SurveyPage.tsx";
 import {MySurveysPage} from "../../pages/MySurveysPage/MySurveysPage.tsx";
-import Moving from "../../pages/Moving/moving-page.tsx";
 
 export function App() {
     return (
@@ -34,10 +33,6 @@ export function App() {
                 <Route
                     path={AppRoute.SurveyId}
                     element={<SurveyPage />}
-                />
-                <Route
-                    path={AppRoute.Moving}
-                    element={<Moving />}
                 />
             </Routes>
         </BrowserRouter>

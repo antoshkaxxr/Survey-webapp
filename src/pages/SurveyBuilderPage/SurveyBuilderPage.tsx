@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { QuestionTypeModal } from '../../components/survey-builder-parts/QuestionTypeModal/QuestionTypeModal.tsx';
 import { QuestionInputModal } from '../../components/survey-builder-parts/QuestionInputModal/QuestionInputModal.tsx';
@@ -11,15 +11,21 @@ import { EmptyQuestionItem } from "../../components/survey-builder-parts/EmptyQu
 import { QuestionButtons } from "../../components/survey-builder-parts/QuestionButtons/QuestionButtons.tsx";
 import { ColorPanel } from '../../components/survey-builder-parts/ColorPanel/ColorPanel.tsx';
 import { IP_ADDRESS } from "../../config.ts";
+import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
+
 
 export function SurveyBuilderPage() {
     const { id } = useParams<{ id: string }>();
+
     const [isTypeModalOpen, setTypeModalOpen] = useState<boolean>(false);
     const [isInputModalOpen, setInputModalOpen] = useState<boolean>(false);
+
     const [selectedQuestionType, setSelectedQuestionType] = useState<number>(0);
     const [questions, setQuestions] = useState<SurveyQuestion[]>([]);
     const [editIndex, setEditIndex] = useState<number | null>(null);
+    const [addIndex, setAddIndex] = useState<number | null>(null);
     const [surveyTitle, setSurveyTitle] = useState<string>('');
+
     const [backgroundImage, setBackgroundImage] = useState<Theme>(
         { name: 'Стандартная тема', url: 'url(/images/default.jpg)' }
     );
@@ -66,7 +72,12 @@ export function SurveyBuilderPage() {
             questionId: generateUniqueId()
         };
 
-        if (editIndex !== null) {
+        if (addIndex !== null) {
+            const updatedQuestions = [...questions];
+            updatedQuestions.splice(addIndex, 0, newQuestion);
+            setQuestions(updatedQuestions);
+            setAddIndex(null);
+        } else if (editIndex !== null) {
             const updatedQuestions = [...questions];
             updatedQuestions[editIndex] = newQuestion;
             setQuestions(updatedQuestions);
@@ -114,6 +125,15 @@ export function SurveyBuilderPage() {
         }
     };
 
+    const onDragEnd = (result: DropResult) => {
+        if (!result.destination) return;
+        const reorderedQuestions = Array.from(questions);
+        const [movedItem] = reorderedQuestions.splice(result.source.index, 1); // Удаляем элемент из исходной позиции
+        reorderedQuestions.splice(result.destination.index, 0, movedItem); // Вставляем элемент в новую позицию
+
+        setQuestions(reorderedQuestions);
+    };
+
     return (
         <div className={'builder-survey'}>
             <h1>Конструктор опросов</h1>
@@ -131,26 +151,47 @@ export function SurveyBuilderPage() {
                 {questions.length === 0 &&
                     <EmptyQuestionItem />
                 }
-                {questions.length > 0 && questions.map((q, index) => (
-                    <div key={index} className="question-item">
-                        <div className='question-container' style={{ backgroundColor: QuestionSelectedColor }}>
-                            <Question
-                                question={q.question}
-                                type={q.type}
-                                
-                                textColor={TextSelectedColor}
-                            />
-                        </div>
+                {questions.length > 0 &&
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId="droppable">
+                            {(provided) => (
+                                <div className="dropzone" {...provided.droppableProps} ref={provided.innerRef}>
+                                    {questions.map((question, i) => (
+                                        <Draggable key={question.questionId.toString()} draggableId={question.questionId.toString()} index={i}>
+                                            {(provided) => (
+                                                <div className="move-box"
+                                                     ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                    <div key={i} className="question-item">
+                                                        <div className='question-container'
+                                                             style={{backgroundColor: QuestionSelectedColor}}>
+                                                            <Question
+                                                                question={question.question}
+                                                                type={question.type}
+                                                                textColor={TextSelectedColor}
+                                                            />
+                                                        </div>
 
-                        <QuestionButtons
-                            index={index} setEditIndex={setEditIndex}
-                            setSelectedQuestionType={setSelectedQuestionType}
-                            questions={questions}
-                            setInputModalOpen={setInputModalOpen}
-                            setQuestions={setQuestions}
-                        />
-                    </div>
-                ))}
+                                                        <QuestionButtons
+                                                            index={i}
+                                                            setAddIndex={setAddIndex}
+                                                            setEditIndex={setEditIndex}
+                                                            setSelectedQuestionType={setSelectedQuestionType}
+                                                            questions={questions}
+                                                            setInputModalOpen={setInputModalOpen}
+                                                            setTypeModalOpen={setTypeModalOpen}
+                                                            setQuestions={setQuestions}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                }
             </div>
             <button className={'add-question-button'} onClick={() => setTypeModalOpen(true)}>Добавить вопрос</button>
             <Link to={AppRoute.MySurveys}>
