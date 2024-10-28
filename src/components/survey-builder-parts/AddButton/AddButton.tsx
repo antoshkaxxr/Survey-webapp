@@ -15,7 +15,7 @@ export function AddButton({index, setAddIndex, setTypeModalOpen}: AddButtonProps
 
     return (
         <button onClick={() => handleMoveDown(index)}>
-            <img src="/icons/arrow-down-circle.svg" alt="Добавить новый вопрос перед этим"/>
+            <img src="/icons/icon-add-question.svg" alt="Добавить новый вопрос перед этим"/>
         </button>
     );
 }
