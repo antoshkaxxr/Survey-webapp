@@ -1,6 +1,6 @@
 .question-item {
     display: flex;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
 }
 
 .question-item:hover .question-buttons button {
