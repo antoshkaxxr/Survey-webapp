@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AppRoute } from "../../const.ts";
+import { AppRoute } from "../../const/AppRoute";
 import './custom-my-surveys.css';
 
 interface Question {

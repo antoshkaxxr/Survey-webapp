@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../Modal.css';
 import './QuestionInputModal.css';
-import { DragDropContext, Droppable, Draggable, DropResult, DragStart } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
 type QuestionInputModalProps = {
     isOpen: boolean;
     onClose: () => void;
@@ -47,7 +47,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         onClose();
     };
 
-    const onDragEnd = (result) => {
+    const onDragEnd = (result: DropResult) => {
         if (!result.destination) return;
         const reorderedBoxes = Array.from(options);
         const [removed] = reorderedBoxes.splice(result.source.index, 1);

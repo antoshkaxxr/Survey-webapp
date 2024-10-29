@@ -17,15 +17,15 @@ const themes: Theme[] = [
   { name: 'Водная гладь', url: 'url(/images/theme2.jpg)' },
 ];
 
-export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSelectorProps) {
+export function ThemeSelector({ setBackgroundImage }: ThemeSelectorProps) {
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const [customTheme, setCustomTheme] = useState<Theme | null>(null);
 
-  const handleSelectTheme = (theme: Theme) => {
-    setBackgroundImage(theme);
-    setIsThemeModalOpen(false);
-  };
+  // const handleSelectTheme = (theme: Theme) => {
+  //   setBackgroundImage(theme);
+  //   setIsThemeModalOpen(false);
+  // };
 
   const handleOpenModal = () => {
     setIsThemeModalOpen(true);
