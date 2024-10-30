@@ -47,7 +47,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         onClose();
     };
 
-    const onDragEnd = (result: DropResult) => {
+    const onDragEnd = (result : DropResult) => {
         if (!result.destination) return;
         const reorderedBoxes = Array.from(options);
         const [removed] = reorderedBoxes.splice(result.source.index, 1);
