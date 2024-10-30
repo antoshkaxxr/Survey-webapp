@@ -74,7 +74,7 @@ export function SurveyBuilderPage() {
 
         if (addIndex !== null) {
             const updatedQuestions = [...questions];
-            updatedQuestions.splice(addIndex, 0, newQuestion);
+            updatedQuestions.splice(addIndex+1, 0, newQuestion);
             setQuestions(updatedQuestions);
             setAddIndex(null);
         } else if (editIndex !== null) {
