@@ -5,7 +5,7 @@
 
 .question-item:hover .question-buttons button {
     opacity: 1;
-    background: #a69e9e;
+    /* background: #a69e9e; */
 }
 
 .add-question-button,

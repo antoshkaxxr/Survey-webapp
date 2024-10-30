@@ -1,14 +1,15 @@
-.survey-title-input {
+.survey-title-textarea {
     width: 50%;
     padding: 10px;
     border: none; /* Убираем рамку */
     border-radius: 5px; /* Оставляем скругление, если нужно */
-    font-size: 16px;
+    font-size: 32px;
     background-color: rgba(255, 255, 255, 0); /* Прозрачный фон */
     color: #000; /* Цвет текста */
     transition: box-shadow 0.3s;
+    resize: none;
 }
 
-.survey-title-input:focus {
+.survey-title-textarea:focus {
     outline: none; /* Убираем стандартный контур */
 }
