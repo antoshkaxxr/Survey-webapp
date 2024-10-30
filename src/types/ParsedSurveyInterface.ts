@@ -1,5 +1,5 @@
 interface ParsedSurvey {
-    surveyId: number;
+    surveyId: string;
     parsedSurvey: {
         Name: string;
         Survey: Question[];

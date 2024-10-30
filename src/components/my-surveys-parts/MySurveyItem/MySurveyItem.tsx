@@ -4,24 +4,22 @@ import {Link} from "react-router-dom";
 import {IP_ADDRESS} from "../../../config.ts";
 
 interface MySurveyItemProps {
-    surveyId: number;
+    surveyId: string;
     surveyName: string;
     setSurveyData: React.Dispatch<React.SetStateAction<ParsedSurvey[]>>;
+    setAccessModalOpen: (open: boolean) => void;
+    setAccessSurveyId: (id: string) => void;
 }
 
-const copyToClipboard = (surveyId: number) => {
+const copyToClipboard = (surveyId: string) => {
     navigator.clipboard.writeText(`http://localhost:3000/survey/${surveyId}`).then(() => {
         alert("Ссылка на опрос скопирована в буфер обмена!");
     });
 };
 
-const handleAccess = (surveyId: number) => {
-    alert(`Доступ к опросу с ID ${surveyId}`);
-};
-
-async function handleExport(surveyId: number) {
+async function handleExport(surveyId: string) {
     const email = 'jenoshima42@despair.com';
-    const url = `http://localhost:8081/user/${email}/survey/${surveyId}/generate`;
+    const url = `http://localhost:8080/user/${email}/survey/${surveyId}/generate`;
 
     try {
         const response = await fetch(url, {
@@ -51,8 +49,8 @@ async function handleExport(surveyId: number) {
     }
 }
 
-export function MySurveyItem({surveyId, surveyName, setSurveyData} : MySurveyItemProps) {
-    const handleDelete = async (surveyId: number) => {
+export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModalOpen, setAccessSurveyId} : MySurveyItemProps) {
+    const handleDelete = async (surveyId: string) => {
         const confirmDeletion = window.confirm("Вы уверены, что хотите удалить этот опрос?");
         if (confirmDeletion) {
             try {
@@ -84,7 +82,10 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData} : MySurveyIte
                     <button onClick={() => copyToClipboard(surveyId)}>
                         <img src="/icons/icon-copy.svg" alt="Скопировать"/>
                     </button>
-                    <button onClick={() => handleAccess(surveyId)}>
+                    <button onClick={() => {
+                        setAccessModalOpen(true);
+                        setAccessSurveyId(surveyId);
+                    }}>
                         <img src="/icons/icon-access.svg" alt="Доступ"/>
                     </button>
                     <button onClick={() => handleExport(surveyId)}>

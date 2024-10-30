@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './SurveyPage.scss';
-import {ComponentMap} from "../../const/ComponentMap.ts";
-import {IP_ADDRESS} from "../../config.ts";
+import { ComponentMap } from "../../const/ComponentMap.ts";
+import { IP_ADDRESS } from "../../config.ts";
+import {UnavailableSurvey} from "../../components/survey-parts/UnavailableSurvey/UnavailableSurvey.tsx";
 
 interface SurveyData {
     Name: string;
@@ -17,10 +18,43 @@ interface SurveyData {
 export function SurveyPage() {
     const { id } = useParams<{ id: string }>();
     const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
+    const [openStatus, setOpenStatus] = useState<boolean>(true);
     const [answers, setAnswers] = useState<{ [key: number]: { question: string; answer: string } }>({});
     const [reset, setReset] = useState(false);
 
     useEffect(() => {
+        const checkSurveyAccess = async () => {
+            try {
+                const response = await fetch(`http://${IP_ADDRESS}:8080/survey/${id}/access`);
+                if (!response.ok) {
+                    throw new Error('Ошибка при получении доступа к опросу');
+                }
+
+                const accessData = await response.json();
+                if (accessData.status === "Inactive") {
+                    setOpenStatus(false);
+                    return;
+                } else if (accessData.status === "Active") {
+                    if (accessData.isLimited) {
+                        const currentTime = new Date();
+                        const [startTime, endTime] = accessData.timeIntervals;
+                        const start = startTime ? new Date(startTime) : null;
+                        const end = endTime ? new Date(endTime) : null;
+
+                        if (start && end && (currentTime < start || currentTime > end)) {
+                            setOpenStatus(false);
+                            console.log(openStatus);
+                            return;
+                        }
+                    }
+                    fetchSurvey();
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                setOpenStatus(false);
+            }
+        };
+
         const fetchSurvey = async () => {
             try {
                 const response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}`);
@@ -40,22 +74,17 @@ export function SurveyPage() {
             }
         };
 
-        fetchSurvey();
-    }, [id]);
+        checkSurveyAccess();
+    }, [id, openStatus]);
 
     const handleAnswerChange = (questionId: number, question: string, answer: string) => {
         setAnswers(prevAnswers => {
             const newAnswers = { ...prevAnswers };
-
             if (answer === '') {
                 delete newAnswers[questionId];
             } else {
-                newAnswers[questionId] = {
-                    question: question,
-                    answer: answer
-                };
+                newAnswers[questionId] = { question, answer };
             }
-
             return newAnswers;
         });
     };
@@ -87,32 +116,34 @@ export function SurveyPage() {
         setTimeout(() => setReset(false), 0);
     };
 
-    if (!surveyData) {
-        return <div>Загрузка опроса...</div>;
-    }
-
     return (
         <div>
-            <h1>{surveyData.Name}</h1>
-            {surveyData.Survey.map(questionInfo => {
-                const QuestionComponent = ComponentMap[questionInfo.type].component;
-                return (
-                    <QuestionComponent
-                        key={questionInfo.questionId}
-                        questionInfo={questionInfo}
-                        onAnswerChange={handleAnswerChange}
-                        reset={reset}
-                    />
-                );
-            })}
-            <div>
-                <button className={'send-button'} onClick={handleSubmit}>
-                    Отправить
-                </button>
-                <button className={'delete-button'} onClick={handleClear}>
-                    Очистить всё
-                </button>
-            </div>
+            {!openStatus ? (
+                <UnavailableSurvey />
+            ) : (
+                <>
+                    <h1>{surveyData ? surveyData.Name : "Загрузка опроса..."}</h1>
+                    {surveyData && surveyData.Survey.map(questionInfo => {
+                        const QuestionComponent = ComponentMap[questionInfo.type]?.component;
+                        return (
+                            <QuestionComponent
+                                key={questionInfo.questionId}
+                                questionInfo={questionInfo}
+                                onAnswerChange={handleAnswerChange}
+                                reset={reset}
+                            />
+                        );
+                    })}
+                    <div>
+                        <button className={'send-button'} onClick={handleSubmit}>
+                            Отправить
+                        </button>
+                        <button className={'delete-button'} onClick={handleClear}>
+                            Очистить всё
+                        </button>
+                    </div>
+                </>
+            )}
         </div>
     );
 }

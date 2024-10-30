@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {Link, useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {QuestionTypeModal} from '../../components/survey-builder-parts/QuestionTypeModal/QuestionTypeModal.tsx';
 import {QuestionInputModal} from '../../components/survey-builder-parts/QuestionInputModal/QuestionInputModal.tsx';
 import {Question} from '../../components/survey-builder-parts/Question/Question.tsx';
@@ -10,6 +10,7 @@ import {ThemeSelector} from "../../components/survey-builder-parts/ThemeSelector
 import {EmptyQuestionItem} from "../../components/survey-builder-parts/EmptyQuestionItem/EmptyQuestionItem.tsx";
 import {QuestionButtons} from "../../components/survey-builder-parts/QuestionButtons/QuestionButtons.tsx";
 import {IP_ADDRESS} from "../../config.ts";
+import {AccessModal} from "../../components/modals/AccessModal/AccessModal.tsx";
 
 export function SurveyBuilderPage() {
     const { id } = useParams<{ id: string }>();
@@ -22,6 +23,9 @@ export function SurveyBuilderPage() {
     const [backgroundImage, setBackgroundImage] = useState<Theme>(
         { name: 'Стандартная тема', theme: 'default', url: 'url(/images/default.jpg)' }
     );
+    const [accessSurveyId, setAccessSurveyId] = useState<string | null>(null);
+    const [isAccessModalOpen, setAccessModalOpen] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (id) {
@@ -92,6 +96,7 @@ export function SurveyBuilderPage() {
                     },
                     body: JSON.stringify(data),
                 });
+                setAccessSurveyId(id);
             } else {
                 response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey`, {
                     method: 'POST',
@@ -100,11 +105,15 @@ export function SurveyBuilderPage() {
                     },
                     body: JSON.stringify(data),
                 });
+                const retrievedId = await response.text();
+                setAccessSurveyId(retrievedId);
             }
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
+
+            setAccessModalOpen(true);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -137,9 +146,7 @@ export function SurveyBuilderPage() {
                 ))}
             </div>
             <button className={'add-question-button'} onClick={() => setTypeModalOpen(true)}>Добавить вопрос</button>
-            <Link to={AppRoute.MySurveys}>
-                <button className={'save-survey-button'} onClick={handleSubmit}>Сохранить опрос</button>
-            </Link>
+            <button className={'save-survey-button'} onClick={handleSubmit}>Сохранить опрос</button>
             <QuestionTypeModal
                 isOpen={isTypeModalOpen}
                 onClose={() => setTypeModalOpen(false)}
@@ -155,6 +162,14 @@ export function SurveyBuilderPage() {
                 onSubmit={handleSubmitQuestion}
                 initialQuestion={editIndex !== null ? questions[editIndex].question : ""}
                 initialOptions={editIndex !== null && questions[editIndex].options ? questions[editIndex].options : []}
+            />
+            <AccessModal
+                isOpen={isAccessModalOpen}
+                onClose={() => {
+                    setAccessModalOpen(false);
+                    navigate(AppRoute.MySurveys);
+                }}
+                accessSurveyId={accessSurveyId}
             />
         </div>
     );

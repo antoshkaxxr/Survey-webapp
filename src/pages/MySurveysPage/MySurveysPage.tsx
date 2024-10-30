@@ -4,15 +4,18 @@ import { AppRoute } from "../../const/AppRoute.ts";
 import './MySurveysPage.css';
 import {MySurveyItem} from "../../components/my-surveys-parts/MySurveyItem/MySurveyItem.tsx";
 import {IP_ADDRESS} from "../../config.ts";
+import {AccessModal} from "../../components/modals/AccessModal/AccessModal.tsx";
 
 interface Survey {
-    id: number;
+    id: string;
     survey: string;
 }
 
 export function MySurveysPage() {
     const [surveyData, setSurveyData] = useState<ParsedSurvey[]>([]);
     const [loading, setLoading] = useState(true);
+    const [accessSurveyId, setAccessSurveyId] = useState<string | null>(null);
+    const [isAccessModalOpen, setAccessModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchSurveys = async () => {
@@ -54,8 +57,15 @@ export function MySurveysPage() {
                     surveyId={survey.surveyId}
                     surveyName={survey.parsedSurvey.Name}
                     setSurveyData={setSurveyData}
+                    setAccessModalOpen={setAccessModalOpen}
+                    setAccessSurveyId={setAccessSurveyId}
                 />
             ))}
+            <AccessModal
+                isOpen={isAccessModalOpen}
+                onClose={() => setAccessModalOpen(false)}
+                accessSurveyId={accessSurveyId}
+            />
         </div>
     );
 }
