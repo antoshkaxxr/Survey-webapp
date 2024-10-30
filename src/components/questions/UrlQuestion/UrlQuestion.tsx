@@ -1,8 +1,8 @@
 import {useState, ChangeEvent, useEffect} from 'react';
-import '../QuestionStyle.css';
 import './UrlQuestion.css';
+import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function UrlQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function UrlQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
     const [url, setUrl] = useState('');
     const [error, setError] = useState('');
 
@@ -44,8 +44,12 @@ export function UrlQuestion({ questionInfo, onAnswerChange, reset }: QuestionPro
     }, [reset]);
 
     return (
-        <div className={'question-border'}>
-            <h3 className={'question-wording'}>{questionInfo.question}</h3>
+        <BaseQuestion
+            question={questionInfo.question}
+            answer={url}
+            handleClear={handleClearUrl}
+            isRequired={isRequired}
+        >
             <input
                 type={'url'}
                 id={`${questionInfo.questionId}`}
@@ -54,11 +58,6 @@ export function UrlQuestion({ questionInfo, onAnswerChange, reset }: QuestionPro
                 onChange={handleChange}
             />
             {error && <span className='error-message'>{error}</span>}
-            {url && (
-                <button onClick={handleClearUrl} className={'clear-button'}>
-                    Очистить поле
-                </button>
-            )}
-        </div>
+        </BaseQuestion>
     );
 }

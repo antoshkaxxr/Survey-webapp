@@ -1,8 +1,8 @@
 import {useState, ChangeEvent, useEffect} from 'react';
-import '../QuestionStyle.css';
 import './SliderQuestion.css';
+import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function SliderQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function SliderQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
     const [value, setValue] = useState<number>(questionInfo.min || 1);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,8 +23,12 @@ export function SliderQuestion({ questionInfo, onAnswerChange, reset }: Question
     }, [reset, questionInfo.min]);
 
     return (
-        <div className={'question-border'}>
-            <h3 className={'question-wording'}>{questionInfo.question}</h3>
+        <BaseQuestion
+            question={questionInfo.question}
+            answer={value}
+            handleClear={handleClearSelection}
+            isRequired={isRequired}
+        >
             <div className="slider-container">
                 <span className="slider-label">{questionInfo.min}</span>
                 <input
@@ -39,11 +43,6 @@ export function SliderQuestion({ questionInfo, onAnswerChange, reset }: Question
                 <span className="slider-label">{questionInfo.max}</span>
             </div>
             <div className={'slider-message'}>Выбранное значение: {value}</div>
-            {value !== questionInfo.min && (
-                <button onClick={handleClearSelection} className={'clear-button'}>
-                    Очистить выбор
-                </button>
-            )}
-        </div>
+        </BaseQuestion>
     );
 }

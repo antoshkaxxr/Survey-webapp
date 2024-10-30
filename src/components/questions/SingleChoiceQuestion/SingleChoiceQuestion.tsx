@@ -1,8 +1,8 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import '../QuestionStyle.css';
+import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 import './SingleChoiceQuestion.css';
 
-export function SingleChoiceQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function SingleChoiceQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,8 +23,12 @@ export function SingleChoiceQuestion({ questionInfo, onAnswerChange, reset }: Qu
     }, [reset]);
 
     return (
-        <div className={'question-border'}>
-            <h3 className={'question-wording'}>{questionInfo.question}</h3>
+        <BaseQuestion
+            question={questionInfo.question}
+            answer={selectedOption}
+            handleClear={handleClearSelection}
+            isRequired={isRequired}
+        >
             {questionInfo.options && questionInfo.options.map((option, index) => (
                 <label key={index} className={'radio-label'}>
                     <input
@@ -38,11 +42,6 @@ export function SingleChoiceQuestion({ questionInfo, onAnswerChange, reset }: Qu
                     <span className={'radio-value'}>{option}</span>
                 </label>
             ))}
-            {selectedOption && (
-                <button onClick={handleClearSelection} className={'clear-button'}>
-                    Очистить выбор
-                </button>
-            )}
-        </div>
+        </BaseQuestion>
     );
 }

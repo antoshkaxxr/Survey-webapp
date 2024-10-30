@@ -131,6 +131,7 @@ export function SurveyPage() {
                                 questionInfo={questionInfo}
                                 onAnswerChange={handleAnswerChange}
                                 reset={reset}
+                                isRequired={true}
                             />
                         );
                     })}

@@ -1,8 +1,9 @@
 import {useState, ChangeEvent, useEffect} from 'react';
-import '../QuestionStyle.css';
+import '../BaseQuestion/BaseQuestion.css';
 import './DateQuestion.css';
+import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function DateQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function DateQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,8 +24,12 @@ export function DateQuestion({ questionInfo, onAnswerChange, reset }: QuestionPr
     }, [reset]);
 
     return (
-        <div className={'question-border'}>
-            <h3 className={'question-wording'}>{questionInfo.question}</h3>
+        <BaseQuestion
+            question={questionInfo.question}
+            answer={answer}
+            handleClear={handleClearDate}
+            isRequired={isRequired}
+        >
             <input
                 type={'date'}
                 id={`${questionInfo.questionId}`}
@@ -32,11 +37,6 @@ export function DateQuestion({ questionInfo, onAnswerChange, reset }: QuestionPr
                 value={answer}
                 onChange={handleDateChange}
             />
-            {answer && (
-                <button onClick={handleClearDate} className={'clear-button'}>
-                    Очистить дату
-                </button>
-            )}
-        </div>
+        </BaseQuestion>
     );
 }

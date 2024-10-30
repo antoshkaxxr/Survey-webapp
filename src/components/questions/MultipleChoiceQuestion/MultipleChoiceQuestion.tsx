@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react';
-import '../QuestionStyle.css';
 import './MultipleChoiceQuestion.css';
+import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
     const handleOptionChange = (option: string) => {
@@ -11,7 +11,7 @@ export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, reset }: 
             : [...selectedOptions, option];
 
         setSelectedOptions(updatedOptions);
-        onAnswerChange(questionInfo.questionId, questionInfo.question, updatedOptions.join(', '));
+        onAnswerChange(questionInfo.questionId, questionInfo.question, updatedOptions.join('\n'));
     };
 
     const handleClearSelection = () => {
@@ -26,8 +26,12 @@ export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, reset }: 
     }, [reset]);
 
     return (
-        <div className={'question-border'}>
-            <h3 className={'question-wording'}>{questionInfo.question}</h3>
+        <BaseQuestion
+            question={questionInfo.question}
+            answer={selectedOptions}
+            handleClear={handleClearSelection}
+            isRequired={isRequired}
+        >
             {questionInfo.options && questionInfo.options.map((option, index) => (
                 <label key={index} className={'checkbox-label'}>
                     <input
@@ -41,11 +45,6 @@ export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, reset }: 
                     <span className={'checkbox-value'}>{option}</span>
                 </label>
             ))}
-            {selectedOptions.length !== 0 && (
-                <button onClick={handleClearSelection} className={'clear-button'}>
-                    Очистить выбор
-                </button>
-            )}
-        </div>
+        </BaseQuestion>
     );
 }

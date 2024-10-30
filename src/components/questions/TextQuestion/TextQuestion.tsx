@@ -1,8 +1,8 @@
 import {useState, ChangeEvent, useEffect} from 'react';
-import '../QuestionStyle.css';
 import './TextQuestion.css';
+import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function TextQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function TextQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -23,8 +23,12 @@ export function TextQuestion({ questionInfo, onAnswerChange, reset }: QuestionPr
     }, [reset]);
 
     return (
-        <div className={'question-border'}>
-            <h3 className={'question-wording'}>{questionInfo.question}</h3>
+        <BaseQuestion
+            question={questionInfo.question}
+            answer={answer}
+            handleClear={handleClearText}
+            isRequired={isRequired}
+        >
             <textarea
                 id={`${questionInfo.questionId}`}
                 className={'text-input'}
@@ -33,12 +37,6 @@ export function TextQuestion({ questionInfo, onAnswerChange, reset }: QuestionPr
                 value={answer}
                 onChange={handleTextChange}
             />
-            {answer && (
-                <button onClick={handleClearText} className={'clear-button'}>
-                    Очистить текст
-                </button>
-            )}
-        </div>
-
+        </BaseQuestion>
     );
 }

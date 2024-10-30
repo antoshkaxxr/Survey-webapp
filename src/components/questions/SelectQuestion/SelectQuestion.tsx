@@ -1,8 +1,8 @@
 import {useState, ChangeEvent, useEffect} from 'react';
-import '../QuestionStyle.css';
 import './SelectQuestion.css';
+import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function SelectQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function SelectQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     const handleOptionChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -23,8 +23,12 @@ export function SelectQuestion({ questionInfo, onAnswerChange, reset }: Question
     };
 
     return (
-        <div className={'question-border'}>
-            <h3 className={'question-wording'}>{questionInfo.question}</h3>
+        <BaseQuestion
+            question={questionInfo.question}
+            answer={selectedOption}
+            handleClear={handleClearSelection}
+            isRequired={isRequired}
+        >
             <select
                 className={'option-select'}
                 value={selectedOption || ''}
@@ -42,6 +46,6 @@ export function SelectQuestion({ questionInfo, onAnswerChange, reset }: Question
                     Очистить выбор
                 </button>
             )}
-        </div>
+        </BaseQuestion>
     );
 }

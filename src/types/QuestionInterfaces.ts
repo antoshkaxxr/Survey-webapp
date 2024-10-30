@@ -10,6 +10,7 @@ interface Question {
 interface QuestionProps {
     questionInfo: Question;
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
+    isRequired: boolean;
     reset: boolean;
 }
 

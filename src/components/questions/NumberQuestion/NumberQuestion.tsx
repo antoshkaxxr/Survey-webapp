@@ -1,8 +1,8 @@
 import {useState, ChangeEvent, useEffect} from 'react';
-import '../QuestionStyle.css';
 import './NumberQuestion.css';
+import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function NumberQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function NumberQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,8 +23,12 @@ export function NumberQuestion({ questionInfo, onAnswerChange, reset }: Question
     }, [reset]);
 
     return (
-        <div className={'question-border'}>
-            <h3 className={'question-wording'}>{questionInfo.question}</h3>
+        <BaseQuestion
+            question={questionInfo.question}
+            answer={answer}
+            handleClear={handleClearNumber}
+            isRequired={isRequired}
+        >
             <input
                 type={'number'}
                 id={`${questionInfo.questionId}`}
@@ -33,11 +37,6 @@ export function NumberQuestion({ questionInfo, onAnswerChange, reset }: Question
                 value={answer}
                 onChange={handleNumberChange}
             />
-            {answer && (
-                <button onClick={handleClearNumber} className={'clear-button'}>
-                    Очистить число
-                </button>
-            )}
-        </div>
+        </BaseQuestion>
     );
 }

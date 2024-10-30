@@ -1,8 +1,8 @@
 import {useState, ChangeEvent, useEffect} from 'react';
-import '../QuestionStyle.css';
 import './FileQuestion.css';
+import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function FileQuestion({ questionInfo, onAnswerChange, reset }: QuestionProps) {
+export function FileQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
     const [file, setFile] = useState<File>();
     const [error, setError] = useState('');
 
@@ -35,8 +35,12 @@ export function FileQuestion({ questionInfo, onAnswerChange, reset }: QuestionPr
     }, [reset]);
 
     return (
-        <div className="question-border">
-            <h3 className="question-wording">{questionInfo.question}</h3>
+        <BaseQuestion
+            question={questionInfo.question}
+            answer={file}
+            handleClear={handleClearFile}
+            isRequired={isRequired}
+        >
             <input
                 type="file"
                 id={`file-input-${questionInfo.questionId}`}
@@ -48,11 +52,6 @@ export function FileQuestion({ questionInfo, onAnswerChange, reset }: QuestionPr
             </label>
             {error && <span className={'error-message'}>{error}</span>}
             {file && <span className={'name-message'}>{file.name}</span>}
-            {file && (
-                <button onClick={handleClearFile} className={'clear-button'}>
-                    Очистить файл
-                </button>
-            )}
-        </div>
+        </BaseQuestion>
     );
 }
