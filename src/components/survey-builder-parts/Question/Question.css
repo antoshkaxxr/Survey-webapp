@@ -1,23 +1,30 @@
 .questions-list {
     padding: 20px 0 20px 40px;
     border-radius: 0 0 10px 10px;
-}
-
-.question-container-default {
+  }
+  
+  .question-container-default {
     border: 2px solid black;
     padding-left: 25px;
     padding-right: 25px;
     border-radius: 5px;
-    width: 90%;
-}
-
-.question-container{
+    width: 500px; /* Fixed width for the container */
+  }
+  
+  .question-container{
     padding-left: 25px;
     padding-right: 25px;
     border-radius: 5px;
-    width: 90%;
+    width: 500px; /* Fixed width for the container */
     margin-bottom: 15px;
-}
+  }
+  
+  h2.question-h3 {
+    word-wrap: break-word; /* Allows words to break within the container */
+    hyphens: auto; /* Enables automatic hyphenation for better word wrapping */
+  }
+  
+
 /* 
 .question-h3-theme1,
 .question-type-p-theme1 {

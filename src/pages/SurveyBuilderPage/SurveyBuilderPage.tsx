@@ -172,6 +172,7 @@ export function SurveyBuilderPage() {
                                                                     question={question.question}
                                                                     type={question.type}
                                                                     textColor={TextSelectedColor}
+                                                                    initialOptions={questions[i].options}
                                                                 />
                                                             </div>
 

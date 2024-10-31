@@ -8,8 +8,10 @@
     color: #000; /* Цвет текста */
     transition: box-shadow 0.3s;
     resize: none;
-}
-
-.survey-title-textarea:focus {
+    overflow: hidden; /* Скрываем полосу прокрутки */
+  }
+  
+  .survey-title-textarea:focus {
     outline: none; /* Убираем стандартный контур */
-}
+  }
+  
