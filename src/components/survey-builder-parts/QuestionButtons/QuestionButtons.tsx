@@ -1,8 +1,8 @@
 import './QuestionButtons.css';
 import {EditButton} from "../EditButton/EditButton.tsx";
 import React from "react";
-import {ArrowUp} from "../ArrowUp/ArrowUp.tsx";
-import {ArrayDown} from "../ArrowDown/ArrowDown.tsx";
+// import {ArrowUp} from "../ArrowUp/ArrowUp.tsx";
+// import {ArrayDown} from "../ArrowDown/ArrowDown.tsx";
 import {DeleteButton} from "../DeleteButton/DeleteButton.tsx";
 import {AddButton} from "../AddButton/AddButton.tsx";
 
@@ -28,8 +28,8 @@ export function QuestionButtons({index, setAddIndex, setEditIndex, setSelectedQu
                 questions={questions}
                 setInputModalOpen={setInputModalOpen}
             />
-            <ArrowUp index={index} questions={questions} setQuestions={setQuestions} />
-            <ArrayDown index={index} questions={questions} setQuestions={setQuestions} />
+            {/* <ArrowUp index={index} questions={questions} setQuestions={setQuestions} />
+            <ArrayDown index={index} questions={questions} setQuestions={setQuestions} /> */}
             <DeleteButton index={index} questions={questions} setQuestions={setQuestions} />
         </div>
     );
