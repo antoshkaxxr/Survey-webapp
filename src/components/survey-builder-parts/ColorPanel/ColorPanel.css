@@ -14,3 +14,10 @@
     font-size: 16px; /* Размер шрифта */
     color: #000; /* Цвет текста */
 }
+
+.name-selector{
+    margin-right: 10px; /* Отступ между input и текстом */
+    font-size: 16px; /* Размер шрифта */
+    color: #000; /* Цвет текста */
+    width: 100px;
+}

@@ -11,7 +11,7 @@ import { EmptyQuestionItem } from "../../components/survey-builder-parts/EmptyQu
 import { QuestionButtons } from "../../components/survey-builder-parts/QuestionButtons/QuestionButtons.tsx";
 import { ColorPanel } from '../../components/survey-builder-parts/ColorPanel/ColorPanel.tsx';
 import { IP_ADDRESS } from "../../config.ts";
-import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
 
 export function SurveyBuilderPage() {
@@ -26,9 +26,8 @@ export function SurveyBuilderPage() {
     const [addIndex, setAddIndex] = useState<number | null>(null);
     const [surveyTitle, setSurveyTitle] = useState<string>('');
 
-    const [backgroundImage, setBackgroundImage] = useState<Theme>(
-        { name: 'Стандартная тема', url: 'url(/images/default.jpg)' }
-    );
+    const [backgroundImage, setBackgroundImage] = useState<Theme | null>(null);
+
     const [BackgroundSelectedColor, BackgroundSetSelectedColor] = useState<string>('#D9D9D9');
     const [QuestionSelectedColor, QuestionSetSelectedColor] = useState<string>('#FFFFFF');
     const [TextSelectedColor, TextSetSelectedColor] = useState<string>('#000000');
@@ -135,84 +134,90 @@ export function SurveyBuilderPage() {
     };
 
     return (
-        <div className={'builder-survey'}>
-            <h1>Конструктор опросов</h1>
+        
+        <div className={'BuilderSurvey'}>
 
-            <ColorPanel selectedColor={BackgroundSelectedColor} setSelectedColor={BackgroundSetSelectedColor} />
-            <ColorPanel selectedColor={QuestionSelectedColor} setSelectedColor={QuestionSetSelectedColor} />
-            <ColorPanel selectedColor={TextSelectedColor} setSelectedColor={TextSetSelectedColor} />
-
-
-            <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} />
-            <div className='cover' style={{ backgroundImage: backgroundImage.url, backgroundSize: 'cover', height: 100 }}></div>
-            <div className="questions-list" style={{ backgroundColor: BackgroundSelectedColor, backgroundSize: 'cover' }}>
             
-                <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
-                {questions.length === 0 &&
-                    <EmptyQuestionItem />
-                }
-                {questions.length > 0 &&
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId="droppable">
-                            {(provided) => (
-                                <div className="dropzone" {...provided.droppableProps} ref={provided.innerRef}>
-                                    {questions.map((question, i) => (
-                                        <Draggable key={question.questionId.toString()} draggableId={question.questionId.toString()} index={i}>
-                                            {(provided) => (
-                                                <div className="move-box"
-                                                     ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                                    <div key={i} className="question-item">
-                                                        <div className='question-container'
-                                                             style={{backgroundColor: QuestionSelectedColor}}>
-                                                            <Question
-                                                                question={question.question}
-                                                                type={question.type}
-                                                                textColor={TextSelectedColor}
+
+            <div className='ThemeAndColor'>
+                <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} />
+                <ColorPanel selectedColor={BackgroundSelectedColor} setSelectedColor={BackgroundSetSelectedColor} name='Задний фон' />
+                <ColorPanel selectedColor={QuestionSelectedColor} setSelectedColor={QuestionSetSelectedColor} name='Цвет вопроса' />
+                <ColorPanel selectedColor={TextSelectedColor} setSelectedColor={TextSetSelectedColor} name='цвет текста' />
+            </div>
+
+            <div className='SuveryWindow'>
+
+                <div className='cover' style={{ backgroundImage: backgroundImage ? backgroundImage.url : undefined, backgroundSize: 'cover', height: backgroundImage ? 200 : 0}}></div>
+                <div className="questions-list" style={{ backgroundColor: BackgroundSelectedColor, backgroundSize: 'cover' }}>
+
+                    <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
+                    {questions.length === 0 &&
+                        <EmptyQuestionItem />
+                    }
+                    {questions.length > 0 &&
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Droppable droppableId="droppable">
+                                {(provided) => (
+                                    <div className="dropzone" {...provided.droppableProps} ref={provided.innerRef}>
+                                        {questions.map((question, i) => (
+                                            <Draggable key={question.questionId.toString()} draggableId={question.questionId.toString()} index={i}>
+                                                {(provided) => (
+                                                    <div className="move-box"
+                                                        ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                        <div key={i} className="question-item">
+                                                            <div className='question-container'
+                                                                style={{ backgroundColor: QuestionSelectedColor }}>
+                                                                <Question
+                                                                    question={question.question}
+                                                                    type={question.type}
+                                                                    textColor={TextSelectedColor}
+                                                                />
+                                                            </div>
+
+                                                            <QuestionButtons
+                                                                index={i}
+                                                                setAddIndex={setAddIndex}
+                                                                setEditIndex={setEditIndex}
+                                                                setSelectedQuestionType={setSelectedQuestionType}
+                                                                questions={questions}
+                                                                setInputModalOpen={setInputModalOpen}
+                                                                setTypeModalOpen={setTypeModalOpen}
+                                                                setQuestions={setQuestions}
                                                             />
                                                         </div>
-
-                                                        <QuestionButtons
-                                                            index={i}
-                                                            setAddIndex={setAddIndex}
-                                                            setEditIndex={setEditIndex}
-                                                            setSelectedQuestionType={setSelectedQuestionType}
-                                                            questions={questions}
-                                                            setInputModalOpen={setInputModalOpen}
-                                                            setTypeModalOpen={setTypeModalOpen}
-                                                            setQuestions={setQuestions}
-                                                        />
                                                     </div>
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    ))}
-                                    {provided.placeholder}
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
-                }
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                    }
+                </div>
+                <button className={'add-question-button'} onClick={() => setTypeModalOpen(true)}>Добавить вопрос</button>
+                <Link to={AppRoute.MySurveys}>
+                    <button className={'save-survey-button'} onClick={handleSubmit}>Сохранить опрос</button>
+                </Link>
+                <QuestionTypeModal
+                    isOpen={isTypeModalOpen}
+                    onClose={() => setTypeModalOpen(false)}
+                    onSelect={handleSelectQuestionType}
+                />
+                <QuestionInputModal
+                    isOpen={isInputModalOpen}
+                    onClose={() => {
+                        setInputModalOpen(false);
+                        setEditIndex(null);
+                    }}
+                    questionType={selectedQuestionType}
+                    onSubmit={handleSubmitQuestion}
+                    initialQuestion={editIndex !== null ? questions[editIndex].question : ""}
+                    initialOptions={editIndex !== null && questions[editIndex].options ? questions[editIndex].options : []}
+                />
             </div>
-            <button className={'add-question-button'} onClick={() => setTypeModalOpen(true)}>Добавить вопрос</button>
-            <Link to={AppRoute.MySurveys}>
-                <button className={'save-survey-button'} onClick={handleSubmit}>Сохранить опрос</button>
-            </Link>
-            <QuestionTypeModal
-                isOpen={isTypeModalOpen}
-                onClose={() => setTypeModalOpen(false)}
-                onSelect={handleSelectQuestionType}
-            />
-            <QuestionInputModal
-                isOpen={isInputModalOpen}
-                onClose={() => {
-                    setInputModalOpen(false);
-                    setEditIndex(null);
-                }}
-                questionType={selectedQuestionType}
-                onSubmit={handleSubmitQuestion}
-                initialQuestion={editIndex !== null ? questions[editIndex].question : ""}
-                initialOptions={editIndex !== null && questions[editIndex].options ? questions[editIndex].options : []}
-            />
         </div>
     );
 }

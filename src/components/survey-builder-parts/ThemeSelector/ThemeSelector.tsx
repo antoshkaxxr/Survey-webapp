@@ -7,8 +7,8 @@ interface Theme {
 }
 
 interface ThemeSelectorProps {
-  backgroundImage: Theme;
-  setBackgroundImage: React.Dispatch<React.SetStateAction<Theme>>;
+  backgroundImage: Theme | null;  // Изменено на null по умолчанию
+  setBackgroundImage: React.Dispatch<React.SetStateAction<Theme | null>>;
 }
 
 const themes: Theme[] = [
@@ -17,15 +17,10 @@ const themes: Theme[] = [
   { name: 'Водная гладь', url: 'url(/images/theme2.jpg)' },
 ];
 
-export function ThemeSelector({ setBackgroundImage }: ThemeSelectorProps) {
+export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSelectorProps) {
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const [customTheme, setCustomTheme] = useState<Theme | null>(null);
-
-  // const handleSelectTheme = (theme: Theme) => {
-  //   setBackgroundImage(theme);
-  //   setIsThemeModalOpen(false);
-  // };
 
   const handleOpenModal = () => {
     setIsThemeModalOpen(true);
@@ -50,15 +45,22 @@ export function ThemeSelector({ setBackgroundImage }: ThemeSelectorProps) {
       const url = URL.createObjectURL(file);
       const newTheme: Theme = { name: file.name, url: `url(${url})` };
       setCustomTheme(newTheme);
-      setSelectedTheme(newTheme); // Automatically select the custom theme
+      setSelectedTheme(newTheme); // Автоматически выбираем пользовательскую тему
     }
   };
 
   return (
     <div className="theme-selector">
-      <button className="theme-button" onClick={handleOpenModal}>
-        Изменить тему
-      </button>
+      {!backgroundImage ? (
+        <button className="theme-button" onClick={handleOpenModal}>
+          Добавить тему
+        </button>
+      ) : (
+        // Если тема выбрана, отобразите кнопку "Изменить тему"
+        <button className="theme-button" onClick={handleOpenModal}>
+          Изменить тему
+        </button>
+      )}
 
       {isThemeModalOpen && (
         <div className="theme-modal">

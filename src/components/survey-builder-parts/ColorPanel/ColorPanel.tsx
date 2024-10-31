@@ -2,11 +2,12 @@ import React from 'react';
 import './ColorPanel.css';
 
 interface ColorProps {
+    name: string;
     selectedColor: string;
     setSelectedColor: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export function ColorPanel({ selectedColor, setSelectedColor }: ColorProps) {
+export function ColorPanel({ selectedColor, setSelectedColor, name }: ColorProps) {
 
     const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedColor(e.target.value);
@@ -14,6 +15,7 @@ export function ColorPanel({ selectedColor, setSelectedColor }: ColorProps) {
 
     return (
         <div className="color-panel">
+            <span className="name-selector">{name}</span>
             <input
                 type="color"
                 value={selectedColor}

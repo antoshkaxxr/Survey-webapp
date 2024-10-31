@@ -1,5 +1,6 @@
 .questions-list {
     padding: 20px 0 20px 40px;
+    border-radius: 0 0 10px 10px;
 }
 
 .question-container-default {

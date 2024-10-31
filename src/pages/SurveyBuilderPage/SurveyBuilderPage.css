@@ -37,3 +37,22 @@
 }
 
 
+.BuilderSurvey {
+    padding-top: 10%;
+    display: flex; /* Используем flexbox для размещения элементов рядом друг с другом */
+    align-items: flex-start; /* Выравниваем по верхнему краю, если необходимо */
+    justify-content: center; /* Центрируем контейнер, если нужно */
+}
+
+.ThemeAndColor {
+    margin-right: 20px; /* Добавляем отступ справа для расстояния между блоками */
+}
+
+.SuveryWindow {
+    /* Убедитесь, что ширина SurveyWindow установлена для правильного отображения */
+    flex-grow: 1; /* Позволяем SurveyWindow занимать оставшееся пространство */
+}
+
+.cover {
+    border-radius: 10px 10px 0 0; /* Закругляем только верхние углы */
+}
