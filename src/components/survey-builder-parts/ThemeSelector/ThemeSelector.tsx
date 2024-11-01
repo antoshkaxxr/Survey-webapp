@@ -7,7 +7,7 @@ interface Theme {
 }
 
 interface ThemeSelectorProps {
-  backgroundImage: Theme | null;  // Изменено на null по умолчанию
+  backgroundImage: Theme | null;
   setBackgroundImage: React.Dispatch<React.SetStateAction<Theme | null>>;
 }
 
@@ -19,6 +19,7 @@ const themes: Theme[] = [
 
 export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSelectorProps) {
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
+  const [haveImage, sethaveImage] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const [customTheme, setCustomTheme] = useState<Theme | null>(null);
 
@@ -37,6 +38,7 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
       setBackgroundImage(customTheme);
     }
     setIsThemeModalOpen(false);
+    sethaveImage(true);
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,20 +47,48 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
       const url = URL.createObjectURL(file);
       const newTheme: Theme = { name: file.name, url: `url(${url})` };
       setCustomTheme(newTheme);
-      setSelectedTheme(newTheme); // Автоматически выбираем пользовательскую тему
+      setSelectedTheme(newTheme);
     }
+  };
+
+  const handleRemoveTheme = () => {
+    setBackgroundImage(null); // Сброс выбранной темы
+    setSelectedTheme(null);
+    setCustomTheme(null); // Сброс выбранной темы
+    setIsThemeModalOpen(false);
+    sethaveImage(false);
   };
 
   return (
     <div className="theme-selector">
-      {!backgroundImage ? (
-        <button className="theme-button" onClick={handleOpenModal}>
-          Добавить тему
-        </button>
+      {backgroundImage ? (
+        <>
+          <button
+            className="theme-button"
+            onClick={handleOpenModal}
+            style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+          >
+            <img
+              src="/icons/design-nib.svg"
+              alt="Изменить картинку"
+              style={{ width: '200px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s' }}
+              className="image-icon"
+            />
+          </button>
+
+        </>
       ) : (
-        // Если тема выбрана, отобразите кнопку "Изменить тему"
-        <button className="theme-button" onClick={handleOpenModal}>
-          Изменить тему
+        <button
+          className="theme-button"
+          onClick={handleOpenModal}
+          style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+        >
+          <img
+            src="/icons/media-image-plus.svg"
+            alt="Добавить картинку"
+            style={{ width: '200px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s' }}
+            className="image-icon"
+          />
         </button>
       )}
 
@@ -80,10 +110,10 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
               ))}
             </div>
             <div className="custom-upload">
-              <input 
-                type="file" 
-                accept="image/*" 
-                onChange={handleFileChange} 
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
               />
               <p>Загрузить собственный файл</p>
             </div>
@@ -92,6 +122,18 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
             </button>
             <button className="confirm-button" onClick={handleConfirmTheme} disabled={!selectedTheme && !customTheme}>
               Применить
+            </button>
+            <button
+              className="remove-theme-button"
+              onClick={handleRemoveTheme}
+              disabled={!haveImage}
+            >
+              <img
+                src="/icons/trash-bin.svg"
+                alt="Удалить картинку"
+                style={{ width: '30px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s' }}
+                className="image-icon"
+              />
             </button>
           </div>
         </div>

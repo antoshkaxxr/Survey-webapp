@@ -3,20 +3,22 @@
    }
    
    .theme-button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-   }
-   
-   .theme-button:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-   }
+    outline: none;
+}
+
+.image-icon {
+    transition: transform 0.3s, filter 0.3s; /* Анимация для масштабирования и фильтра */
+}
+
+.theme-button:hover .image-icon {
+    transform: scale(1.1); /* Увеличиваем размер изображения */
+    filter: brightness(1.2); /* Немного увеличиваем яркость изображения */
+}
+
+.theme-button:active .image-icon {
+    transform: scale(0.95); /* Уменьшаем изображение при нажатии */
+}
+
    
    .theme-modal {
     position: fixed;
@@ -79,7 +81,8 @@
    }
    
    .cancel-button,
-   .confirm-button {
+   .confirm-button,
+   .remove-theme-button {
     margin-top: 20px;
     padding: 10px 20px;
     border: none;
@@ -105,8 +108,18 @@
    .confirm-button:hover {
     background-color: #45a049;
    }
+
+   
    
    .confirm-button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+   }
+
+   .remove-theme-button{
+    background-color: #000;
+   }
+   .remove-theme-button[disabled] {
     opacity: 0.5;
     cursor: not-allowed;
    }
