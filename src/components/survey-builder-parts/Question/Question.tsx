@@ -28,9 +28,8 @@ export function Question({ question, type, textColor, initialOptions }: Question
 
 
                         <h3 key={index} className="option-item" style={{ color: textColor }}>
-                            <div className='option'>
-                                {type === 1 && <img src="/icons/select.svg" alt="select icon" style={{ width: '16px', height: '16px', marginRight: '4px', verticalAlign: 'middle' }} />}
-                                {type === 2 && <img src="/icons/checkbox.svg" alt="checkbox icon" style={{ width: '16px', height: '16px', marginLeft: '4px', verticalAlign: 'middle' }} />}
+                            <div className='option'>{type === 1 && <img className="option-img" src="/icons/select.svg" alt="select icon" />}
+                                {type === 2 && <img className="option-img" src="/icons/checkbox.svg" alt="checkbox icon"/>}
                                 {option.trim() === "" ? `Вариант ${index + 1}` : option}
                             </div>
 
