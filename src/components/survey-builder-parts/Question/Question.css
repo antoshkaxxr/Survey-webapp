@@ -26,14 +26,22 @@
   }
   
 .option {
+  display: flex; 
+}
 
+.optionText{
+  display: block;
+  width: 80%;
 }
 
 .option-img {
+  margin-top: 5px;
   width: 16px;
   height: 16px;
   margin-right: 4px;
-  vertical-align: middle
+  vertical-align: middle;
+
+  
 }
 
 

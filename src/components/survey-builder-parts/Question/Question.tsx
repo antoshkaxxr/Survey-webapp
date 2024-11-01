@@ -28,9 +28,13 @@ export function Question({ question, type, textColor, initialOptions }: Question
 
 
                         <h3 key={index} className="option-item" style={{ color: textColor }}>
-                            <div className='option'>{type === 1 && <img className="option-img" src="/icons/select.svg" alt="select icon" />}
-                                {type === 2 && <img className="option-img" src="/icons/checkbox.svg" alt="checkbox icon"/>}
-                                {option.trim() === "" ? `Вариант ${index + 1}` : option}
+                            <div className='option'>
+                                {type === 1 && <img className="option-img" src="/icons/select.svg" alt="select icon" />}
+                                {type === 2 && <img className="option-img" src="/icons/checkbox.svg" alt="checkbox icon"style={{ stroke: textColor }} />}
+                                <div className='optionText' >
+                                    {option.trim() === "" ? `Вариант ${index + 1}` : option}
+                                </div>
+                                
                             </div>
 
 
