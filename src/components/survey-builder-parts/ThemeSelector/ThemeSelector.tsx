@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import './ThemeSelector.css';
+import { IP_ADDRESS } from "../../../config";
 
 interface Theme {
   name: string;
@@ -41,13 +42,39 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
     sethaveImage(true);
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (file && file.type.startsWith('image/')) { // Проверка на картинку
       const url = URL.createObjectURL(file);
       const newTheme: Theme = { name: file.name, url: `url(${url})` };
       setCustomTheme(newTheme);
       setSelectedTheme(newTheme);
+
+      // Отправка изображения в формате Base64
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target && typeof e.target.result === 'string') {
+          const base64Data = e.target.result;
+          sendImageToBackend(base64Data);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const sendImageToBackend = async (base64Data: string) => {
+    try {
+      const response = await fetch(`http://${IP_ADDRESS}:8080/bucket`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: base64Data }),
+      });
+
+      if (!response.ok) {
+        console.error('Ошибка при отправке изображения:', response.status);
+      }
+    } catch (error) {
+      console.error('Ошибка при отправке изображения:', error);
     }
   };
 
@@ -58,6 +85,9 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
     setIsThemeModalOpen(false);
     sethaveImage(false);
   };
+
+
+
 
   return (
     <div className="theme-selector">
