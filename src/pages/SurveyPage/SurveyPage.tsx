@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import './SurveyPage.scss';
 import {ComponentMap} from "../../const/ComponentMap.ts";
 import {IP_ADDRESS} from "../../config.ts";
+import {sendResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
 
 interface SurveyData {
     Name: string;
@@ -62,15 +63,13 @@ export function SurveyPage() {
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}/answer`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(answers),
-            });
+            const response = await sendResponseWhenLogged(
+                'POST',
+                `http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}/answer`,
+                answers
+            );
 
-            if (!response.ok) {
+            if (!response || !response.ok) {
                 throw new Error('Ошибка при отправке ответов');
             }
 

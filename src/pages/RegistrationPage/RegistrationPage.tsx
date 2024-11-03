@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import './LoginPage.css';
+import './RegistrationPage.css';
 import {IP_ADDRESS} from "../../config.ts";
 
 
-export function LoginPage() {
+export function RegistrationPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = async () => {
         try {
-            const response = await fetch(`http://${IP_ADDRESS}:8080/user/login`, {
+            const response = await fetch(`http://${IP_ADDRESS}:8080/user/registration`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -20,34 +20,18 @@ export function LoginPage() {
                         "password": password,
                     })
             });
-            const result = await response.json();
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
-            document.cookie = "Token" + "=" + (result.result || "")  + "; path=/";
-
+            const result = await response.json();
             console.log('Success:', result);
         } catch (error) {
             console.error('Error:', error);
         }
     };
 
-    const handleGoogleLogin = () => {
-        // Логика для входа через Google
-        console.log('Login with Google');
-    };
-
-    const handleGithubLogin = () => {
-        // Логика для входа через GitHub
-        console.log('Login with GitHub');
-    };
-
-    const handleVkLogin = () => {
-        // Логика для входа через VK
-        console.log('Login with VK');
-    };
 
     return (
         <>
@@ -67,14 +51,7 @@ export function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button className="login-submit" onClick={handleLogin}>Войти</button>
-
-                <div className="social-login">
-                    <h2 className="login-h2">Или войдите через:</h2>
-                    <button className="google-login-submit" onClick={handleGoogleLogin}>Google</button>
-                    <button className="github-login-submit" onClick={handleGithubLogin}>GitHub</button>
-                    <button className="vk-login-submit" onClick={handleVkLogin}>VK</button>
-                </div>
+                <button className="login-submit" onClick={handleLogin}>Зарегистрироваться</button>
             </div>
 
 

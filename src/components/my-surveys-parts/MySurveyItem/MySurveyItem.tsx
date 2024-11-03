@@ -2,6 +2,7 @@ import React from "react";
 import {AppRoute} from "../../../const/AppRoute.ts";
 import {Link} from "react-router-dom";
 import {IP_ADDRESS} from "../../../config.ts";
+import {sendResponseWhenLogged} from "../../../sendResponseWhenLogged.ts";
 
 interface MySurveyItemProps {
     surveyId: number;
@@ -10,6 +11,7 @@ interface MySurveyItemProps {
 }
 
 const copyToClipboard = (surveyId: number) => {
+
     navigator.clipboard.writeText(`http://localhost:3000/survey/${surveyId}`).then(() => {
         alert("Ссылка на опрос скопирована в буфер обмена!");
     });
@@ -24,15 +26,10 @@ async function handleExport(surveyId: number) {
     const url = `http://localhost:8081/user/${email}/survey/${surveyId}/generate`;
 
     try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            },
-        });
+        const response = await sendResponseWhenLogged('GET_SHEET', url, {});
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response || !response.ok) {
+            throw new Error(`HTTP error! status: ${response && response.status}`);
         }
 
         const blob = await response.blob();
@@ -56,11 +53,10 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData} : MySurveyIte
         const confirmDeletion = window.confirm("Вы уверены, что хотите удалить этот опрос?");
         if (confirmDeletion) {
             try {
-                const response = await fetch(`http://${IP_ADDRESS}:8080/survey/${surveyId}`, {
-                    method: 'DELETE',
-                });
+                const response = await sendResponseWhenLogged('DELETE',
+                    `http://${IP_ADDRESS}:8080/survey/${surveyId}`, {});
 
-                if (!response.ok) {
+                if (!response || !response.ok) {
                     throw new Error('Ошибка при удалении опроса');
                 }
 

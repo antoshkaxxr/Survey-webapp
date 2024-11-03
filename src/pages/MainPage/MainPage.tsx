@@ -6,6 +6,9 @@ export function MainPage() {
     return (
         <>
             <div className="WelcomeButton-container">
+                <a href={AppRoute.Registration}>
+                    <button className="WelcomeTransparent-btn">Регистрация</button>
+                </a>
                 <a href={AppRoute.Login}>
                     <button className="WelcomeTransparent-btn">Войти</button>
                 </a>

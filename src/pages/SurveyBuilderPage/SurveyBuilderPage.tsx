@@ -12,6 +12,7 @@ import { QuestionButtons } from "../../components/survey-builder-parts/QuestionB
 import { ColorPanel } from '../../components/survey-builder-parts/ColorPanel/ColorPanel.tsx';
 import { IP_ADDRESS } from "../../config.ts";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
+import {sendResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
 
 
 export function SurveyBuilderPage() {
@@ -36,8 +37,12 @@ export function SurveyBuilderPage() {
         if (id) {
             const fetchSurvey = async () => {
                 try {
-                    const response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}`);
-                    if (!response.ok) {
+                    const response = await sendResponseWhenLogged(
+                        'GET',
+                        `http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}`,
+                        {}
+                    );
+                    if (!response || !response.ok) {
                         throw new Error('Ошибка при загрузке опроса');
                     }
                     const data = await response.json();
@@ -99,24 +104,20 @@ export function SurveyBuilderPage() {
         try {
             let response;
             if (id) {
-                response = await fetch(`http://${IP_ADDRESS}:8080/survey/${id}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
+                response = await sendResponseWhenLogged(
+                    'PATCH',
+                    `http://${IP_ADDRESS}:8080/survey/${id}`,
+                    data
+                );
             } else {
-                response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
+                response = await sendResponseWhenLogged(
+                    'POST',
+                    `http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey`,
+                    data
+                );
             }
 
-            if (!response.ok) {
+            if (!response || !response.ok) {
                 throw new Error('Network response was not ok');
             }
         } catch (error) {

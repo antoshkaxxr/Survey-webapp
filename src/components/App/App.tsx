@@ -2,6 +2,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {AppRoute} from "../../const/AppRoute.ts";
 import {MainPage} from "../../pages/MainPage/MainPage.tsx";
 import {LoginPage} from "../../pages/LoginPage/LoginPage.tsx";
+import {RegistrationPage} from "../../pages/RegistrationPage/RegistrationPage.tsx";
 import {SurveyBuilderPage} from "../../pages/SurveyBuilderPage/SurveyBuilderPage.tsx";
 import {SurveyPage} from "../../pages/SurveyPage/SurveyPage.tsx";
 import {MySurveysPage} from "../../pages/MySurveysPage/MySurveysPage.tsx";
@@ -17,6 +18,10 @@ export function App() {
                 <Route
                     path={AppRoute.Login}
                     element={<LoginPage />}
+                />
+                <Route
+                    path={AppRoute.Registration}
+                    element={<RegistrationPage />}
                 />
                 <Route
                     path={AppRoute.MySurveys}
