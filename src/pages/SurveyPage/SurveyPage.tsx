@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import './SurveyPage.scss';
 import {ComponentMap} from "../../const/ComponentMap.ts";
 import {IP_ADDRESS} from "../../config.ts";
-import {sendResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
+import {sendGetResponseWhenLogged, sendChangingResponseWhenLogged, getEmail} from "../../sendResponseWhenLogged.ts";
 
 interface SurveyData {
     Name: string;
@@ -24,7 +24,8 @@ export function SurveyPage() {
     useEffect(() => {
         const fetchSurvey = async () => {
             try {
-                const response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}`);
+                const response = await sendGetResponseWhenLogged(
+                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
@@ -63,9 +64,9 @@ export function SurveyPage() {
 
     const handleSubmit = async () => {
         try {
-            const response = await sendResponseWhenLogged(
+            const response = await sendChangingResponseWhenLogged(
                 'POST',
-                `http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}/answer`,
+                `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}/answer`,
                 answers
             );
 

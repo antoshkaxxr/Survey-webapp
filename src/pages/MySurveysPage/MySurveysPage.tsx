@@ -4,7 +4,7 @@ import { AppRoute } from "../../const/AppRoute.ts";
 import './MySurveysPage.css';
 import {MySurveyItem} from "../../components/my-surveys-parts/MySurveyItem/MySurveyItem.tsx";
 import {IP_ADDRESS} from "../../config.ts";
-import {sendResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
+import {sendGetResponseWhenLogged, getEmail} from "../../sendResponseWhenLogged.ts";
 
 interface Survey {
     id: number;
@@ -18,11 +18,8 @@ export function MySurveysPage() {
     useEffect(() => {
         const fetchSurveys = async () => {
             try {
-                const response = await sendResponseWhenLogged(
-                    'GET',
-                    `http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/surveys`,
-                    {}
-                );
+                const response = await sendGetResponseWhenLogged(
+                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/surveys`);
                 if (!response || !response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }

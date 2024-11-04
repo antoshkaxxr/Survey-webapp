@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import './LoginPage.css';
 import {IP_ADDRESS} from "../../config.ts";
+import { useNavigate } from 'react-router-dom';
+import {AppRoute} from "../../const/AppRoute.ts";
 
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
@@ -20,15 +23,16 @@ export function LoginPage() {
                         "password": password,
                     })
             });
-            const result = await response.json();
+            const result = await response.text();
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
-            document.cookie = "Token" + "=" + (result.result || "")  + "; path=/";
-
+            document.cookie = "Token" + "=" + (result || "")  + "; path=/";
+            document.cookie = "Email" + "=" + (email || "")  + "; path=/";
             console.log('Success:', result);
+            navigate(AppRoute.MySurveys);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -47,6 +51,10 @@ export function LoginPage() {
     const handleVkLogin = () => {
         // Логика для входа через VK
         console.log('Login with VK');
+    };
+
+    const redirectOnRegistration = () => {
+        navigate(AppRoute.Registration);
     };
 
     return (
@@ -68,6 +76,7 @@ export function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <button className="login-submit" onClick={handleLogin}>Войти</button>
+                <button className="redirect-registration" onClick={redirectOnRegistration}>Зарегистрироваться</button>
 
                 <div className="social-login">
                     <h2 className="login-h2">Или войдите через:</h2>
@@ -76,8 +85,6 @@ export function LoginPage() {
                     <button className="vk-login-submit" onClick={handleVkLogin}>VK</button>
                 </div>
             </div>
-
-
 
 
             {/* ну можно попробовать но анимация скорей раздражает -_- */}

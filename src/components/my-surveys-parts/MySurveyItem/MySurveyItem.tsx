@@ -2,7 +2,7 @@ import React from "react";
 import {AppRoute} from "../../../const/AppRoute.ts";
 import {Link} from "react-router-dom";
 import {IP_ADDRESS} from "../../../config.ts";
-import {sendResponseWhenLogged} from "../../../sendResponseWhenLogged.ts";
+import {sendChangingResponseWhenLogged, sendGetSheetResponseWhenLogged, getEmail} from "../../../sendResponseWhenLogged.ts";
 
 interface MySurveyItemProps {
     surveyId: number;
@@ -22,11 +22,11 @@ const handleAccess = (surveyId: number) => {
 };
 
 async function handleExport(surveyId: number) {
-    const email = 'jenoshima42@despair.com';
+    const email = getEmail();
     const url = `http://localhost:8081/user/${email}/survey/${surveyId}/generate`;
 
     try {
-        const response = await sendResponseWhenLogged('GET_SHEET', url, {});
+        const response = await sendGetSheetResponseWhenLogged(url);
 
         if (!response || !response.ok) {
             throw new Error(`HTTP error! status: ${response && response.status}`);
@@ -53,7 +53,7 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData} : MySurveyIte
         const confirmDeletion = window.confirm("Вы уверены, что хотите удалить этот опрос?");
         if (confirmDeletion) {
             try {
-                const response = await sendResponseWhenLogged('DELETE',
+                const response = await sendChangingResponseWhenLogged('DELETE',
                     `http://${IP_ADDRESS}:8080/survey/${surveyId}`, {});
 
                 if (!response || !response.ok) {

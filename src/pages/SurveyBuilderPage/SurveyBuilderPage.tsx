@@ -12,7 +12,7 @@ import { QuestionButtons } from "../../components/survey-builder-parts/QuestionB
 import { ColorPanel } from '../../components/survey-builder-parts/ColorPanel/ColorPanel.tsx';
 import { IP_ADDRESS } from "../../config.ts";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
-import {sendResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
+import {sendGetResponseWhenLogged, sendChangingResponseWhenLogged, getEmail} from "../../sendResponseWhenLogged.ts";
 
 
 export function SurveyBuilderPage() {
@@ -37,11 +37,8 @@ export function SurveyBuilderPage() {
         if (id) {
             const fetchSurvey = async () => {
                 try {
-                    const response = await sendResponseWhenLogged(
-                        'GET',
-                        `http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}`,
-                        {}
-                    );
+                    const response = await sendGetResponseWhenLogged(
+                        `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}`);
                     if (!response || !response.ok) {
                         throw new Error('Ошибка при загрузке опроса');
                     }
@@ -104,15 +101,15 @@ export function SurveyBuilderPage() {
         try {
             let response;
             if (id) {
-                response = await sendResponseWhenLogged(
+                response = await sendChangingResponseWhenLogged(
                     'PATCH',
                     `http://${IP_ADDRESS}:8080/survey/${id}`,
                     data
                 );
             } else {
-                response = await sendResponseWhenLogged(
+                response = await sendChangingResponseWhenLogged(
                     'POST',
-                    `http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey`,
+                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey`,
                     data
                 );
             }

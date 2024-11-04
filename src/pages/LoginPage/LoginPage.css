@@ -30,6 +30,7 @@
     background-color: rgba(255, 255, 255, 0.8); /* Более яркий фон при фокусе */
 }
 
+.redirect-registration,
 .login-submit {
     background-color: rgba(0, 123, 255, 0.7); /* Полупрозрачный фон */
     color: white;
@@ -40,8 +41,10 @@
     width: calc(100% - 10px);
     font-weight: bold;
     transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Добавляем тень */
+    margin-bottom: 15px;
 }
 
+.redirect-registration:hover,
 .login-submit:hover {
     background-color: rgba(0, 86, 179, 0.8); /* Более яркий цвет при наведении */
     transform: translateY(-2px);
