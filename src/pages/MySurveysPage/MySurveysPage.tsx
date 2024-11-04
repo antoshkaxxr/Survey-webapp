@@ -5,6 +5,7 @@ import './MySurveysPage.css';
 import {MySurveyItem} from "../../components/my-surveys-parts/MySurveyItem/MySurveyItem.tsx";
 import {IP_ADDRESS} from "../../config.ts";
 import {AccessModal} from "../../components/modals/AccessModal/AccessModal.tsx";
+import {sendGetResponseWhenLogged, getEmail} from "../../sendResponseWhenLogged.ts";
 
 interface Survey {
     id: string;
@@ -20,8 +21,9 @@ export function MySurveysPage() {
     useEffect(() => {
         const fetchSurveys = async () => {
             try {
-                const response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/surveys`);
-                if (!response.ok) {
+                const response = await sendGetResponseWhenLogged(
+                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/surveys`);
+                if (!response || !response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
                 let data: Survey[] = await response.json();

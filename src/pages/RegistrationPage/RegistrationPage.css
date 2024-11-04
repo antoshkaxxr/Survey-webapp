@@ -1,6 +1,6 @@
 
 
-.login-box {
+.registration-box {
     background: rgba(255, 255, 255, 0.7); /* Полупрозрачный фон */
     backdrop-filter: blur(10px); /* Эффект размытия */
     border-radius: 10px;
@@ -14,7 +14,7 @@
 }
 
 
-.login-input {
+.registration-input {
     width: 90%;
     padding: 10px;
     margin-bottom: 15px;
@@ -24,14 +24,13 @@
     transition: border 0.3s, background-color 0.3s;
 }
 
-.login-input:focus {
+.registration-input:focus {
     border-color: #007BFF;
     outline: none;
     background-color: rgba(255, 255, 255, 0.8); /* Более яркий фон при фокусе */
 }
 
-.redirect-registration,
-.login-submit {
+.registration-submit {
     background-color: rgba(0, 123, 255, 0.7); /* Полупрозрачный фон */
     color: white;
     border: none;
@@ -44,38 +43,17 @@
     margin-bottom: 15px;
 }
 
-.redirect-registration:hover,
-.login-submit:hover {
+.registration-submit:hover {
     background-color: rgba(0, 86, 179, 0.8); /* Более яркий цвет при наведении */
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(0, 123, 255, 0.5); /* Тень при наведении */
 }
 
-.social-login {
+.social-registration {
     margin-top: 20px;
 }
 
-.google-login-submit,
-.github-login-submit,
-.vk-login-submit {
-    background-color: rgba(255, 255, 255, 0.7); /* Полупрозрачный фон */
-    color: #333;
-    border: 1px solid rgba(255, 255, 255, 0.5); /* Полупрозрачная граница */
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
-    width: calc(100% - 10px);
-    margin: 5px 0; /* Отступ для пространства */
-    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Добавляем тень */
-}
 
-.google-login-submit:hover,
-.github-login-submit:hover,
-.vk-login-submit:hover {
-    background-color: rgba(245, 245, 245, 0.8); /* Более яркий цвет при наведении */
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Тень при наведении */
-}
 
 @keyframes fadeIn {
     from {
@@ -88,12 +66,7 @@
 
 
 
-
-/*  */
-/*  */
-
-
-.login-box2{
+.registration-box2{
     user-select:none;
     max-width: 300px;
     margin: 5rem auto;

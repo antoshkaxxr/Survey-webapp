@@ -1,18 +1,17 @@
-.survey-title-container {
-    margin-bottom: 20px;
-}
-
-.survey-title-input {
+.survey-title-textarea {
     width: 50%;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: border-color 0.3s;
-}
-
-.survey-title-input:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Оставляем скругление, если нужно */
+    font-size: 32px;
+    background-color: rgba(255, 255, 255, 0); /* Прозрачный фон */
+    color: #000; /* Цвет текста */
+    transition: box-shadow 0.3s;
+    resize: none;
+    overflow: hidden; /* Скрываем полосу прокрутки */
+  }
+  
+  .survey-title-textarea:focus {
+    outline: none; /* Убираем стандартный контур */
+  }
+  

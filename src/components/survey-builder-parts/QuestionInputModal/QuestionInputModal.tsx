@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../Modal.css';
 import './QuestionInputModal.css';
-
+import { DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
 type QuestionInputModalProps = {
     isOpen: boolean;
     onClose: () => void;
@@ -47,6 +47,14 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         onClose();
     };
 
+    const onDragEnd = (result : DropResult) => {
+        if (!result.destination) return;
+        const reorderedBoxes = Array.from(options);
+        const [removed] = reorderedBoxes.splice(result.source.index, 1);
+        reorderedBoxes.splice(result.destination.index, 0, removed);
+        setOptions(reorderedBoxes);
+    };
+
     return (
         <div className="modal-overlay">
             <div className="modal-content">
@@ -68,21 +76,38 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                         <h2 className={'requested-action'}>
                             {initialOptions.length > 0 ? 'Отредактируйте варианты ответов:' : 'Введите варианты ответов:'}
                         </h2>
-                        {options.map((option, index) => (
-                            <div key={index} className="option-input">
-                                <input
-                                    type="text"
-                                    value={option}
-                                    onChange={(e) => handleOptionChange(index, e.target.value)}
-                                    placeholder={`Вариант ${index + 1}`}
-                                />
-                                {options.length > 1 && (
-                                    <button type="button" onClick={() => handleRemoveOption(index)}>
-                                        Удалить
-                                    </button>
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Droppable droppableId="droppable">
+                                {(provided) => (
+                                    <div className="dropzone" {...provided.droppableProps} ref={provided.innerRef}>
+                                        {options.map((option, index) => (
+                                            <Draggable key={`${index}`} draggableId={`${index}`} index={index}>
+                                                {(provided) => (
+                                                    <div className="move-box"
+                                                         ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                        <div key={index} className="option-input">
+                                                            <input
+                                                                type="text"
+                                                                value={option}
+                                                                onChange={(e) => handleOptionChange(index, e.target.value)}
+                                                                placeholder={`Вариант ${index + 1}`}
+                                                            />
+                                                            {options.length > 1 && (
+                                                                <button type="button"
+                                                                        onClick={() => handleRemoveOption(index)}>
+                                                                    Удалить
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </div>
                                 )}
-                            </div>
-                        ))}
+                            </Droppable>
+                        </DragDropContext>
                         <div>
                             <button className={'add-button'} type="button" onClick={handleAddOption}>
                                 Добавить вариант

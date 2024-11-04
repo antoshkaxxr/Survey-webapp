@@ -4,6 +4,7 @@ import './SurveyPage.scss';
 import { ComponentMap } from "../../const/ComponentMap.ts";
 import { IP_ADDRESS } from "../../config.ts";
 import {UnavailableSurvey} from "../../components/survey-parts/UnavailableSurvey/UnavailableSurvey.tsx";
+import {sendGetResponseWhenLogged, sendChangingResponseWhenLogged, getEmail} from "../../sendResponseWhenLogged.ts";
 
 interface SurveyData {
     Name: string;
@@ -25,7 +26,7 @@ export function SurveyPage() {
     useEffect(() => {
         const checkSurveyAccess = async () => {
             try {
-                const response = await fetch(`http://${IP_ADDRESS}:8080/survey/${id}/access`);
+                const response = await sendGetResponseWhenLogged(`http://${IP_ADDRESS}:8080/survey/${id}/access`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении доступа к опросу');
                 }
@@ -57,7 +58,8 @@ export function SurveyPage() {
 
         const fetchSurvey = async () => {
             try {
-                const response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}`);
+                const response = await sendGetResponseWhenLogged(
+                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
@@ -91,15 +93,13 @@ export function SurveyPage() {
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch(`http://${IP_ADDRESS}:8080/user/jenoshima42@despair.com/survey/${id}/answer`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(answers),
-            });
+            const response = await sendChangingResponseWhenLogged(
+                'POST',
+                `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}/answer`,
+                answers
+            );
 
-            if (!response.ok) {
+            if (!response || !response.ok) {
                 throw new Error('Ошибка при отправке ответов');
             }
 
@@ -115,6 +115,10 @@ export function SurveyPage() {
         setReset(true);
         setTimeout(() => setReset(false), 0);
     };
+
+    if (!surveyData) {
+        return <div>Загрузка опроса...</div>;
+    }
 
     return (
         <div>

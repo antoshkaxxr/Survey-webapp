@@ -1,18 +1,18 @@
 import { useState } from 'react';
-import './LoginPage.css';
+import './RegistrationPage.css';
 import {IP_ADDRESS} from "../../config.ts";
-import { useNavigate } from 'react-router-dom';
 import {AppRoute} from "../../const/AppRoute.ts";
+import { useNavigate } from 'react-router-dom';
 
 
-export function LoginPage() {
+export function RegistrationPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
+    const handleRegistration = async () => {
         try {
-            const response = await fetch(`http://${IP_ADDRESS}:8080/user/login`, {
+            const response = await fetch(`http://${IP_ADDRESS}:8080/user/registration`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -23,67 +23,43 @@ export function LoginPage() {
                         "password": password,
                     })
             });
-            const result = await response.text();
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
-            document.cookie = "Token" + "=" + (result || "")  + "; path=/";
-            document.cookie = "Email" + "=" + (email || "")  + "; path=/";
+            const result = await response.json();
             console.log('Success:', result);
-            navigate(AppRoute.MySurveys);
+            navigate(AppRoute.Login);
         } catch (error) {
             console.error('Error:', error);
         }
     };
 
-    const handleGoogleLogin = () => {
-        // Логика для входа через Google
-        console.log('Login with Google');
-    };
-
-    const handleGithubLogin = () => {
-        // Логика для входа через GitHub
-        console.log('Login with GitHub');
-    };
-
-    const handleVkLogin = () => {
-        // Логика для входа через VK
-        console.log('Login with VK');
-    };
-
-    const redirectOnRegistration = () => {
-        navigate(AppRoute.Registration);
+    const redirectOnLogin = () => {
+        navigate(AppRoute.Login);
     };
 
     return (
         <>
-            <div className="login-box">
-                <h1 className="login-h1">Введите e-mail и пароль</h1>
+            <div className="registration-box">
+                <h1 className="registration-h1">Введите e-mail и пароль</h1>
                 <input
-                    className='login-input'
+                    className='registration-input'
                     type="email"
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
-                    className='login-input'
+                    className='registration-input'
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button className="login-submit" onClick={handleLogin}>Войти</button>
-                <button className="redirect-registration" onClick={redirectOnRegistration}>Зарегистрироваться</button>
-
-                <div className="social-login">
-                    <h2 className="login-h2">Или войдите через:</h2>
-                    <button className="google-login-submit" onClick={handleGoogleLogin}>Google</button>
-                    <button className="github-login-submit" onClick={handleGithubLogin}>GitHub</button>
-                    <button className="vk-login-submit" onClick={handleVkLogin}>VK</button>
-                </div>
+                <button className="registration-submit" onClick={handleRegistration}>Зарегистрироваться</button>
+                <button className="registration-submit" onClick={redirectOnLogin}>Уже зарегистрирован</button>
             </div>
 
 

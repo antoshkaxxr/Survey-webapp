@@ -2,6 +2,7 @@ import React from "react";
 import {AppRoute} from "../../../const/AppRoute.ts";
 import {Link} from "react-router-dom";
 import {IP_ADDRESS} from "../../../config.ts";
+import {sendChangingResponseWhenLogged, sendGetSheetResponseWhenLogged, getEmail} from "../../../sendResponseWhenLogged.ts";
 
 interface MySurveyItemProps {
     surveyId: string;
@@ -12,25 +13,21 @@ interface MySurveyItemProps {
 }
 
 const copyToClipboard = (surveyId: string) => {
+
     navigator.clipboard.writeText(`http://localhost:3000/survey/${surveyId}`).then(() => {
         alert("Ссылка на опрос скопирована в буфер обмена!");
     });
 };
 
 async function handleExport(surveyId: string) {
-    const email = 'jenoshima42@despair.com';
-    const url = `http://localhost:8080/user/${email}/survey/${surveyId}/generate`;
+    const email = getEmail();
+    const url = `http://localhost:8080/user/${email}/survey/${surveyId}/generate_excel`;
 
     try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            },
-        });
+        const response = await sendGetSheetResponseWhenLogged(url);
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response || !response.ok) {
+            throw new Error(`HTTP error! status: ${response && response.status}`);
         }
 
         const blob = await response.blob();
@@ -54,11 +51,10 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModa
         const confirmDeletion = window.confirm("Вы уверены, что хотите удалить этот опрос?");
         if (confirmDeletion) {
             try {
-                const response = await fetch(`http://${IP_ADDRESS}:8080/survey/${surveyId}`, {
-                    method: 'DELETE',
-                });
+                const response = await sendChangingResponseWhenLogged('DELETE',
+                    `http://${IP_ADDRESS}:8080/survey/${surveyId}`, {});
 
-                if (!response.ok) {
+                if (!response || !response.ok) {
                     throw new Error('Ошибка при удалении опроса');
                 }
 
