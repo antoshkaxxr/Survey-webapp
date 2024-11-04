@@ -30,6 +30,7 @@ export function RegistrationPage() {
 
             const result = await response.json();
             console.log('Success:', result);
+            navigate(AppRoute.Login);
         } catch (error) {
             console.error('Error:', error);
         }

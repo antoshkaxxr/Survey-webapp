@@ -23,7 +23,7 @@ const handleAccess = (surveyId: number) => {
 
 async function handleExport(surveyId: number) {
     const email = getEmail();
-    const url = `http://localhost:8081/user/${email}/survey/${surveyId}/generate`;
+    const url = `http://localhost:8080/user/${email}/survey/${surveyId}/generate`;
 
     try {
         const response = await sendGetSheetResponseWhenLogged(url);
