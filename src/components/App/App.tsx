@@ -12,7 +12,7 @@ function RequireAuth({ children } : { children: React.ReactNode }) {
     const email = getEmail();
     if (email === null) {
         // Не авторизован
-        return <Navigate to="\login" replace />;
+        return <Navigate to="/login" replace />;
     }
     return children;
 }

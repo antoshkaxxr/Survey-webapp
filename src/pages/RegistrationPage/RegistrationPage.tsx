@@ -28,7 +28,7 @@ export function RegistrationPage() {
                 throw new Error('Network response was not ok');
             }
 
-            const result = await response.json();
+            const result = await response.text();
             console.log('Success:', result);
             navigate(AppRoute.Login);
         } catch (error) {

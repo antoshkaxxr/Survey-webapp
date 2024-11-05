@@ -2,6 +2,7 @@ import { useState } from 'react';
 import '../../survey-builder-parts/Modal.css';
 import './AccessModal.css';
 import {IP_ADDRESS} from "../../../config.ts";
+import {sendChangingResponseWhenLogged} from "../../../sendResponseWhenLogged.ts";
 
 interface AccessModalProps {
     isOpen: boolean;
@@ -24,6 +25,7 @@ export function AccessModal({ isOpen, onClose, accessSurveyId }: AccessModalProp
         }
 
         if (accessSurveyId === null) return;
+        console.log(startDate, endDate);
 
         const status = selectedType === 1 ? "Active" : "Inactive";
         const isLimited = selectedType === 1 && timeLimited;
@@ -35,14 +37,10 @@ export function AccessModal({ isOpen, onClose, accessSurveyId }: AccessModalProp
             timeIntervals: timeIntervals
         };
 
+        console.log(requestBody);
+
         try {
-            const response = await fetch(`http://${IP_ADDRESS}:8080/survey/${accessSurveyId}/access`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestBody)
-            });
+            const response = await sendChangingResponseWhenLogged('POST',`http://${IP_ADDRESS}:8080/survey/${accessSurveyId}/access`, requestBody);
 
             if (!response.ok) {
                 throw new Error('Ошибка при отправке данных');

@@ -32,6 +32,7 @@ export function SurveyPage() {
                 }
 
                 const accessData = await response.json();
+                console.log(accessData);
                 if (accessData.status === "Inactive") {
                     setOpenStatus(false);
                     return;
@@ -115,10 +116,6 @@ export function SurveyPage() {
         setReset(true);
         setTimeout(() => setReset(false), 0);
     };
-
-    if (!surveyData) {
-        return <div>Загрузка опроса...</div>;
-    }
 
     return (
         <div>
