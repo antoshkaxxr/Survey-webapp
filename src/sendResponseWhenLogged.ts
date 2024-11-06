@@ -22,11 +22,22 @@ export async function sendGetResponseWhenLogged(url: string){
     return response;
 }
 
-export async function sendGetSheetResponseWhenLogged(url: string){
+export async function sendGetSheetEcxelResponseWhenLogged(url: string){
     const response = await fetch(url, {
         method: 'GET',
         headers: {
             'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Authorization': "Bearer " + getCookie('Token')
+        },
+    });
+    return response;
+}
+
+export async function sendGetSheetPdfResponseWhenLogged(url: string){
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': "application/pdf",
             'Authorization': "Bearer " + getCookie('Token')
         },
     });
