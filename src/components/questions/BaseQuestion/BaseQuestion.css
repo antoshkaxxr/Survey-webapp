@@ -15,15 +15,19 @@
     font-style: normal;
     font-size: 22px;
     margin-left: 25px;
+    white-space: normal; /* Позволяет переносить текст на новую строку */
+    word-wrap: break-word; /* Переносит длинные слова, если они не помещаются */
+    overflow-wrap: break-word; /* Добавляет дополнительный перенос слов при необходимости */
+    width: 80%; /* Задает ширину элемента, можно настроить по необходимостям */
 }
 
-.radio-value, .checkbox-value {
+/* .radio-value, .checkbox-value {
     font-family: "Roboto Flex", sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 18px;
     align-items: center;
-}
+} */
 
 
 

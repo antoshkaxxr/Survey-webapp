@@ -1,5 +1,6 @@
 .radio-label {
-    display: flex;
+    display: block; /* Занимает всю ширину родительского элемента */
+
     padding: 5px 0;
     font-size: 20px;
     cursor: pointer;
@@ -7,11 +8,13 @@
 
 .custom-radio {
     opacity: 0;
+    display: inline-block;
 }
 
 .radio-value {
     position: relative;
-    display: flex;
+    display: block; /* Занимает всю ширину родительского элемента */
+    word-wrap: break-word; /* Перенос слов по словам */
     align-items: center;
     padding: 5px 20px 5px 50px;
     border-radius: 20px;

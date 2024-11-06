@@ -114,14 +114,14 @@ export function SurveyPage() {
     };
 
     return (
-        <div>
+        <div className='suvery-page'>
             {!openStatus ? (
                 <UnavailableSurvey
                     message = {messageException}
                 />
             ) : (
                 <>
-                    <h1>{surveyData ? surveyData.Name : "Загрузка опроса..."}</h1>
+                    <h1 className='survey-name'>{surveyData ? surveyData.Name : "Загрузка опроса..."}</h1>
                     {surveyData && surveyData.Survey.map(questionInfo => {
                         const QuestionComponent = ComponentMap[questionInfo.type]?.component;
                         return (
