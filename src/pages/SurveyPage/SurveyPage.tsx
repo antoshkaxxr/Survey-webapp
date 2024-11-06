@@ -23,6 +23,8 @@ export function SurveyPage() {
     const [answers, setAnswers] = useState<{ [key: number]: { question: string; answer: string } }>({});
     const [reset, setReset] = useState(false);
 
+    const [messageException, setMessageException] = useState<string>("");
+
     useEffect(() => {
         const checkSurveyAccess = async () => {
             try {
@@ -33,29 +35,23 @@ export function SurveyPage() {
 
                 const accessData = await response.json();
                 console.log(accessData);
-                if (accessData.status === "Inactive") {
-                    setOpenStatus(false);
-                    return;
-                } else if (accessData.status === "Active") {
-                    if (accessData.isLimited) {
-                        const currentTime = new Date();
-                        const [startTime, endTime] = accessData.timeIntervals;
-                        const start = startTime ? new Date(startTime) : null;
-                        const end = endTime ? new Date(endTime) : null;
-
-                        if (start && end && (currentTime < start || currentTime > end)) {
-                            setOpenStatus(false);
-                            console.log(openStatus);
-                            return;
-                        }
-                    }
+                if (accessData.isAvailable)
                     fetchSurvey();
+                else {
+                    setOpenStatus(false);
+                    if (accessData.isLimited)
+                        setMessageException(`Опрос доступен с ${accessData.startTime.split('T').slice(0, -1)} по ${accessData.endTime.split('T').slice(0, -1)}`)
+                    else
+                        setMessageException(`Опрос ещё не готов`)
                 }
+
             } catch (error) {
                 console.error('Ошибка:', error);
                 setOpenStatus(false);
             }
         };
+
+
 
         const fetchSurvey = async () => {
             try {
@@ -120,7 +116,9 @@ export function SurveyPage() {
     return (
         <div>
             {!openStatus ? (
-                <UnavailableSurvey />
+                <UnavailableSurvey
+                    message = {messageException}
+                />
             ) : (
                 <>
                     <h1>{surveyData ? surveyData.Name : "Загрузка опроса..."}</h1>
