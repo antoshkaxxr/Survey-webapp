@@ -3,6 +3,7 @@ import {AppRoute} from "../../../const/AppRoute.ts";
 import {Link} from "react-router-dom";
 import {IP_ADDRESS} from "../../../config.ts";
 import {sendChangingResponseWhenLogged, sendGetSheetResponseWhenLogged, getEmail} from "../../../sendResponseWhenLogged.ts";
+import './MySurveyItem.css';
 
 interface MySurveyItemProps {
     surveyId: string;
@@ -68,7 +69,7 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModa
     return (
         <div className={'survey-container'}>
             <div className="survey-header">
-                <h3>{surveyName !== '' ? surveyName : 'Без названия'}</h3>
+                <h2 className="my-survey-title">{surveyName !== '' ? surveyName : 'Без названия'}</h2>
                 <div className="survey-buttons">
                     <Link to={`${AppRoute.Survey}/${surveyId}`}>
                         <button>
