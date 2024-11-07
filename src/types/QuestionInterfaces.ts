@@ -3,13 +3,11 @@ interface Question {
     questionId: number;
     question: string;
     options?: string[];
-    min?: number;
-    max?: number;
 }
 
 interface QuestionProps {
-    questionInfo: Question;
-    onAnswerChange: (questionId: number, question: string, answer: string) => void;
+    questionInfo: SurveyQuestion;
+    onAnswerChange: (questionId: string, question: string, answer: string) => void;
     isRequired: boolean;
     reset: boolean;
 }
@@ -19,4 +17,6 @@ interface SurveyQuestion {
     type: number;
     options?: string[];
     questionId: string;
+    min?: number;
+    max?: number;
 }
