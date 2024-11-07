@@ -17,6 +17,7 @@ interface SurveyQuestion {
     type: number;
     options?: string[];
     questionId: string;
+    necessarily: boolean
     min?: number;
     max?: number;
 }

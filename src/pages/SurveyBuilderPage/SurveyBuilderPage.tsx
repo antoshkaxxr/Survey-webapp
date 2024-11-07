@@ -61,6 +61,13 @@ export function SurveyBuilderPage() {
         setTypeModalOpen(false);
     };
 
+    const handleSelectNecessarily = (i: number) => {
+        let newQuestions = [...questions]
+        newQuestions[i].necessarily = questions[i].necessarily;
+        setQuestions(questions);
+    };
+
+
     const generateUniqueId = () => {
         return '_' + Math.random().toString(36).substring(2, 9);
     };
@@ -70,7 +77,10 @@ export function SurveyBuilderPage() {
             question,
             type: selectedQuestionType,
             options,
-            questionId: generateUniqueId()
+            questionId: generateUniqueId(),
+            necessarily: false,
+            min: null as unknown as number,
+            max: null as unknown as number,
         };
 
         if (addIndex !== null) {
@@ -173,6 +183,8 @@ export function SurveyBuilderPage() {
                                                                     type={question.type}
                                                                     textColor={TextSelectedColor}
                                                                     initialOptions={questions[i].options}
+                                                                    necessarily={question.necessarily}
+                                                                    setNecessarily={() => {handleSelectNecessarily(i)}}
                                                                 />
                                                             </div>
 
