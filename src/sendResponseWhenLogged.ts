@@ -1,4 +1,3 @@
-
 export async function sendChangingResponseWhenLogged(method: string, url: string, bodyObject: object, ){
     const response = await fetch(url, {
         method: method,
@@ -8,6 +7,10 @@ export async function sendChangingResponseWhenLogged(method: string, url: string
         },
         body: JSON.stringify(bodyObject)
     });
+    if(response.status === 403){
+        deleteAllCookies();
+        window.location.reload();
+    }
     return response;
 }
 
@@ -19,6 +22,10 @@ export async function sendGetResponseWhenLogged(url: string){
             'Authorization': "Bearer " + getCookie('Token')
         },
     });
+    if(response.status === 403){
+        deleteAllCookies();
+        window.location.reload();
+    }
     return response;
 }
 
@@ -30,6 +37,10 @@ export async function sendGetSheetEcxelResponseWhenLogged(url: string){
             'Authorization': "Bearer " + getCookie('Token')
         },
     });
+    if(response.status === 403){
+        deleteAllCookies();
+        window.location.reload();
+    }
     return response;
 }
 
@@ -41,6 +52,10 @@ export async function sendGetSheetPdfResponseWhenLogged(url: string){
             'Authorization': "Bearer " + getCookie('Token')
         },
     });
+    if(response.status === 403){
+        deleteAllCookies();
+        window.location.reload();
+    }
     return response;
 }
 
@@ -57,3 +72,14 @@ function getCookie(name: string) {
     }
     return null;
 }
+
+function deleteAllCookies() {
+    const cookies = document.cookie.split(';');
+
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        const name = cookie.substring(0, cookie.indexOf('='));
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    }
+}
+
