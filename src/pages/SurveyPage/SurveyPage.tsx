@@ -90,6 +90,17 @@ export function SurveyPage() {
 
     const handleSubmit = async () => {
         try {
+            if (surveyData === null){
+                window.alert("ещё не загрузилось")
+                return;
+            }
+            const canSubmit = surveyData?.Survey.every((x: SurveyQuestion) => {
+                return !x.necessarily || (x.necessarily && answers[x.questionId] !== undefined);
+            });
+            if (!canSubmit){
+                window.alert("Заполните все обязательные вопросы")
+                return;
+            }
             const response = await sendChangingResponseWhenLogged(
                 'POST',
                 `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}/answer`,
@@ -113,6 +124,8 @@ export function SurveyPage() {
         setTimeout(() => setReset(false), 0);
     };
 
+
+
     return (
         <div className='suvery-page'>
             {!openStatus ? (
@@ -125,13 +138,18 @@ export function SurveyPage() {
                     {surveyData && surveyData.Survey.map(questionInfo => {
                         const QuestionComponent = ComponentMap[questionInfo.type]?.component;
                         return (
-                            <QuestionComponent
-                                key={questionInfo.questionId}
-                                questionInfo={questionInfo}
-                                onAnswerChange={handleAnswerChange}
-                                reset={reset}
-                                isRequired={true}
-                            />
+                            <div>
+                                <QuestionComponent
+                                    key={questionInfo.questionId}
+                                    questionInfo={questionInfo}
+                                    onAnswerChange={handleAnswerChange}
+                                    reset={reset}
+                                    isRequired={true}
+                                />
+                                {questionInfo.necessarily && <div>
+                                    Это обязательный вопрос!
+                                </div>}
+                            </div>
                         );
                     })}
                     <div>

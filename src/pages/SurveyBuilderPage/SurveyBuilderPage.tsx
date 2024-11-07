@@ -63,8 +63,8 @@ export function SurveyBuilderPage() {
 
     const handleSelectNecessarily = (i: number) => {
         let newQuestions = [...questions]
-        newQuestions[i].necessarily = questions[i].necessarily;
-        setQuestions(questions);
+        newQuestions[i].necessarily = !questions[i].necessarily;
+        setQuestions(newQuestions);
     };
 
 
