@@ -103,7 +103,7 @@ export function SurveyBuilderPage() {
             if (id) {
                 response = await sendChangingResponseWhenLogged(
                     'PATCH',
-                    `http://${IP_ADDRESS}:8080/survey/${id}`,
+                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}`,
                     data
                 );
                 setAccessSurveyId(id);
