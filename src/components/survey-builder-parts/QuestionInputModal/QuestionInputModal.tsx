@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import '../Modal.css';
 import './QuestionInputModal.css';
 import { DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
+
 type QuestionInputModalProps = {
     isOpen: boolean;
     onClose: () => void;
@@ -14,17 +15,29 @@ type QuestionInputModalProps = {
 const optionQuestionTypes = [1, 2, 9];
 
 export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
-                                initialQuestion = '', initialOptions = [] }: QuestionInputModalProps) {
+                                initialQuestion = 'Вопрос', initialOptions = [] }: QuestionInputModalProps) {
 
     const [question, setQuestion] = useState<string>(initialQuestion);
-    const [options, setOptions] = useState<string[]>(initialOptions.length > 0 ? initialOptions : ['']);
+    const [options, setOptions] = useState<string[]>(initialOptions.length > 0 ? initialOptions : 
+        Array(1).fill('').map((_, index) => `Вариант ${index + 1}`));
+    const [isQuestionValid, setIsQuestionValid] = useState(true);
+    const [areOptionsValid, setAreOptionsValid] = useState(true);
 
     useEffect(() => {
         if (isOpen) {
             setQuestion(initialQuestion);
-            setOptions(initialOptions.length > 0 ? initialOptions : ['']);
+            setOptions(initialOptions.length > 0 ? initialOptions : 
+                Array(1).fill('').map((_, index) => `Вариант ${index + 1}`));
         }
     }, [isOpen, initialQuestion, initialOptions]);
+
+    useEffect(() => {
+        setIsQuestionValid(question.trim() !== '');
+    }, [question]);
+
+    useEffect(() => {
+        setAreOptionsValid(options.every(option => option.trim() !== ''));
+    }, [options]);
 
     if (!isOpen) return null;
 
@@ -35,7 +48,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
     };
 
     const handleAddOption = () => {
-        setOptions([...options, '']);
+        setOptions([...options, `Вариант ${options.length + 1}`]);
     };
 
     const handleRemoveOption = (index: number) => {
@@ -43,8 +56,10 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
     };
 
     const handleSubmit = () => {
-        onSubmit(question, optionQuestionTypes.includes(questionType) ? options : undefined);
-        onClose();
+        if (isQuestionValid && (optionQuestionTypes.includes(questionType) ? areOptionsValid : true)) {
+            onSubmit(question, optionQuestionTypes.includes(questionType) ? options : undefined);
+            onClose();
+        }
     };
 
     const onDragEnd = (result : DropResult) => {
@@ -66,7 +81,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                 </h2>
                 <input
                     type="text"
-                    className={'question-input'}
+                    className={`question-input ${question.trim() !== '' ? '' : 'invalid'}`}
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder="Вопрос"
@@ -91,6 +106,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                                                                 value={option}
                                                                 onChange={(e) => handleOptionChange(index, e.target.value)}
                                                                 placeholder={`Вариант ${index + 1}`}
+                                                                className={`option-input ${option.trim() !== '' ? '' : 'invalid'}`}
                                                             />
                                                             {options.length > 1 && (
                                                                 <button type="button"
@@ -111,11 +127,11 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                         <div>
                             <button className={'add-button'} type="button" onClick={handleAddOption}>
                                 Добавить вариант
-                            </button>
+                                </button>
                         </div>
                     </>
                 )}
-                <button className={'save-button'} onClick={handleSubmit}>
+                <button className={`save-button ${isQuestionValid && (optionQuestionTypes.includes(questionType) ? areOptionsValid : true) ? '' : 'disabled'}`} onClick={handleSubmit}>
                     {initialQuestion ? 'Сохранить изменения' : 'Сохранить'}
                 </button>
             </div>
