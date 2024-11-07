@@ -146,7 +146,7 @@ export function SurveyPage() {
                                     reset={reset}
                                     isRequired={true}
                                 />
-                                {questionInfo.necessarily && <div>
+                                {questionInfo.necessarily && <div className={"warning-block"}>
                                     Это обязательный вопрос!
                                 </div>}
                             </div>
