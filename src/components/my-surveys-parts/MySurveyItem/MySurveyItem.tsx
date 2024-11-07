@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {AppRoute} from "../../../const/AppRoute.ts";
 import {Link} from "react-router-dom";
 import {IP_ADDRESS} from "../../../config.ts";
-import {sendChangingResponseWhenLogged} from "../../../sendResponseWhenLogged.ts";
+import {sendChangingResponseWhenLogged, getEmail} from "../../../sendResponseWhenLogged.ts";
 import './MySurveyItem.css';
 import {ExportModal} from "../ExportModal/ExportModal.tsx";
 
@@ -31,7 +31,7 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModa
         if (confirmDeletion) {
             try {
                 const response = await sendChangingResponseWhenLogged('DELETE',
-                    `http://${IP_ADDRESS}:8080/survey/${surveyId}`, {});
+                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${surveyId}`, {});
 
                 if (!response || !response.ok) {
                     throw new Error('Ошибка при удалении опроса');

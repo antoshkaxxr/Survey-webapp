@@ -13,14 +13,14 @@ interface SurveyData {
         theme: string;
         url: string;
     }
-    Survey: Question[];
+    Survey: SurveyQuestion[];
 }
 
 export function SurveyPage() {
     const { id } = useParams<{ id: string }>();
     const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
     const [openStatus, setOpenStatus] = useState<boolean>(true);
-    const [answers, setAnswers] = useState<{ [key: number]: { question: string; answer: string } }>({});
+    const [answers, setAnswers] = useState<{ [key: string]: { question: string; answer: string } }>({});
     const [reset, setReset] = useState(false);
 
     const [messageException, setMessageException] = useState<string>("");
@@ -28,7 +28,7 @@ export function SurveyPage() {
     useEffect(() => {
         const checkSurveyAccess = async () => {
             try {
-                const response = await sendGetResponseWhenLogged(`http://${IP_ADDRESS}:8080/survey/${id}/access`);
+                const response = await sendGetResponseWhenLogged(`http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}/access`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении доступа к опросу');
                 }
@@ -76,7 +76,7 @@ export function SurveyPage() {
         checkSurveyAccess();
     }, [id, openStatus]);
 
-    const handleAnswerChange = (questionId: number, question: string, answer: string) => {
+    const handleAnswerChange = (questionId: string, question: string, answer: string) => {
         setAnswers(prevAnswers => {
             const newAnswers = { ...prevAnswers };
             if (answer === '') {
