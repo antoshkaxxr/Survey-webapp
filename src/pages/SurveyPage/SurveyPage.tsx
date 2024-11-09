@@ -22,7 +22,6 @@ export function SurveyPage() {
     const [openStatus, setOpenStatus] = useState<boolean>(true);
     const [answers, setAnswers] = useState<{ [key: string]: { question: string; answer: string } }>({});
     const [reset, setReset] = useState(false);
-
     const [messageException, setMessageException] = useState<string>("");
 
     useEffect(() => {

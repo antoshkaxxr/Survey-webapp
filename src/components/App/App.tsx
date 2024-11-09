@@ -7,6 +7,7 @@ import {SurveyBuilderPage} from "../../pages/SurveyBuilderPage/SurveyBuilderPage
 import {SurveyPage} from "../../pages/SurveyPage/SurveyPage.tsx";
 import {MySurveysPage} from "../../pages/MySurveysPage/MySurveysPage.tsx";
 import {getEmail} from "../../sendResponseWhenLogged.ts";
+import {StatisticsPage} from "../../pages/StatisticsPage/StatisticsPage.tsx";
 
 function RequireAuth({ children } : { children: React.ReactNode }) {
     const email = getEmail();
@@ -48,6 +49,10 @@ export function App() {
                 <Route
                     path={AppRoute.SurveyId}
                     element={<RequireAuth><SurveyPage /></RequireAuth>}
+                />
+                <Route
+                    path={AppRoute.StatisticId}
+                    element={<RequireAuth><StatisticsPage /></RequireAuth>}
                 />
             </Routes>
         </BrowserRouter>
