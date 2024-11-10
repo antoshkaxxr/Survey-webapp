@@ -29,6 +29,9 @@ export function BaseQuestion({ question, children, answer, handleClear, isRequir
             <h3 className={'question-wording'} style={{color: textColor}}>{question} {isRequired && '*'}</h3>
             {children}
             {isAnswerFilled() && (
+                <div className="clear-button-container">
+                
+                
                 <button
                     onClick={handleClear}
                     className={'clear-button'}
@@ -36,6 +39,7 @@ export function BaseQuestion({ question, children, answer, handleClear, isRequir
                 >
                     Очистить ответ
                 </button>
+                </div>
             )}
         </div>
     );

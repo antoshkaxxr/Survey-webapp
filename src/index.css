@@ -4,8 +4,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-left: 15%;
-  padding-right: 15%;
+
   background-color: rgba(69, 148, 204, 0.3);
 }
 

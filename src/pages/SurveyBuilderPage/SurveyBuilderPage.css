@@ -35,6 +35,8 @@
 }
 
 .builder-container {
+    padding-left: 15%;
+    padding-right: 15%;
     padding-top: 10%;
     display: flex;
     align-items: flex-start;

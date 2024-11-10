@@ -19,7 +19,17 @@ function RequireAuth({ children } : { children: React.ReactNode }) {
 }
 
 export function App() {
+
     return (
+        <>
+        {/* {
+            getEmail() !== null &&
+            <h1>
+                Здесь надо добавить кнопки 'logout' 'home' и добавить инфу про пользователя (думаю email достаточно)
+            </h1>
+        } */}
+        
+        
         <BrowserRouter>
             <Routes>
                 <Route
@@ -56,5 +66,6 @@ export function App() {
                 />
             </Routes>
         </BrowserRouter>
+        </>
     );
 }

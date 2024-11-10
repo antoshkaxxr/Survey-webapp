@@ -1,9 +1,13 @@
 .survey-content {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 15%;
+    padding-right: 15%;
 }
 
 .survey-page-title, .survey-page-buttons {
+    white-space: normal; /* Позволяет переносить текст на новую строку */
+    word-wrap: break-word; /* Переносит длинные слова, если они не помещаются */
+    overflow-wrap: break-word; /* Добавляет дополнительный перенос слов при необходимости */
+    width: 100%; /* Задает ширину элемента, можно настроить по необходимостям */
     margin-left: 15px;
 }
 
@@ -53,4 +57,10 @@
     background-color: #fdfdfd;
     border: 1px solid black;
     border-radius: 10px;
+}
+
+.header-img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
 }

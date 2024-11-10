@@ -48,7 +48,7 @@ export function MySurveysPage() {
     }
 
     return (
-        <div>
+        <div className="my-surveys-container">
             <h1>Мои опросы</h1>
             <Link to={AppRoute.FormBuilder}>
                 <button className="create-survey-button">Создать новый опрос</button>
