@@ -23,6 +23,7 @@ export async function sendGetResponseWhenLogged(url: string){
         },
     });
     if(response.status === 403){
+        console.log(response);
         deleteAllCookies();
         window.location.reload();
     }

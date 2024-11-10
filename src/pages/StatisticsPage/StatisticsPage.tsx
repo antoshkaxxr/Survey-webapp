@@ -1,20 +1,27 @@
 import {useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {getEmail, sendGetResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
 import {IP_ADDRESS} from "../../config.ts";
 import {ComponentMap} from "../../const/ComponentMap.ts";
-import {DisplayStatisticsMap} from "../../const/DisplayStatisticsMap.ts";
+import {BaseStatistic} from "../../components/display-statistics/BaseStatics/BaseStatistic.tsx";
 
+interface DisplayStatisticsPropsResponse{
+    questionId: string;
+    question: string;
+    answers: StatisticVariant[];
+}
 export function StatisticsPage() {
     const { surveyId} = useParams<{ surveyId: string }>();
     const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
     const [isLoadingStatistic, setLoadingStatistic] = useState<boolean>(false);
     const [currQuestion, setCurrQuestion] = useState<SurveyQuestion | null>(null);
-    const [currAnswers, setCurrAnswers] = useState<Answer[]>([]);
+    const [propsDisplayStatisticsByIdQuestion, setPropsDisplayStatisticsByIdQuestion] = useState<Record<string, DisplayStatisticsProps>>({});
 
     useEffect(() => {
         const downloadDataSurvey = async () => {
             try {
+                if (surveyData !== null)
+                    return;
                 const response = await sendGetResponseWhenLogged(
                     `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${surveyId}`);
                 if (!response.ok) {
@@ -27,26 +34,35 @@ export function StatisticsPage() {
             }
         };
         downloadDataSurvey();
-    })
-
-    const loadStatistic = async (questionInfo : SurveyQuestion) =>{
-        setCurrQuestion(questionInfo);
         setLoadingStatistic(false);
         const downloadDataStatistic = async () => {
             try {
                 const response = await sendGetResponseWhenLogged(
-                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${surveyId}/question/${questionInfo.questionId}`);
+                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey-statistic/${surveyId}`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
                 const data = await response.json();
-                setCurrAnswers(data);
+                let propsDict = data.reduce((acc : any, item : DisplayStatisticsPropsResponse) => {
+                    const { questionId, question, answers } = item as DisplayStatisticsPropsResponse;
+                    const propsDisplayStatistics : DisplayStatisticsProps = {
+                        "question": question,
+                        "answers": answers
+                    }
+                    acc[questionId] = propsDisplayStatistics;
+                    return acc;
+                }, {});
+                setPropsDisplayStatisticsByIdQuestion(propsDict);
                 setLoadingStatistic(true);
             } catch (error) {
                 alert('Не удалось удалить опрос. Попробуйте снова.');
             }
         };
         downloadDataStatistic();
+    }, [surveyId, surveyData] )
+
+    const loadStatistic = async (questionInfo : SurveyQuestion) =>{
+        setCurrQuestion(questionInfo);
     }
 
     return (
@@ -84,11 +100,11 @@ export function StatisticsPage() {
             {currQuestion && !isLoadingStatistic && <div>Статистика загружается</div>}
             {currQuestion && isLoadingStatistic &&
                 <div>
-                    <button onClick={() => setCurrQuestion(null)}></button>
-                    {DisplayStatisticsMap[currQuestion.type]({
-                            questionName: currQuestion.question,
-                            answers: currAnswers
-                        })})
+                    <BaseStatistic
+                        questionInfo={currQuestion}
+                        answers = {propsDisplayStatisticsByIdQuestion[currQuestion.questionId].answers}
+                        onClose = { () => {setCurrQuestion(null)}}>
+                    </BaseStatistic>
                 </div>}
         </div>
     );

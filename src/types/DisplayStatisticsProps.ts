@@ -1,5 +1,5 @@
 
 interface DisplayStatisticsProps {
-    questionName : string;
-    answers: Answer[];
+    question : string;
+    answers: StatisticVariant[];
 }
