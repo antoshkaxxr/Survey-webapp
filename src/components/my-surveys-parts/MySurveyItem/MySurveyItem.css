@@ -1,0 +1,20 @@
+.survey-header {
+    display: flex;
+    justify-content: space-between; /* Размещает элементы по краям */
+    align-items: center; /* Вертикальное выравнивание по центру */
+    
+}
+
+.my-survey-title {
+    font-size: 24px; /* Размер шрифта */
+    font-weight: bold; /* Жирный шрифт */
+    color: #333; /* Цвет текста, можно изменить на желаемый */
+    max-width: 70%; /* Максимальная ширина заголовка */
+    overflow-wrap: break-word; /* Позволяет переносить слова на новую строку */
+    white-space: normal; /* Позволяет переносить текст */
+    margin: 0; /* Убираем отступы по умолчанию */
+}
+
+.survey-buttons button {
+    margin-left: 8px; /* Отступы между кнопками */
+}

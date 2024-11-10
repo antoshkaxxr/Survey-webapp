@@ -13,50 +13,46 @@ interface SurveyData {
     BackgroundColor: string;
     QuestionColor: string;
     TextColor: string;
-    Survey: Question[];
+    Survey: SurveyQuestion[];
 }
 
 export function SurveyPage() {
     const { id } = useParams<{ id: string }>();
     const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
     const [openStatus, setOpenStatus] = useState<boolean>(true);
-    const [answers, setAnswers] = useState<{ [key: number]: { question: string; answer: string } }>({});
+    const [answers, setAnswers] = useState<{ [key: string]: { question: string; answer: string } }>({});
     const [reset, setReset] = useState(false);
     const [backgroundUrl, setBackgroundUrl] = useState<string | undefined>(undefined);
+
+    const [messageException, setMessageException] = useState<string>("");
 
     useEffect(() => {
         const checkSurveyAccess = async () => {
             try {
-                const response = await sendGetResponseWhenLogged(`http://${IP_ADDRESS}:8080/survey/${id}/access`);
+                const response = await sendGetResponseWhenLogged(`http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}/access`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении доступа к опросу');
                 }
 
                 const accessData = await response.json();
                 console.log(accessData);
-                if (accessData.status === "Inactive") {
-                    setOpenStatus(false);
-                    return;
-                } else if (accessData.status === "Active") {
-                    if (accessData.isLimited) {
-                        const currentTime = new Date();
-                        const [startTime, endTime] = accessData.timeIntervals;
-                        const start = startTime ? new Date(startTime) : null;
-                        const end = endTime ? new Date(endTime) : null;
-
-                        if (start && end && (currentTime < start || currentTime > end)) {
-                            setOpenStatus(false);
-                            console.log(openStatus);
-                            return;
-                        }
-                    }
+                if (accessData.isAvailable)
                     fetchSurvey();
+                else {
+                    setOpenStatus(false);
+                    if (accessData.isLimited)
+                        setMessageException(`Опрос доступен с ${accessData.startTime.split('T').slice(0, -1)} по ${accessData.endTime.split('T').slice(0, -1)}`)
+                    else
+                        setMessageException(`Опрос ещё не готов`)
                 }
+
             } catch (error) {
                 console.error('Ошибка:', error);
                 setOpenStatus(false);
             }
         };
+
+
 
         const fetchSurvey = async () => {
             try {
@@ -82,7 +78,7 @@ export function SurveyPage() {
         checkSurveyAccess();
     }, [id, openStatus]);
 
-    const handleAnswerChange = (questionId: number, question: string, answer: string) => {
+    const handleAnswerChange = (questionId: string, question: string, answer: string) => {
         setAnswers(prevAnswers => {
             const newAnswers = { ...prevAnswers };
             if (answer === '') {
@@ -96,6 +92,17 @@ export function SurveyPage() {
 
     const handleSubmit = async () => {
         try {
+            if (surveyData === null){
+                window.alert("ещё не загрузилось")
+                return;
+            }
+            const canSubmit = surveyData?.Survey.every((x: SurveyQuestion) => {
+                return !x.necessarily || (x.necessarily && answers[x.questionId] !== undefined);
+            });
+            if (!canSubmit){
+                window.alert("Заполните все обязательные вопросы")
+                return;
+            }
             const response = await sendChangingResponseWhenLogged(
                 'POST',
                 `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}/answer`,
@@ -119,10 +126,14 @@ export function SurveyPage() {
         setTimeout(() => setReset(false), 0);
     };
 
+
+
     return (
         <div className={'survey-page-container'} style={{background: surveyData ? surveyData.BackgroundColor : undefined}}>
             {!openStatus ? (
-                <UnavailableSurvey />
+                <UnavailableSurvey
+                    message = {messageException}
+                />
             ) : (
                 <>
                     {surveyData && (
@@ -141,16 +152,21 @@ export function SurveyPage() {
                                 {surveyData.Survey.map((questionInfo) => {
                                     const QuestionComponent = ComponentMap[questionInfo.type]?.component;
                                     return (
-                                        <QuestionComponent
-                                            key={questionInfo.questionId}
-                                            questionInfo={questionInfo}
-                                            onAnswerChange={handleAnswerChange}
-                                            reset={reset}
-                                            isRequired={true}
-                                            backgroundColor={surveyData.BackgroundColor}
-                                            questionColor={surveyData.QuestionColor}
-                                            textColor={surveyData.TextColor}
-                                        />
+                                        <div>
+                                            <QuestionComponent
+                                                key={questionInfo.questionId}
+                                                questionInfo={questionInfo}
+                                                onAnswerChange={handleAnswerChange}
+                                                reset={reset}
+                                                isRequired={true}
+                                                backgroundColor={surveyData.BackgroundColor}
+                                                questionColor={surveyData.QuestionColor}
+                                                textColor={surveyData.TextColor}
+                                            />
+                                            {questionInfo.necessarily && <div className={"warning-block"}>
+                                                Это обязательный вопрос!
+                                            </div>}
+                                        </div>
                                     );
                                 })}
                                 <div className={'survey-page-buttons'}>

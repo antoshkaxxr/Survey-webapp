@@ -42,6 +42,7 @@ export function SingleChoiceQuestion({ questionInfo, onAnswerChange, isRequired,
                         checked={selectedOption === option}
                         onChange={handleOptionChange}
                     />
+                    <span className={'radio-value'}>{option || `Вариант ${index + 1}`}</span>
                     <span
                         className={'radio-value'}
                         style={{color: textColor}}

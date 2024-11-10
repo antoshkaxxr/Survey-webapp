@@ -79,6 +79,13 @@ export function SurveyBuilderPage() {
         setTypeModalOpen(false);
     };
 
+    const handleSelectNecessarily = (i: number) => {
+        let newQuestions = [...questions]
+        newQuestions[i].necessarily = !questions[i].necessarily;
+        setQuestions(newQuestions);
+    };
+
+
     const generateUniqueId = () => {
         return '_' + Math.random().toString(36).substring(2, 9);
     };
@@ -88,7 +95,10 @@ export function SurveyBuilderPage() {
             question,
             type: selectedQuestionType,
             options,
-            questionId: generateUniqueId()
+            questionId: generateUniqueId(),
+            necessarily: false,
+            min: null as unknown as number,
+            max: null as unknown as number,
         };
 
         if (addIndex !== null) {
@@ -124,7 +134,7 @@ export function SurveyBuilderPage() {
             if (id) {
                 response = await sendChangingResponseWhenLogged(
                     'PATCH',
-                    `http://${IP_ADDRESS}:8080/survey/${id}`,
+                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}`,
                     data
                 );
                 setAccessSurveyId(id);
@@ -190,6 +200,8 @@ export function SurveyBuilderPage() {
                                                                     type={question.type}
                                                                     textColor={textColor}
                                                                     initialOptions={questions[i].options}
+                                                                    necessarily={question.necessarily}
+                                                                    setNecessarily={() => {handleSelectNecessarily(i)}}
                                                                 />
                                                             </div>
                                                             <QuestionButtons
