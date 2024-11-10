@@ -63,6 +63,5 @@ export function Diagram({ question, answers }: DisplayStatisticsProps) {
                 options={options}
             />
         </div>
-
     );
 }
