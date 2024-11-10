@@ -13,8 +13,12 @@ import {IP_ADDRESS} from "../../config.ts";
 import {AccessModal} from "../../components/modals/AccessModal/AccessModal.tsx";
 import { ColorPanel } from '../../components/survey-builder-parts/ColorPanel/ColorPanel.tsx';
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
-import {sendGetResponseWhenLogged, sendChangingResponseWhenLogged, getEmail} from "../../sendResponseWhenLogged.ts";
-
+import {
+    sendGetResponseWhenLogged,
+    sendChangingResponseWhenLogged,
+    getEmail,
+    getImage
+} from "../../sendResponseWhenLogged.ts";
 
 export function SurveyBuilderPage() {
     const { id } = useParams<{ id: string }>();
@@ -29,9 +33,10 @@ export function SurveyBuilderPage() {
     const [isAccessModalOpen, setAccessModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
     const [backgroundImage, setBackgroundImage] = useState<Theme | null>(null);
-    const [BackgroundSelectedColor, BackgroundSetSelectedColor] = useState<string>('#D9D9D9');
-    const [QuestionSelectedColor, QuestionSetSelectedColor] = useState<string>('#FFFFFF');
-    const [TextSelectedColor, TextSetSelectedColor] = useState<string>('#000000');
+    const [backgroundColor, setBackgroundColor] = useState<string>('#D9D9D9');
+    const [questionColor, setQuestionColor] = useState<string>('#FFFFFF');
+    const [textColor, setTextColor] = useState<string>('#000000');
+    const [backgroundUrl, setBackgroundUrl] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         if (id) {
@@ -54,6 +59,19 @@ export function SurveyBuilderPage() {
             fetchSurvey();
         }
     }, [id]);
+
+    useEffect(() => {
+        if (!backgroundImage) {
+            setBackgroundUrl(undefined);
+            return;
+        }
+
+        const updateUrl = async () => {
+            setBackgroundUrl(await getImage(backgroundImage.name));
+        }
+
+        updateUrl();
+    }, [backgroundImage]);
 
     const handleSelectQuestionType = (type: number) => {
         setSelectedQuestionType(type);
@@ -94,7 +112,10 @@ export function SurveyBuilderPage() {
     const handleSubmit = async () => {
         const data = {
             Name: surveyTitle,
-            Theme: backgroundImage,
+            BackgroundImage: backgroundImage,
+            BackgroundColor: backgroundColor,
+            QuestionColor: questionColor,
+            TextColor: textColor,
             Survey: questions
         };
 
@@ -130,27 +151,23 @@ export function SurveyBuilderPage() {
     const onDragEnd = (result: DropResult) => {
         if (!result.destination) return;
         const reorderedQuestions = Array.from(questions);
-        const [movedItem] = reorderedQuestions.splice(result.source.index, 1); // Удаляем элемент из исходной позиции
-        reorderedQuestions.splice(result.destination.index, 0, movedItem); // Вставляем элемент в новую позицию
+        const [movedItem] = reorderedQuestions.splice(result.source.index, 1);
+        reorderedQuestions.splice(result.destination.index, 0, movedItem);
 
         setQuestions(reorderedQuestions);
     };
 
     return (
-
-        <div className={'BuilderSurvey'}>
-            <div className='ThemeAndColor'>
+        <div className={'builder-container'}>
+            <div className={'theme-color'}>
                 <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} />
-                <ColorPanel selectedColor={BackgroundSelectedColor} setSelectedColor={BackgroundSetSelectedColor} name='Задний фон' />
-                <ColorPanel selectedColor={QuestionSelectedColor} setSelectedColor={QuestionSetSelectedColor} name='Цвет вопроса' />
-                <ColorPanel selectedColor={TextSelectedColor} setSelectedColor={TextSetSelectedColor} name='цвет текста' />
+                <ColorPanel selectedColor={backgroundColor} setSelectedColor={setBackgroundColor} name='Задний фон' />
+                <ColorPanel selectedColor={questionColor} setSelectedColor={setQuestionColor} name='Цвет вопроса' />
+                <ColorPanel selectedColor={textColor} setSelectedColor={setTextColor} name='Цвет текста' />
             </div>
-
-            <div className='SuveryWindow'>
-
-                <div className='cover' style={{ backgroundImage: backgroundImage ? backgroundImage.url : undefined, backgroundSize: 'cover', height: backgroundImage ? 200 : 0}}></div>
-                <div className="questions-list" style={{ backgroundColor: BackgroundSelectedColor, backgroundSize: 'cover' }}>
-
+            <div className={'survey-window'}>
+                <div className='cover' style={{ backgroundImage: backgroundImage ? `url(${backgroundUrl})` : undefined, backgroundSize: 'cover', height: backgroundImage ? 200 : 0}}></div>
+                <div className="questions-list" style={{ backgroundColor: backgroundColor, backgroundSize: 'cover' }}>
                     <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
                     {questions.length === 0 &&
                         <EmptyQuestionItem />
@@ -167,15 +184,14 @@ export function SurveyBuilderPage() {
                                                         ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                                                         <div key={i} className="question-item">
                                                             <div className='question-container'
-                                                                style={{ backgroundColor: QuestionSelectedColor }}>
+                                                                style={{ backgroundColor: questionColor }}>
                                                                 <Question
                                                                     question={question.question}
                                                                     type={question.type}
-                                                                    textColor={TextSelectedColor}
+                                                                    textColor={textColor}
                                                                     initialOptions={questions[i].options}
                                                                 />
                                                             </div>
-
                                                             <QuestionButtons
                                                                 index={i}
                                                                 setAddIndex={setAddIndex}

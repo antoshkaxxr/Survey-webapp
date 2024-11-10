@@ -1,3 +1,4 @@
+import {s3} from "./config/AwsConfig.ts";
 
 export async function sendChangingResponseWhenLogged(method: string, url: string, bodyObject: object, ){
     const response = await fetch(url, {
@@ -33,9 +34,25 @@ export async function sendGetSheetResponseWhenLogged(url: string){
     return response;
 }
 
+export async function getImage(key: string) {
+    try {
+        const params = {
+            Bucket: 'survey-webapp-bucket',
+            Key: key
+        };
+
+        const response = await s3.getObject(params).promise();
+        const imageBlob = new Blob([response.Body as BlobPart], { type: response.ContentType });
+        return URL.createObjectURL(imageBlob);
+    } catch (error) {
+        console.error('Ошибка при получении изображения:', error);
+    }
+}
+
 export function getEmail(){
     return getCookie("Email")
 }
+
 function getCookie(name: string) {
     const cookieArr = document.cookie.split('; ');
     for (let i = 0; i < cookieArr.length; i++) {

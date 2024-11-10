@@ -2,7 +2,8 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import './TextQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function TextQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
+export function TextQuestion({ questionInfo, onAnswerChange, isRequired,
+                               reset, backgroundColor, questionColor, textColor }: QuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -28,6 +29,8 @@ export function TextQuestion({ questionInfo, onAnswerChange, isRequired, reset }
             answer={answer}
             handleClear={handleClearText}
             isRequired={isRequired}
+            questionColor={questionColor}
+            textColor={textColor}
         >
             <textarea
                 id={`${questionInfo.questionId}`}
@@ -36,6 +39,7 @@ export function TextQuestion({ questionInfo, onAnswerChange, isRequired, reset }
                 placeholder={'Введите текст...'}
                 value={answer}
                 onChange={handleTextChange}
+                style={{background: backgroundColor}}
             />
         </BaseQuestion>
     );

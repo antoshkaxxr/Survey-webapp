@@ -2,7 +2,8 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import './SliderQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function SliderQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
+export function SliderQuestion({ questionInfo, onAnswerChange, isRequired,
+                                 reset, questionColor, textColor }: QuestionProps) {
     const [value, setValue] = useState<number>(questionInfo.min || 1);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -28,6 +29,8 @@ export function SliderQuestion({ questionInfo, onAnswerChange, isRequired, reset
             answer={value}
             handleClear={handleClearSelection}
             isRequired={isRequired}
+            questionColor={questionColor}
+            textColor={textColor}
         >
             <div className="slider-container">
                 <span className="slider-label">{questionInfo.min}</span>
@@ -42,7 +45,12 @@ export function SliderQuestion({ questionInfo, onAnswerChange, isRequired, reset
                 />
                 <span className="slider-label">{questionInfo.max}</span>
             </div>
-            <div className={'slider-message'}>Выбранное значение: {value}</div>
+            <div
+                className={'slider-message'}
+                style={{color: textColor}}
+            >
+                Выбранное значение: {value}
+            </div>
         </BaseQuestion>
     );
 }

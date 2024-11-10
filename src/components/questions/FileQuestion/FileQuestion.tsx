@@ -2,7 +2,8 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import './FileQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function FileQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
+export function FileQuestion({ questionInfo, onAnswerChange, isRequired,
+                               reset, questionColor, textColor }: QuestionProps) {
     const [file, setFile] = useState<File>();
     const [error, setError] = useState('');
 
@@ -40,6 +41,8 @@ export function FileQuestion({ questionInfo, onAnswerChange, isRequired, reset }
             answer={file}
             handleClear={handleClearFile}
             isRequired={isRequired}
+            questionColor={questionColor}
+            textColor={textColor}
         >
             <input
                 type="file"
@@ -47,7 +50,10 @@ export function FileQuestion({ questionInfo, onAnswerChange, isRequired, reset }
                 onChange={handleFileChange}
                 style={{display: 'none'}}
             />
-            <label htmlFor={`file-input-${questionInfo.questionId}`} className="custom-file-label">
+            <label
+                htmlFor={`file-input-${questionInfo.questionId}`}
+                className="custom-file-label"
+            >
                 Выбрать файл
             </label>
             {error && <span className={'error-message'}>{error}</span>}

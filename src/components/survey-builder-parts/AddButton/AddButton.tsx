@@ -4,7 +4,6 @@ interface AddButtonProps {
     index: number;
     setAddIndex: React.Dispatch<React.SetStateAction<number | null>>;
     setTypeModalOpen : React.Dispatch<React.SetStateAction<boolean>>;
-
 }
 
 export function AddButton({index, setAddIndex, setTypeModalOpen}: AddButtonProps) {

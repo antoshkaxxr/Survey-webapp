@@ -2,7 +2,8 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import './UrlQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function UrlQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
+export function UrlQuestion({ questionInfo, onAnswerChange, isRequired,
+                              reset, backgroundColor, questionColor, textColor }: QuestionProps) {
     const [url, setUrl] = useState('');
     const [error, setError] = useState('');
 
@@ -49,6 +50,8 @@ export function UrlQuestion({ questionInfo, onAnswerChange, isRequired, reset }:
             answer={url}
             handleClear={handleClearUrl}
             isRequired={isRequired}
+            questionColor={questionColor}
+            textColor={textColor}
         >
             <input
                 type={'url'}
@@ -56,6 +59,7 @@ export function UrlQuestion({ questionInfo, onAnswerChange, isRequired, reset }:
                 className={'url-input'}
                 value={url}
                 onChange={handleChange}
+                style={{background: backgroundColor}}
             />
             {error && <span className='error-message'>{error}</span>}
         </BaseQuestion>

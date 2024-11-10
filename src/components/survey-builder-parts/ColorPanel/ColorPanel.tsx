@@ -8,7 +8,6 @@ interface ColorProps {
 }
 
 export function ColorPanel({ selectedColor, setSelectedColor, name }: ColorProps) {
-
     const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedColor(e.target.value);
     };

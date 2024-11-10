@@ -5,14 +5,14 @@ import { ComponentMap } from "../../const/ComponentMap.ts";
 import { IP_ADDRESS } from "../../config.ts";
 import {UnavailableSurvey} from "../../components/survey-parts/UnavailableSurvey/UnavailableSurvey.tsx";
 import {sendGetResponseWhenLogged, sendChangingResponseWhenLogged, getEmail} from "../../sendResponseWhenLogged.ts";
+import {getImage} from "../../sendResponseWhenLogged.ts";
 
 interface SurveyData {
     Name: string;
-    Theme: {
-        name: string;
-        theme: string;
-        url: string;
-    }
+    BackgroundImage: Theme | null;
+    BackgroundColor: string;
+    QuestionColor: string;
+    TextColor: string;
     Survey: Question[];
 }
 
@@ -22,6 +22,7 @@ export function SurveyPage() {
     const [openStatus, setOpenStatus] = useState<boolean>(true);
     const [answers, setAnswers] = useState<{ [key: number]: { question: string; answer: string } }>({});
     const [reset, setReset] = useState(false);
+    const [backgroundUrl, setBackgroundUrl] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         const checkSurveyAccess = async () => {
@@ -67,10 +68,11 @@ export function SurveyPage() {
                 const data = await response.json();
                 setSurveyData(data);
 
-                if (data.Theme) {
-                    document.body.style.backgroundImage = `${data.Theme.url}`;
-                    document.body.style.backgroundSize = 'cover';
-                    document.body.style.backgroundRepeat = 'no-repeat';
+                console.log(data);
+
+                if (data.BackgroundImage) {
+                    const imageUrl = await getImage(data.BackgroundImage.name);
+                    setBackgroundUrl(imageUrl);
                 }
             } catch (error) {
                 console.error('Ошибка:', error);
@@ -118,32 +120,50 @@ export function SurveyPage() {
     };
 
     return (
-        <div>
+        <div className={'survey-page-container'} style={{background: surveyData ? surveyData.BackgroundColor : undefined}}>
             {!openStatus ? (
                 <UnavailableSurvey />
             ) : (
                 <>
-                    <h1>{surveyData ? surveyData.Name : "Загрузка опроса..."}</h1>
-                    {surveyData && surveyData.Survey.map(questionInfo => {
-                        const QuestionComponent = ComponentMap[questionInfo.type]?.component;
-                        return (
-                            <QuestionComponent
-                                key={questionInfo.questionId}
-                                questionInfo={questionInfo}
-                                onAnswerChange={handleAnswerChange}
-                                reset={reset}
-                                isRequired={true}
-                            />
-                        );
-                    })}
-                    <div>
-                        <button className={'send-button'} onClick={handleSubmit}>
-                            Отправить
-                        </button>
-                        <button className={'delete-button'} onClick={handleClear}>
-                            Очистить всё
-                        </button>
-                    </div>
+                    {surveyData && (
+                        <>
+                            <div
+                                className='header-img'
+                                style={{
+                                    backgroundImage: surveyData.BackgroundImage ? `url(${backgroundUrl})` : undefined,
+                                    backgroundSize: 'cover',
+                                    height: surveyData.BackgroundImage ? 200 : 0,
+                                }}
+                            >
+                            </div>
+                            <div className={'survey-content'}>
+                                <h1 className={'survey-page-title'}>{surveyData.Name}</h1>
+                                {surveyData.Survey.map((questionInfo) => {
+                                    const QuestionComponent = ComponentMap[questionInfo.type]?.component;
+                                    return (
+                                        <QuestionComponent
+                                            key={questionInfo.questionId}
+                                            questionInfo={questionInfo}
+                                            onAnswerChange={handleAnswerChange}
+                                            reset={reset}
+                                            isRequired={true}
+                                            backgroundColor={surveyData.BackgroundColor}
+                                            questionColor={surveyData.QuestionColor}
+                                            textColor={surveyData.TextColor}
+                                        />
+                                    );
+                                })}
+                                <div className={'survey-page-buttons'}>
+                                    <button className='send-button' onClick={handleSubmit}>
+                                        Отправить
+                                    </button>
+                                    <button className='delete-button' onClick={handleClear}>
+                                        Очистить всё
+                                    </button>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </>
             )}
         </div>

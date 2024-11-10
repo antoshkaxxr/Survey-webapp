@@ -12,6 +12,9 @@ interface QuestionProps {
     onAnswerChange: (questionId: number, question: string, answer: string) => void;
     isRequired: boolean;
     reset: boolean;
+    backgroundColor: string;
+    questionColor: string;
+    textColor: string;
 }
 
 interface SurveyQuestion {

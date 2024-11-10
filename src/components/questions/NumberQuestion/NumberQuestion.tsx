@@ -2,7 +2,8 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import './NumberQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function NumberQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
+export function NumberQuestion({ questionInfo, onAnswerChange, isRequired,
+                                 reset, backgroundColor, questionColor, textColor }: QuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -28,6 +29,8 @@ export function NumberQuestion({ questionInfo, onAnswerChange, isRequired, reset
             answer={answer}
             handleClear={handleClearNumber}
             isRequired={isRequired}
+            questionColor={questionColor}
+            textColor={textColor}
         >
             <input
                 type={'number'}
@@ -36,6 +39,7 @@ export function NumberQuestion({ questionInfo, onAnswerChange, isRequired, reset
                 placeholder={'Введите число...'}
                 value={answer}
                 onChange={handleNumberChange}
+                style={{background: backgroundColor}}
             />
         </BaseQuestion>
     );

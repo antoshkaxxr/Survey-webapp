@@ -3,7 +3,8 @@ import '../BaseQuestion/BaseQuestion.css';
 import './DateQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function DateQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
+export function DateQuestion({ questionInfo, onAnswerChange, isRequired,
+                               reset, backgroundColor, questionColor, textColor }: QuestionProps) {
     const [answer, setAnswer] = useState<string>('');
 
     const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -29,6 +30,8 @@ export function DateQuestion({ questionInfo, onAnswerChange, isRequired, reset }
             answer={answer}
             handleClear={handleClearDate}
             isRequired={isRequired}
+            questionColor={questionColor}
+            textColor={textColor}
         >
             <input
                 type={'date'}
@@ -36,6 +39,7 @@ export function DateQuestion({ questionInfo, onAnswerChange, isRequired, reset }
                 className={'date-input'}
                 value={answer}
                 onChange={handleDateChange}
+                style={{background: backgroundColor}}
             />
         </BaseQuestion>
     );

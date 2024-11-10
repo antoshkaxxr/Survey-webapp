@@ -1,6 +1,5 @@
 import React from "react";
 import './BaseQuestion.css';
-import {ClearButton} from "../../buttons/ClearButton/ClearButton.tsx";
 
 interface BaseQuestionProps {
     question: string;
@@ -8,10 +7,13 @@ interface BaseQuestionProps {
     answer: number | string | string[] | File | null | undefined;
     handleClear: () => void;
     isRequired: boolean;
+    questionColor: string;
+    textColor: string;
     criticalValue?: number;
 }
 
-export function BaseQuestion({ question, children, answer, handleClear, isRequired, criticalValue } : BaseQuestionProps) {
+export function BaseQuestion({ question, children, answer, handleClear, isRequired,
+                               questionColor, textColor, criticalValue } : BaseQuestionProps) {
     const isAnswerFilled = (): boolean => {
         if (typeof answer === "number") {
             return answer !== criticalValue;
@@ -23,11 +25,17 @@ export function BaseQuestion({ question, children, answer, handleClear, isRequir
     }
 
     return (
-        <div className={'question-border'}>
-            <h3 className={'question-wording'}>{question} {isRequired && '*'}</h3>
+        <div className={'question-border'} style={{background: questionColor}}>
+            <h3 className={'question-wording'} style={{color: textColor}}>{question} {isRequired && '*'}</h3>
             {children}
             {isAnswerFilled() && (
-                <ClearButton handleClear={handleClear} />
+                <button
+                    onClick={handleClear}
+                    className={'clear-button'}
+                    style={{color: textColor}}
+                >
+                    Очистить ответ
+                </button>
             )}
         </div>
     );

@@ -2,7 +2,8 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 import './SingleChoiceQuestion.css';
 
-export function SingleChoiceQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
+export function SingleChoiceQuestion({ questionInfo, onAnswerChange, isRequired,
+                                       reset, questionColor, textColor }: QuestionProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -28,6 +29,8 @@ export function SingleChoiceQuestion({ questionInfo, onAnswerChange, isRequired,
             answer={selectedOption}
             handleClear={handleClearSelection}
             isRequired={isRequired}
+            questionColor={questionColor}
+            textColor={textColor}
         >
             {questionInfo.options && questionInfo.options.map((option, index) => (
                 <label key={index} className={'radio-label'}>
@@ -39,7 +42,12 @@ export function SingleChoiceQuestion({ questionInfo, onAnswerChange, isRequired,
                         checked={selectedOption === option}
                         onChange={handleOptionChange}
                     />
-                    <span className={'radio-value'}>{option}</span>
+                    <span
+                        className={'radio-value'}
+                        style={{color: textColor}}
+                    >
+                        {option}
+                    </span>
                 </label>
             ))}
         </BaseQuestion>

@@ -2,7 +2,8 @@ import {useState, ChangeEvent, useEffect} from 'react';
 import './SelectQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function SelectQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
+export function SelectQuestion({ questionInfo, onAnswerChange, isRequired,
+                                 reset, backgroundColor, questionColor, textColor }: QuestionProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     const handleOptionChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -28,11 +29,14 @@ export function SelectQuestion({ questionInfo, onAnswerChange, isRequired, reset
             answer={selectedOption}
             handleClear={handleClearSelection}
             isRequired={isRequired}
+            questionColor={questionColor}
+            textColor={textColor}
         >
             <select
                 className={'option-select'}
                 value={selectedOption || ''}
                 onChange={handleOptionChange}
+                style={{background: backgroundColor}}
             >
                 <option value="" disabled>Выберите ответ</option>
                 {questionInfo.options && questionInfo.options.map((option, index) => (

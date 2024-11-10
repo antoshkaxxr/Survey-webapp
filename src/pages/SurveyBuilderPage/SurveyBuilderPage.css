@@ -1,11 +1,9 @@
 .question-item {
     display: flex;
-    /* margin-bottom: 15px; */
 }
 
 .question-item:hover .question-buttons button {
     opacity: 1;
-    /* background: #a69e9e; */
 }
 
 .add-question-button,
@@ -36,23 +34,21 @@
     background-color: #0056b3;
 }
 
-
-.BuilderSurvey {
+.builder-container {
     padding-top: 10%;
-    display: flex; /* Используем flexbox для размещения элементов рядом друг с другом */
-    align-items: flex-start; /* Выравниваем по верхнему краю, если необходимо */
-    justify-content: center; /* Центрируем контейнер, если нужно */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
 }
 
-.ThemeAndColor {
-    margin-right: 20px; /* Добавляем отступ справа для расстояния между блоками */
+.theme-color {
+    margin-right: 20px;
 }
 
-.SuveryWindow {
-    /* Убедитесь, что ширина SurveyWindow установлена для правильного отображения */
-    flex-grow: 1; /* Позволяем SurveyWindow занимать оставшееся пространство */
+.survey-window {
+    flex-grow: 1;
 }
 
 .cover {
-    border-radius: 10px 10px 0 0; /* Закругляем только верхние углы */
+    border-radius: 10px 10px 0 0;
 }

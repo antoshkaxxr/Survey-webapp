@@ -2,7 +2,8 @@ import {useEffect, useState} from 'react';
 import './MultipleChoiceQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, isRequired, reset }: QuestionProps) {
+export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, isRequired,
+                                         reset, questionColor, textColor }: QuestionProps) {
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
     const handleOptionChange = (option: string) => {
@@ -31,6 +32,8 @@ export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, isRequire
             answer={selectedOptions}
             handleClear={handleClearSelection}
             isRequired={isRequired}
+            questionColor={questionColor}
+            textColor={textColor}
         >
             {questionInfo.options && questionInfo.options.map((option, index) => (
                 <label key={index} className={'checkbox-label'}>
@@ -42,7 +45,12 @@ export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, isRequire
                         checked={selectedOptions.includes(option)}
                         onChange={() => handleOptionChange(option)}
                     />
-                    <span className={'checkbox-value'}>{option}</span>
+                    <span
+                        className={'checkbox-value'}
+                        style={{color: textColor}}
+                    >
+                        {option}
+                    </span>
                 </label>
             ))}
         </BaseQuestion>

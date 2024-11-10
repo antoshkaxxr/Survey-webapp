@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './ThemeSelector.css';
-import { IP_ADDRESS } from "../../../config";
-
-interface Theme {
-  name: string;
-  url: string;
-}
+import { s3 } from '../../../config/AwsConfig';
+import { getImage } from "../../../sendResponseWhenLogged.ts";
 
 interface ThemeSelectorProps {
   backgroundImage: Theme | null;
@@ -13,16 +9,28 @@ interface ThemeSelectorProps {
 }
 
 const themes: Theme[] = [
-  { name: 'Стандартная тема', url: 'url(/images/default.jpg)' },
-  { name: 'Небоскребы', url: 'url(/images/theme1.jpg)' },
-  { name: 'Водная гладь', url: 'url(/images/theme2.jpg)' },
+  { title: 'Стандартная тема', name: 'default.jpg' },
+  { title: 'Небоскребы', name: 'theme1.jpg' },
+  { title: 'Водная гладь', name: 'theme2.jpg' },
 ];
 
 export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSelectorProps) {
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
-  const [haveImage, sethaveImage] = useState(false);
+  const [haveImage, setHaveImage] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const [customTheme, setCustomTheme] = useState<Theme | null>(null);
+  const [themeImages, setThemeImages] = useState<{ [key: string]: string | undefined }>({});
+
+  useEffect(() => {
+    const loadImages = async () => {
+      const images: { [key: string]: string | undefined } = {};
+      for (const theme of themes) {
+        images[theme.name] = await getImage(theme.name);
+      }
+      setThemeImages(images);
+    };
+    loadImages();
+  }, []);
 
   const handleOpenModal = () => {
     setIsThemeModalOpen(true);
@@ -39,135 +47,116 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
       setBackgroundImage(customTheme);
     }
     setIsThemeModalOpen(false);
-    sethaveImage(true);
+    setHaveImage(true);
   };
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && file.type.startsWith('image/')) { // Проверка на картинку
-      const url = URL.createObjectURL(file);
-      const newTheme: Theme = { name: file.name, url: `url(${url})` };
-      setCustomTheme(newTheme);
-      setSelectedTheme(newTheme);
+    if (!file) return;
 
-      // Отправка изображения в формате Base64
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target && typeof e.target.result === 'string') {
-          const base64Data = e.target.result;
-          sendImageToBackend(base64Data);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+    const timestamp = new Date().getTime();
+    const randomId = Math.floor(Math.random() * 1000000);
+    const uniqueFileName = `${timestamp}_${randomId}_${file.name}`;
 
-  const sendImageToBackend = async (base64Data: string) => {
-    try {
-      const response = await fetch(`http://${IP_ADDRESS}:8080/bucket`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: base64Data }),
-      });
+    const params = {
+      Bucket: 'survey-webapp-bucket',
+      Key: uniqueFileName,
+      Body: file,
+      ContentType: file.type
+    };
 
-      if (!response.ok) {
-        console.error('Ошибка при отправке изображения:', response.status);
-      }
-    } catch (error) {
-      console.error('Ошибка при отправке изображения:', error);
-    }
+    await s3.upload(params).promise();
+
+    const newTheme: Theme = { title: 'Кастомный фон', name: uniqueFileName };
+    setCustomTheme(newTheme);
+    setSelectedTheme(newTheme);
   };
 
   const handleRemoveTheme = () => {
-    setBackgroundImage(null); // Сброс выбранной темы
+    setBackgroundImage(null);
     setSelectedTheme(null);
-    setCustomTheme(null); // Сброс выбранной темы
+    setCustomTheme(null);
     setIsThemeModalOpen(false);
-    sethaveImage(false);
+    setHaveImage(false);
   };
 
-
-
-
   return (
-    <div className="theme-selector">
-      {backgroundImage ? (
-        <>
-          <button
-            className="theme-button"
-            onClick={handleOpenModal}
-            style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
-          >
-            <img
-              src="/icons/design-nib.svg"
-              alt="Изменить картинку"
-              style={{ width: '200px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s' }}
-              className="image-icon"
-            />
-          </button>
-
-        </>
-      ) : (
-        <button
-          className="theme-button"
-          onClick={handleOpenModal}
-          style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
-        >
-          <img
-            src="/icons/media-image-plus.svg"
-            alt="Добавить картинку"
-            style={{ width: '200px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s' }}
-            className="image-icon"
-          />
-        </button>
-      )}
-
-      {isThemeModalOpen && (
-        <div className="theme-modal">
-          <div className="theme-modal-content">
-            <h2>Выберите тему</h2>
-            <div className="theme-options">
-              {themes.map((theme) => (
-                <div key={theme.name} className="theme-option">
-                  <img src={theme.url.slice(4, -1)} alt={theme.name} />
-                  <button
-                    onClick={() => handleThemeChange(theme)}
-                    className={selectedTheme?.name === theme.name ? 'active' : ''}
-                  >
-                    {theme.name}
-                  </button>
-                </div>
-              ))}
-            </div>
-            <div className="custom-upload">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-              />
-              <p>Загрузить собственный файл</p>
-            </div>
-            <button className="cancel-button" onClick={() => setIsThemeModalOpen(false)}>
-              Отмена
-            </button>
-            <button className="confirm-button" onClick={handleConfirmTheme} disabled={!selectedTheme && !customTheme}>
-              Применить
-            </button>
+      <div className="theme-selector">
+        {backgroundImage ? (
+            <>
+              <button
+                  className="theme-button"
+                  onClick={handleOpenModal}
+                  style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+              >
+                <img
+                    src="/icons/design-nib.svg"
+                    alt="Изменить картинку"
+                    style={{ width: '200px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s' }}
+                    className="image-icon"
+                />
+              </button>
+            </>
+        ) : (
             <button
-              className="remove-theme-button"
-              onClick={handleRemoveTheme}
-              disabled={!haveImage}
+                className="theme-button"
+                onClick={handleOpenModal}
+                style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
             >
               <img
-                src="/icons/trash-bin.svg"
-                alt="Удалить картинку"
-                style={{ width: '30px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s' }}
-                className="image-icon"
+                  src="/icons/media-image-plus.svg"
+                  alt="Добавить картинку"
+                  style={{ width: '200px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s' }}
+                  className="image-icon"
               />
             </button>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+        {isThemeModalOpen && (
+            <div className="theme-modal">
+              <div className="theme-modal-content">
+                <h2>Выберите тему</h2>
+                <div className="theme-options">
+                  {themes.map((theme) => (
+                      <div key={theme.title} className="theme-option">
+                        <img src={themeImages[theme.name]} alt={theme.name} />
+                        <button
+                            onClick={() => handleThemeChange(theme)}
+                            className={selectedTheme?.title === theme.title ? 'active' : ''}
+                        >
+                          {theme.title}
+                        </button>
+                      </div>
+                  ))}
+                </div>
+                <div className="custom-upload">
+                  <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                  />
+                  <p>Загрузить собственный файл</p>
+                </div>
+                <button className="cancel-button" onClick={() => setIsThemeModalOpen(false)}>
+                  Отмена
+                </button>
+                <button className="confirm-button" onClick={handleConfirmTheme} disabled={!selectedTheme && !customTheme}>
+                  Применить
+                </button>
+                <button
+                    className="remove-theme-button"
+                    onClick={handleRemoveTheme}
+                    disabled={!haveImage}
+                >
+                  <img
+                      src="/icons/trash-bin.svg"
+                      alt="Удалить картинку"
+                      style={{ width: '30px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s' }}
+                      className="image-icon"
+                  />
+                </button>
+              </div>
+            </div>
+        )}
+      </div>
   );
 }

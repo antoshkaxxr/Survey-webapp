@@ -17,12 +17,25 @@
     margin-left: 25px;
 }
 
-.radio-value, .checkbox-value {
+.clear-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #0056b3;
+    cursor: pointer;
+    padding: 5px 10px;
+    text-decoration: underline;
     font-family: "Roboto Flex", sans-serif;
-    font-weight: 400;
+    font-weight: 300;
     font-style: normal;
-    font-size: 18px;
-    align-items: center;
+    font-size: 16px;
+}
+
+.clear-button:hover {
+    color: rgba(0, 0, 0, 0.8);
+    text-decoration: none;
 }
 
 
