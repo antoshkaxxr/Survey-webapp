@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {AppRoute} from "../../../const/AppRoute.ts";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {IP_ADDRESS} from "../../../config.ts";
 import {sendChangingResponseWhenLogged, getEmail} from "../../../sendResponseWhenLogged.ts";
 import './MySurveyItem.css';
-import {ExportModal} from "../ExportModal/ExportModal.tsx";
+import {ExportModal} from "../../modals/ExportModal/ExportModal.tsx";
 
 interface MySurveyItemProps {
     surveyId: string;
@@ -25,6 +25,8 @@ const copyToClipboard = (surveyId: string) => {
 
 export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModalOpen, setAccessSurveyId} : MySurveyItemProps) {
     const [isExportModalOpen, setExportModalOpen] = useState<boolean>(false);
+    const navigate = useNavigate();
+
 
     const handleDelete = async (surveyId: string) => {
         const confirmDeletion = window.confirm("Вы уверены, что хотите удалить этот опрос?");
@@ -65,6 +67,9 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModa
                         }}>
                             <img src="/icons/icon-access.svg" alt="Доступ"/>
                         </button>
+                        <button onClick={() => navigate(`${AppRoute.Statistic}/${surveyId}`)}>
+                            <img src="/icons/icon-statistic.svg" alt="Статистика"/>
+                        </button>
                         <button onClick={() => setExportModalOpen(true)}>
                             <img src="/icons/icon-export.svg" alt="Экспорт"/>
                         </button>
@@ -79,9 +84,9 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModa
                     </div>
                 </div>
             </div>
-                {isExportModalOpen && <ExportModal
-                    surveyId={surveyId}
-                    surveyName={surveyName}
+            {isExportModalOpen && <ExportModal
+                surveyId={surveyId}
+                surveyName={surveyName}
                     onClose={() => setExportModalOpen(false)}>
                 </ExportModal>}
         </div>

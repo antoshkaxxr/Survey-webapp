@@ -45,12 +45,11 @@ export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, isRequire
                         checked={selectedOptions.includes(option)}
                         onChange={() => handleOptionChange(option)}
                     />
-                    <span className={'checkbox-value'}>{option || `Вариант ${index + 1}`}</span>
                     <span
                         className={'checkbox-value'}
                         style={{color: textColor}}
                     >
-                        {option}
+                        {option || `Вариант ${index + 1}`}
                     </span>
                 </label>
             ))}

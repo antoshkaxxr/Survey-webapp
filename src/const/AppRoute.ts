@@ -7,4 +7,6 @@ export enum AppRoute {
     Survey = '/survey',
     SurveyId = '/survey/:id',
     MySurveys = '/my-surveys',
+    Statistic = '/statistic-survey',
+    StatisticId = '/statistic-survey/:surveyId',
 }

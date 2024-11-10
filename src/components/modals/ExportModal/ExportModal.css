@@ -1,3 +1,7 @@
+.export-modal {
+    display: flex;
+    flex-grow: 1; /* Позволяем SurveyWindow занимать оставшееся пространство */
+}
 
 .export-header {
     text-align: center;
