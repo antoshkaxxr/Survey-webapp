@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import './ThemeSelector.css';
-import { s3 } from '../../../config/AwsConfig';
-import { getImage } from "../../../sendResponseWhenLogged.ts";
+import {getImage} from "../../../sendResponseWhenLogged.ts";
 
 interface ThemeSelectorProps {
   backgroundImage: Theme | null;
@@ -54,22 +53,42 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const timestamp = new Date().getTime();
-    const randomId = Math.floor(Math.random() * 1000000);
-    const uniqueFileName = `${timestamp}_${randomId}_${file.name}`;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      const base64Data = reader.result?.toString().split(',')[1];
+      if (!base64Data) return;
 
-    const params = {
-      Bucket: 'survey-webapp-bucket',
-      Key: uniqueFileName,
-      Body: file,
-      ContentType: file.type
+      const timestamp = new Date().getTime();
+      const randomId = Math.floor(Math.random() * 1000000);
+      const uniqueFileName = `${timestamp}_${randomId}_${file.name}`;
+
+      const fileData = {
+        name: uniqueFileName,
+        buffer: base64Data,
+      };
+
+      try {
+        const response = await fetch('https://functions.yandexcloud.net/d4e5uokosjfla9bphql4', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ file: fileData }),
+        });
+
+        if (response.ok) {
+          const newTheme: Theme = { title: 'Кастомный фон', name: uniqueFileName };
+          setCustomTheme(newTheme);
+          setSelectedTheme(newTheme);
+          console.log('Успех!');
+        } else {
+          console.error('Error uploading file');
+        }
+      } catch (error) {
+        console.error('Error uploading file', error);
+      }
     };
-
-    await s3.upload(params).promise();
-
-    const newTheme: Theme = { title: 'Кастомный фон', name: uniqueFileName };
-    setCustomTheme(newTheme);
-    setSelectedTheme(newTheme);
   };
 
   const handleRemoveTheme = () => {

@@ -1,6 +1,4 @@
-import {s3} from "./config/AwsConfig.ts";
-
-export async function sendChangingResponseWhenLogged(method: string, url: string, bodyObject: object, ){
+export async function sendChangingResponseWhenLogged(method: string, url: string, bodyObject: object){
     const response = await fetch(url, {
         method: method,
         headers: {
@@ -64,13 +62,12 @@ export async function sendGetSheetPdfResponseWhenLogged(url: string){
 
 export async function getImage(key: string) {
     try {
-        const params = {
-            Bucket: 'survey-webapp-bucket',
-            Key: key
-        };
+        const response = await fetch(`https://functions.yandexcloud.net/d4e5uokosjfla9bphql4?fileName=${encodeURIComponent(key)}`);
+        if (!response.ok) {
+            throw new Error('Ошибка при получении изображения');
+        }
 
-        const response = await s3.getObject(params).promise();
-        const imageBlob = new Blob([response.Body as BlobPart], { type: response.ContentType });
+        const imageBlob = await response.blob();
         return URL.createObjectURL(imageBlob);
     } catch (error) {
         console.error('Ошибка при получении изображения:', error);
