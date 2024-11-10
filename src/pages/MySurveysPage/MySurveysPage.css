@@ -59,3 +59,8 @@
 .survey-buttons button:hover img {
     filter: brightness(0.8);
 }
+
+.my-surveys-container {
+    padding-left: 10%;
+    padding-right: 10%;
+}

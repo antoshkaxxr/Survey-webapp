@@ -42,6 +42,11 @@
     text-decoration: none;
 }
 
+.clear-button-container{
+    display: flex;
+    height: 10px;
+}
+
 
 
 
