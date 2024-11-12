@@ -1,6 +1,5 @@
-
 import {DisplayStatisticsMap} from "../../../const/DisplayStatisticsMap.ts";
-
+import "./BaseStatistic.css"
 interface BaseStatisticProps{
     questionInfo: SurveyQuestion;
     answers: StatisticVariant[];
@@ -8,13 +7,17 @@ interface BaseStatisticProps{
 }
 export function BaseStatistic({questionInfo, answers, onClose} : BaseStatisticProps) {
 
+
     const { component: StatisticComponent } = DisplayStatisticsMap[questionInfo.type];
     return (
-        <div>
-            <button onClick={onClose}></button>
+        <div className={"statistic-base"}>
+            <button className={"close-button-container"} onClick={onClose}>
+                <img src="/icons/icon-close.svg" alt="Закрыть статистику"/>
+            </button>
             <StatisticComponent
-                question = {questionInfo.question}
-                answers = {answers}>
-            </StatisticComponent>
-    </div>);
+                question={questionInfo.question}
+                answers={answers}
+            />
+        </div>
+    );
 }

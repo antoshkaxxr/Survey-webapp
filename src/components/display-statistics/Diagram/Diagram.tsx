@@ -34,7 +34,7 @@ export function Diagram({ question, answers }: DisplayStatisticsProps) {
         labels: labels,
         datasets: [
             {
-                label: 'Sales',
+                label: question,
                 data: data,
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgba(54, 162, 235, 1)',
@@ -48,10 +48,13 @@ export function Diagram({ question, answers }: DisplayStatisticsProps) {
             title: {
                 display: true,
                 text: question,
+                font: {
+                    size: 32, //  Размер шрифта
+                    weight: 'bold' //  Жирность шрифта
+                },
             },
             legend: {
-                display: true,
-                position: "top",
+                display: false
             },
         },
     };
