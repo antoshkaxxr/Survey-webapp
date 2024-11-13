@@ -16,5 +16,12 @@
 }
 
 .survey-buttons button {
-    margin-left: 8px; /* Отступы между кнопками */
+    margin-left: 8px;
 }
+
+.survey-buttons {
+    display: flex;
+    flex-wrap: wrap;
+
+  }
+  
