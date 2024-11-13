@@ -16,7 +16,6 @@ import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautif
 import {
     sendGetResponseWhenLogged,
     sendChangingResponseWhenLogged,
-    getEmail,
     getImage
 } from "../../sendResponseWhenLogged.ts";
 
@@ -43,7 +42,7 @@ export function SurveyBuilderPage() {
             const fetchSurvey = async () => {
                 try {
                     const response = await sendGetResponseWhenLogged(
-                        `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}`);
+                        `http://${IP_ADDRESS}:8080/survey/${id}`);
                     if (!response || !response.ok) {
                         throw new Error('Ошибка при загрузке опроса');
                     }
@@ -134,14 +133,14 @@ export function SurveyBuilderPage() {
             if (id) {
                 response = await sendChangingResponseWhenLogged(
                     'PATCH',
-                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}`,
+                    `http://${IP_ADDRESS}:8080/survey/${id}`,
                     data
                 );
                 setAccessSurveyId(id);
             } else {
                 response = await sendChangingResponseWhenLogged(
                     'POST',
-                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey`,
+                    `http://${IP_ADDRESS}:8080/survey`,
                     data
                 );
                 const retrievedId = await response.text();

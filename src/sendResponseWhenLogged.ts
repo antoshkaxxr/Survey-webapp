@@ -5,7 +5,10 @@ export async function sendChangingResponseWhenLogged(method: string, url: string
             'Content-Type': 'application/json',
             'Authorization': "Bearer " + getCookie('Token')
         },
-        body: JSON.stringify(bodyObject)
+        body: JSON.stringify({
+            email: getEmail(),
+            data: bodyObject
+        })
     });
     if(response.status === 403){
         deleteAllCookies();

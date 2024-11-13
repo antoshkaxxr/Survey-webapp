@@ -22,7 +22,7 @@ export function MySurveysPage() {
         const fetchSurveys = async () => {
             try {
                 const response = await sendGetResponseWhenLogged(
-                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/surveys`);
+                    `http://${IP_ADDRESS}:8080/surveys?email=${getEmail()}`);
                 if (!response || !response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
