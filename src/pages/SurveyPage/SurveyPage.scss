@@ -49,14 +49,15 @@
 }
 
 .warning-block {
-    display: block;
-    color: red;
-    padding: 10px;
-    margin: 10px;
-    background-color: #fdfdfd;
-    border: 1px solid black;
-    border-radius: 10px;
+    display: flex;                /* Используем Flexbox для размещения элементов */
+    color: red;                  /* Красный цвет текста */
+    font-size: 40px;             /* Увеличиваем размер текста */
+    align-items: center;         /* Выровнять элементы по вертикали */
+    height: 0;
+    width: 0;
 }
+
+
 
 .header-img {
     width: 100%;
