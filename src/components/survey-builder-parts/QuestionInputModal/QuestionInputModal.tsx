@@ -18,7 +18,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                                 initialQuestion = 'Вопрос', initialOptions = [] }: QuestionInputModalProps) {
 
     const [question, setQuestion] = useState<string>(initialQuestion);
-    const [options, setOptions] = useState<string[]>(initialOptions.length > 0 ? initialOptions : 
+    const [options, setOptions] = useState<string[]>(initialOptions.length > 0 ? initialOptions :
         Array(1).fill('').map((_, index) => `Вариант ${index + 1}`));
     const [isQuestionValid, setIsQuestionValid] = useState(true);
     const [areOptionsValid, setAreOptionsValid] = useState(true);
@@ -26,7 +26,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
     useEffect(() => {
         if (isOpen) {
             setQuestion(initialQuestion);
-            setOptions(initialOptions.length > 0 ? initialOptions : 
+            setOptions(initialOptions.length > 0 ? initialOptions :
                 Array(1).fill('').map((_, index) => `Вариант ${index + 1}`));
         }
     }, [isOpen, initialQuestion, initialOptions]);
@@ -45,6 +45,10 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         const newOptions = [...options];
         newOptions[index] = value;
         setOptions(newOptions);
+
+        if (!newOptions.some((opt, i) => opt.trim().toLowerCase() === value.trim().toLowerCase() && i !== index)) {
+            setOptions(newOptions);
+        }
     };
 
     const handleAddOption = () => {
@@ -68,6 +72,15 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         const [removed] = reorderedBoxes.splice(result.source.index, 1);
         reorderedBoxes.splice(result.destination.index, 0, removed);
         setOptions(reorderedBoxes);
+    };
+
+    const hasDuplicate = (value: string) => {
+        const filteredOptions = options.filter(opt => opt.trim().toLowerCase() === value.trim().toLowerCase());
+        return filteredOptions.length > 1;
+    };
+
+    const hasDuplicates = (array: string[]) => {
+        return array.length !== new Set(array.map(item => item.trim().toLowerCase())).size;
     };
 
     return (
@@ -106,7 +119,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                                                                 value={option}
                                                                 onChange={(e) => handleOptionChange(index, e.target.value)}
                                                                 placeholder={`Вариант ${index + 1}`}
-                                                                className={`option-input ${option.trim() !== '' ? '' : 'invalid'}`}
+                                                                className={`option-input ${option.trim() !== '' ? '' : 'invalid'} ${hasDuplicate(option) ? 'invalid' : ''}`}
                                                             />
                                                             {options.length > 1 && (
                                                                 <button type="button"
@@ -131,9 +144,15 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                         </div>
                     </>
                 )}
-                <button className={`save-button ${isQuestionValid && (optionQuestionTypes.includes(questionType) ? areOptionsValid : true) ? '' : 'disabled'}`} onClick={handleSubmit}>
-                    {initialQuestion ? 'Сохранить изменения' : 'Сохранить'}
-                </button>
+<button
+                className={`save-button ${isQuestionValid && 
+                    (optionQuestionTypes.includes(questionType) ? areOptionsValid : true) && 
+                    !hasDuplicates(options) ? '' : 'disabled'}`}
+                onClick={handleSubmit}
+                disabled={hasDuplicates(options)} // Отключаем кнопку при наличии дубликатов
+            >
+                {initialQuestion ? 'Сохранить изменения' : 'Сохранить'}
+            </button>
             </div>
         </div>
     );

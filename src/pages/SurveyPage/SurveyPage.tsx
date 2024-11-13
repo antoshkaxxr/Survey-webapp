@@ -52,8 +52,6 @@ export function SurveyPage() {
             }
         };
 
-
-
         const fetchSurvey = async () => {
             try {
                 const response = await sendGetResponseWhenLogged(
@@ -153,6 +151,7 @@ export function SurveyPage() {
                                     const QuestionComponent = ComponentMap[questionInfo.type]?.component;
                                     return (
                                         <div>
+                                            {questionInfo.necessarily && <div className={"warning-block"}>*</div>}
                                             <QuestionComponent
                                                 key={questionInfo.questionId}
                                                 questionInfo={questionInfo}
@@ -162,10 +161,10 @@ export function SurveyPage() {
                                                 backgroundColor={surveyData.BackgroundColor}
                                                 questionColor={surveyData.QuestionColor}
                                                 textColor={surveyData.TextColor}
+
+
                                             />
-                                            {questionInfo.necessarily && <div className={"warning-block"}>
-                                                Это обязательный вопрос!
-                                            </div>}
+
                                         </div>
                                     );
                                 })}

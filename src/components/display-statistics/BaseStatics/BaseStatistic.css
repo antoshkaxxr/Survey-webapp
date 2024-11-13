@@ -1,0 +1,17 @@
+.statistic-base {
+    display: flex;
+    flex-direction: column;
+}
+
+.close-button-container {
+    align-self: flex-end;
+    margin-bottom: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.close-button-container img {
+    width: 40px;
+    height: 40px;
+}

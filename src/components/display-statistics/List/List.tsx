@@ -1,4 +1,4 @@
-
+import "./List.css"
 
 export function List({ question, answers }: DisplayStatisticsProps) {
     console.log(question);
@@ -7,7 +7,7 @@ export function List({ question, answers }: DisplayStatisticsProps) {
     //const data = answers.map((a) => a.amountSelected);
 
     return (
-        <table>
+        <table className="list">
             <thead>
             <tr>
                 <th>Ответы</th>

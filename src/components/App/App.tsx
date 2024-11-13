@@ -8,6 +8,7 @@ import {SurveyPage} from "../../pages/SurveyPage/SurveyPage.tsx";
 import {MySurveysPage} from "../../pages/MySurveysPage/MySurveysPage.tsx";
 import {getEmail} from "../../sendResponseWhenLogged.ts";
 import {StatisticsPage} from "../../pages/StatisticsPage/StatisticsPage.tsx";
+import React from "react";
 
 function RequireAuth({ children } : { children: React.ReactNode }) {
     const email = getEmail();
@@ -28,8 +29,8 @@ export function App() {
                 Здесь надо добавить кнопки 'logout' 'home' и добавить инфу про пользователя (думаю email достаточно)
             </h1>
         } */}
-        
-        
+
+
         <BrowserRouter>
             <Routes>
                 <Route

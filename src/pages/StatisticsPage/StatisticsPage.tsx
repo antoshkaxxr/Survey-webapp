@@ -4,6 +4,7 @@ import {getEmail, sendGetResponseWhenLogged} from "../../sendResponseWhenLogged.
 import {IP_ADDRESS} from "../../config.ts";
 import {ComponentMap} from "../../const/ComponentMap.ts";
 import {BaseStatistic} from "../../components/display-statistics/BaseStatics/BaseStatistic.tsx";
+import "./StatisticsPage.css"
 
 interface DisplayStatisticsPropsResponse{
     questionId: string;
@@ -69,43 +70,50 @@ export function StatisticsPage() {
         <div>
             {!surveyData && <h3>Загружается...</h3>}
             {surveyData && !currQuestion &&
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Имя вопроса</th>
-                        <th>Тип вопроса</th>
-                        <th>Кнопка</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {surveyData.Survey.map(questionInfo => {
-                        const questionType = ComponentMap[questionInfo.type]?.name || "";
-                        const questionName = questionInfo.question;
-                        return (
-                            <tr key={questionInfo.questionId}>
-                                <td>{questionName}</td>
-                                <td>{questionType}</td>
-                                <td>
-                                    <button
-                                        className={"button-redirect"}
-                                        onClick={() => loadStatistic(questionInfo)}>
-                                    </button>
-                                </td>
-                            </tr>
-                        );
-                    })}
-                    </tbody>
-                </table>
+                <div className="table-container">
+                    <table className="survey-table">
+                        <thead>
+                        <tr>
+                            <th>Имя вопроса</th>
+                            <th>Тип вопроса</th>
+                            <th>Кнопка</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {surveyData.Survey.map(questionInfo => {
+                            const questionType = ComponentMap[questionInfo.type]?.name || "";
+                            const questionName = questionInfo.question;
+                            return (
+                                <tr key={questionInfo.questionId}>
+                                    <td>{questionName}</td>
+                                    <td>{questionType}</td>
+                                    <td>
+                                        <button
+                                            className="blue-button"
+                                            onClick={() => loadStatistic(questionInfo)}
+                                        >
+                                            Статистика
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                        </tbody>
+                    </table>
+                </div>
             }
             {currQuestion && !isLoadingStatistic && <div>Статистика загружается</div>}
             {currQuestion && isLoadingStatistic &&
                 <div>
                     <BaseStatistic
                         questionInfo={currQuestion}
-                        answers = {propsDisplayStatisticsByIdQuestion[currQuestion.questionId].answers}
-                        onClose = { () => {setCurrQuestion(null)}}>
+                        answers={propsDisplayStatisticsByIdQuestion[currQuestion.questionId].answers}
+                        onClose={() => {
+                            setCurrQuestion(null)
+                        }}>
                     </BaseStatistic>
                 </div>}
-        </div>
+            </div>
+
     );
 }
