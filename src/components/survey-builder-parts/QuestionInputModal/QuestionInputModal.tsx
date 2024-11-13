@@ -80,6 +80,10 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         return filteredOptions.length > 1;
     };
 
+    const hasDuplicates = (array: string[]) => {
+        return array.length !== new Set(array.map(item => item.trim().toLowerCase())).size;
+    };
+
     return (
         <div className="modal-overlay">
             <div className="modal-content">
@@ -141,9 +145,15 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                         </div>
                     </>
                 )}
-                <button className={`save-button ${isQuestionValid && (optionQuestionTypes.includes(questionType) ? areOptionsValid : true) ? '' : 'disabled'}`} onClick={handleSubmit}>
-                    {initialQuestion ? 'Сохранить изменения' : 'Сохранить'}
-                </button>
+<button 
+                className={`save-button ${isQuestionValid && 
+                    (optionQuestionTypes.includes(questionType) ? areOptionsValid : true) && 
+                    !hasDuplicates(options) ? '' : 'disabled'}`} 
+                onClick={handleSubmit}
+                disabled={hasDuplicates(options)} // Отключаем кнопку при наличии дубликатов
+            >
+                {initialQuestion ? 'Сохранить изменения' : 'Сохранить'}
+            </button>
             </div>
         </div>
     );
