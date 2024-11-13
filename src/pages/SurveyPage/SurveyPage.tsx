@@ -52,8 +52,6 @@ export function SurveyPage() {
             }
         };
 
-
-
         const fetchSurvey = async () => {
             try {
                 const response = await sendGetResponseWhenLogged(
@@ -164,9 +162,9 @@ export function SurveyPage() {
                                                 questionColor={surveyData.QuestionColor}
                                                 textColor={surveyData.TextColor}
 
-                        
+
                                             />
-                                            
+
                                         </div>
                                     );
                                 })}

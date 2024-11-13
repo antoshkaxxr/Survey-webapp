@@ -49,8 +49,8 @@ export function Diagram({ question, answers }: DisplayStatisticsProps) {
                 display: true,
                 text: question,
                 font: {
-                    size: 32, //  Размер шрифта
-                    weight: 'bold' //  Жирность шрифта
+                    size: 32,
+                    weight: 'bold'
                 },
             },
             legend: {

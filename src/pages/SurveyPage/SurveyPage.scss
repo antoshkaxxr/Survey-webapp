@@ -4,10 +4,10 @@
 }
 
 .survey-page-title, .survey-page-buttons {
-    white-space: normal; /* Позволяет переносить текст на новую строку */
-    word-wrap: break-word; /* Переносит длинные слова, если они не помещаются */
-    overflow-wrap: break-word; /* Добавляет дополнительный перенос слов при необходимости */
-    width: 100%; /* Задает ширину элемента, можно настроить по необходимостям */
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
 }
 
 .send-button {
@@ -42,33 +42,17 @@
 }
 
 .survey-name {
-    white-space: normal; /* Позволяет переносить текст на новую строку */
-    word-wrap: break-word; /* Переносит длинные слова, если они не помещаются */
-    overflow-wrap: break-word; /* Добавляет дополнительный перенос слов при необходимости */
-    width: 100%; /* Задает ширину элемента, можно настроить по необходимостям */
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
 }
 
 .warning-block {
-    display: flex;                /* Используем Flexbox для размещения элементов */
-    color: red;                  /* Красный цвет текста */
-    font-size: 40px;             /* Увеличиваем размер текста */
-    align-items: center;         /* Выровнять элементы по вертикали */
+    display: flex;
+    color: red;
+    font-size: 40px;
+    align-items: center;
     height: 0;
     width: 0;
-}
-
-
-
-.header-img {
-    width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-}
-
-
-
-.survey-page-container {
-    width: 100vw;         /* Занимает 100% ширины видимой части окна */
-    height: 100vh;       /* Занимает 100% высоты видимой части окна */
-    box-sizing: border-box; /* Учитывает отступы и границы в ширине и высоте */
 }

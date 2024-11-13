@@ -18,7 +18,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                                 initialQuestion = 'Вопрос', initialOptions = [] }: QuestionInputModalProps) {
 
     const [question, setQuestion] = useState<string>(initialQuestion);
-    const [options, setOptions] = useState<string[]>(initialOptions.length > 0 ? initialOptions : 
+    const [options, setOptions] = useState<string[]>(initialOptions.length > 0 ? initialOptions :
         Array(1).fill('').map((_, index) => `Вариант ${index + 1}`));
     const [isQuestionValid, setIsQuestionValid] = useState(true);
     const [areOptionsValid, setAreOptionsValid] = useState(true);
@@ -26,7 +26,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
     useEffect(() => {
         if (isOpen) {
             setQuestion(initialQuestion);
-            setOptions(initialOptions.length > 0 ? initialOptions : 
+            setOptions(initialOptions.length > 0 ? initialOptions :
                 Array(1).fill('').map((_, index) => `Вариант ${index + 1}`));
         }
     }, [isOpen, initialQuestion, initialOptions]);
@@ -47,7 +47,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         setOptions(newOptions);
 
         if (!newOptions.some((opt, i) => opt.trim().toLowerCase() === value.trim().toLowerCase() && i !== index)) {
-            setOptions(newOptions); // Обновляем состояние только при отсутствии дубликатов
+            setOptions(newOptions);
         }
     };
 
@@ -74,7 +74,6 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         setOptions(reorderedBoxes);
     };
 
-    // Проверяем наличие дубликатов
     const hasDuplicate = (value: string) => {
         const filteredOptions = options.filter(opt => opt.trim().toLowerCase() === value.trim().toLowerCase());
         return filteredOptions.length > 1;
@@ -145,10 +144,10 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                         </div>
                     </>
                 )}
-<button 
+<button
                 className={`save-button ${isQuestionValid && 
                     (optionQuestionTypes.includes(questionType) ? areOptionsValid : true) && 
-                    !hasDuplicates(options) ? '' : 'disabled'}`} 
+                    !hasDuplicates(options) ? '' : 'disabled'}`}
                 onClick={handleSubmit}
                 disabled={hasDuplicates(options)} // Отключаем кнопку при наличии дубликатов
             >

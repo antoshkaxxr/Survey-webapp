@@ -1,13 +1,13 @@
 import {DisplayStatisticsMap} from "../../../const/DisplayStatisticsMap.ts";
-import "./BaseStatistic.css"
+import "./BaseStatistic.css";
+
 interface BaseStatisticProps{
     questionInfo: SurveyQuestion;
     answers: StatisticVariant[];
     onClose: () => void;
 }
+
 export function BaseStatistic({questionInfo, answers, onClose} : BaseStatisticProps) {
-
-
     const { component: StatisticComponent } = DisplayStatisticsMap[questionInfo.type];
     return (
         <div className={"statistic-base"}>
