@@ -64,3 +64,11 @@
     height: auto;
     margin-bottom: 20px;
 }
+
+
+
+.survey-page-container {
+    width: 100vw;         /* Занимает 100% ширины видимой части окна */
+    height: 100vh;       /* Занимает 100% высоты видимой части окна */
+    box-sizing: border-box; /* Учитывает отступы и границы в ширине и высоте */
+}
