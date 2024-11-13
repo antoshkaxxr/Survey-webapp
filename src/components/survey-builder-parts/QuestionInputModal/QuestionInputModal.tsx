@@ -45,6 +45,10 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         const newOptions = [...options];
         newOptions[index] = value;
         setOptions(newOptions);
+
+        if (!newOptions.some((opt, i) => opt.trim().toLowerCase() === value.trim().toLowerCase() && i !== index)) {
+            setOptions(newOptions); // Обновляем состояние только при отсутствии дубликатов
+        }
     };
 
     const handleAddOption = () => {
@@ -68,6 +72,12 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         const [removed] = reorderedBoxes.splice(result.source.index, 1);
         reorderedBoxes.splice(result.destination.index, 0, removed);
         setOptions(reorderedBoxes);
+    };
+
+    // Проверяем наличие дубликатов
+    const hasDuplicate = (value: string) => {
+        const filteredOptions = options.filter(opt => opt.trim().toLowerCase() === value.trim().toLowerCase());
+        return filteredOptions.length > 1;
     };
 
     return (
@@ -106,7 +116,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                                                                 value={option}
                                                                 onChange={(e) => handleOptionChange(index, e.target.value)}
                                                                 placeholder={`Вариант ${index + 1}`}
-                                                                className={`option-input ${option.trim() !== '' ? '' : 'invalid'}`}
+                                                                className={`option-input ${option.trim() !== '' ? '' : 'invalid'} ${hasDuplicate(option) ? 'invalid' : ''}`}
                                                             />
                                                             {options.length > 1 && (
                                                                 <button type="button"
