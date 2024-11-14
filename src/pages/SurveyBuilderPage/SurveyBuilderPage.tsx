@@ -1,23 +1,24 @@
 import { useState, useEffect } from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
-import {QuestionTypeModal} from '../../components/survey-builder-parts/QuestionTypeModal/QuestionTypeModal.tsx';
-import {QuestionInputModal} from '../../components/survey-builder-parts/QuestionInputModal/QuestionInputModal.tsx';
-import {Question} from '../../components/survey-builder-parts/Question/Question.tsx';
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import { QuestionTypeModal } from '../../components/survey-builder-parts/QuestionTypeModal/QuestionTypeModal.tsx';
+import { QuestionInputModal } from '../../components/survey-builder-parts/QuestionInputModal/QuestionInputModal.tsx';
+import { Question } from '../../components/survey-builder-parts/Question/Question.tsx';
 import './SurveyBuilderPage.css';
-import {AppRoute} from "../../const/AppRoute.ts";
-import {SurveyTitle} from "../../components/survey-builder-parts/SurveyTitle/SurveyTitle.tsx";
-import {ThemeSelector} from "../../components/survey-builder-parts/ThemeSelector/ThemeSelector.tsx";
-import {EmptyQuestionItem} from "../../components/survey-builder-parts/EmptyQuestionItem/EmptyQuestionItem.tsx";
-import {QuestionButtons} from "../../components/survey-builder-parts/QuestionButtons/QuestionButtons.tsx";
-import {IP_ADDRESS} from "../../config.ts";
-import {AccessModal} from "../../components/modals/AccessModal/AccessModal.tsx";
+import { AppRoute } from "../../const/AppRoute.ts";
+import { SurveyTitle } from "../../components/survey-builder-parts/SurveyTitle/SurveyTitle.tsx";
+import { ThemeSelector } from "../../components/survey-builder-parts/ThemeSelector/ThemeSelector.tsx";
+import { EmptyQuestionItem } from "../../components/survey-builder-parts/EmptyQuestionItem/EmptyQuestionItem.tsx";
+import { QuestionButtons } from "../../components/survey-builder-parts/QuestionButtons/QuestionButtons.tsx";
+import { IP_ADDRESS } from "../../config.ts";
+import { AccessModal } from "../../components/modals/AccessModal/AccessModal.tsx";
 import { ColorPanel } from '../../components/survey-builder-parts/ColorPanel/ColorPanel.tsx';
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 import {
     sendGetResponseWhenLogged,
     sendChangingResponseWhenLogged,
     getEmail,
-    getImage
+    getImage,
+    deleteAllCookies
 } from "../../sendResponseWhenLogged.ts";
 
 export function SurveyBuilderPage() {
@@ -38,6 +39,7 @@ export function SurveyBuilderPage() {
     const [textColor, setTextColor] = useState<string>('#000000');
     const [backgroundUrl, setBackgroundUrl] = useState<string | undefined>(undefined);
 
+
     useEffect(() => {
         if (id) {
             const fetchSurvey = async () => {
@@ -50,7 +52,11 @@ export function SurveyBuilderPage() {
                     const data = await response.json();
                     setSurveyTitle(data.Name);
                     setQuestions(data.Survey);
-                    setBackgroundImage(data.Theme);
+
+                    setBackgroundImage(data.BackgroundImage);
+                    setTextColor(data.TextColor)
+                    setBackgroundColor(data.BackgroundColor);
+                    setQuestionColor(data.QuestionColor);
                 } catch (error) {
                     console.error('Ошибка:', error);
                 }
@@ -167,91 +173,118 @@ export function SurveyBuilderPage() {
         setQuestions(reorderedQuestions);
     };
 
+    const email = getEmail();
+
     return (
-        <div className={'builder-container'}>
-            <div className={'theme-color'}>
-                <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} />
-                <ColorPanel selectedColor={backgroundColor} setSelectedColor={setBackgroundColor} name='Задний фон' />
-                <ColorPanel selectedColor={questionColor} setSelectedColor={setQuestionColor} name='Цвет вопроса' />
-                <ColorPanel selectedColor={textColor} setSelectedColor={setTextColor} name='Цвет текста' />
+        <div>
+            <div className={'builder-menu-container'}>
+                {
+                    email !== null &&
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", width: "100%" }}>
+                        <div style={{ display: "flex", marginRight: "20px" }}>
+                            <Link to={AppRoute.Root}>
+                                <button className="WelcomeTransparent-btn">Home</button>
+                            </Link>
+                            <Link to={AppRoute.MySurveys}>
+                                <button className="WelcomeTransparent-btn">My Surveys</button>
+                            </Link>
+                            <Link to={AppRoute.Login}>
+                                <button className="WelcomeTransparent-btn" onClick={deleteAllCookies}>Logout</button>
+                            </Link>
+                        </div>
+                        <h1>{email}</h1>
+                    </div>
+                }
             </div>
-            <div className={'survey-window'}>
-                <div className='cover' style={{ backgroundImage: backgroundImage ? `url(${backgroundUrl})` : undefined, backgroundSize: 'cover', height: backgroundImage ? 200 : 0}}></div>
-                <div className="questions-list" style={{ backgroundColor: backgroundColor, backgroundSize: 'cover' }}>
-                    <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
-                    {questions.length === 0 &&
-                        <EmptyQuestionItem />
-                    }
-                    {questions.length > 0 &&
-                        <DragDropContext onDragEnd={onDragEnd}>
-                            <Droppable droppableId="droppable">
-                                {(provided) => (
-                                    <div className="dropzone" {...provided.droppableProps} ref={provided.innerRef}>
-                                        {questions.map((question, i) => (
-                                            <Draggable key={question.questionId.toString()} draggableId={question.questionId.toString()} index={i}>
-                                                {(provided) => (
-                                                    <div className="move-box"
-                                                        ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                                        <div key={i} className="question-item">
-                                                            <div className='question-container'
-                                                                style={{ backgroundColor: questionColor }}>
-                                                                <Question
-                                                                    question={question.question}
-                                                                    type={question.type}
-                                                                    textColor={textColor}
-                                                                    initialOptions={questions[i].options}
-                                                                    necessarily={question.necessarily}
-                                                                    setNecessarily={() => {handleSelectNecessarily(i)}}
+
+            <div className={'builder-container'}>
+
+                <div className={'theme-color'}>
+                    <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} />
+                    <ColorPanel selectedColor={backgroundColor} setSelectedColor={setBackgroundColor} name='Задний фон' />
+                    <ColorPanel selectedColor={questionColor} setSelectedColor={setQuestionColor} name='Цвет вопроса' />
+                    <ColorPanel selectedColor={textColor} setSelectedColor={setTextColor} name='Цвет текста' />
+                </div>
+                <div className={'survey-window'}  style={{ backgroundColor: backgroundColor, backgroundSize: 'cover' }}>
+                <div className='cover' style={{ backgroundImage: backgroundImage ? `url(${backgroundUrl})` : undefined, backgroundSize: 'cover', height: backgroundImage ? 200 : 0 }}></div>
+                    <div className="questions-list">
+                        
+                        <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
+                        {questions.length === 0 &&
+                            <EmptyQuestionItem />
+                        }
+                        {questions.length > 0 &&
+                            <DragDropContext onDragEnd={onDragEnd}>
+                                <Droppable droppableId="droppable">
+                                    {(provided) => (
+                                        <div className="dropzone" {...provided.droppableProps} ref={provided.innerRef}>
+                                            {questions.map((question, i) => (
+                                                <Draggable key={question.questionId.toString()} draggableId={question.questionId.toString()} index={i}>
+                                                    {(provided) => (
+                                                        <div className="move-box"
+                                                            ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                            <div key={i} className="question-item">
+                                                                <div className='question-container'
+                                                                    style={{ backgroundColor: questionColor }}>
+                                                                    <Question
+                                                                        question={question.question}
+                                                                        type={question.type}
+                                                                        textColor={textColor}
+                                                                        initialOptions={questions[i].options}
+                                                                        necessarily={question.necessarily}
+                                                                        setNecessarily={() => { handleSelectNecessarily(i) }}
+                                                                    />
+                                                                </div>
+                                                                <QuestionButtons
+                                                                    index={i}
+                                                                    setAddIndex={setAddIndex}
+                                                                    setEditIndex={setEditIndex}
+                                                                    setSelectedQuestionType={setSelectedQuestionType}
+                                                                    questions={questions}
+                                                                    setInputModalOpen={setInputModalOpen}
+                                                                    setTypeModalOpen={setTypeModalOpen}
+                                                                    setQuestions={setQuestions}
                                                                 />
                                                             </div>
-                                                            <QuestionButtons
-                                                                index={i}
-                                                                setAddIndex={setAddIndex}
-                                                                setEditIndex={setEditIndex}
-                                                                setSelectedQuestionType={setSelectedQuestionType}
-                                                                questions={questions}
-                                                                setInputModalOpen={setInputModalOpen}
-                                                                setTypeModalOpen={setTypeModalOpen}
-                                                                setQuestions={setQuestions}
-                                                            />
                                                         </div>
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        ))}
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </Droppable>
-                        </DragDropContext>
-                    }
+                                                    )}
+                                                </Draggable>
+                                            ))}
+                                            {provided.placeholder}
+                                        </div>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
+                        }
+                        <button className={'add-question-button'} onClick={() => setTypeModalOpen(true)}>Добавить вопрос</button>
+                        <button className={'save-survey-button'} onClick={handleSubmit}>Сохранить опрос</button>
+                    </div>
+                    
+                    <QuestionTypeModal
+                        isOpen={isTypeModalOpen}
+                        onClose={() => setTypeModalOpen(false)}
+                        onSelect={handleSelectQuestionType}
+                    />
+                    <QuestionInputModal
+                        isOpen={isInputModalOpen}
+                        onClose={() => {
+                            setInputModalOpen(false);
+                            setEditIndex(null);
+                        }}
+                        questionType={selectedQuestionType}
+                        onSubmit={handleSubmitQuestion}
+                        initialQuestion={editIndex !== null ? questions[editIndex].question : ""}
+                        initialOptions={editIndex !== null && questions[editIndex].options ? questions[editIndex].options : []}
+                    />
+                    <AccessModal
+                        isOpen={isAccessModalOpen}
+                        onClose={() => {
+                            setAccessModalOpen(false);
+                            navigate(AppRoute.MySurveys);
+                        }}
+                        accessSurveyId={accessSurveyId}
+                    />
                 </div>
-                <button className={'add-question-button'} onClick={() => setTypeModalOpen(true)}>Добавить вопрос</button>
-                <button className={'save-survey-button'} onClick={handleSubmit}>Сохранить опрос</button>
-                <QuestionTypeModal
-                    isOpen={isTypeModalOpen}
-                    onClose={() => setTypeModalOpen(false)}
-                    onSelect={handleSelectQuestionType}
-                />
-                <QuestionInputModal
-                    isOpen={isInputModalOpen}
-                    onClose={() => {
-                        setInputModalOpen(false);
-                        setEditIndex(null);
-                    }}
-                    questionType={selectedQuestionType}
-                    onSubmit={handleSubmitQuestion}
-                    initialQuestion={editIndex !== null ? questions[editIndex].question : ""}
-                    initialOptions={editIndex !== null && questions[editIndex].options ? questions[editIndex].options : []}
-                />
-                <AccessModal
-                    isOpen={isAccessModalOpen}
-                    onClose={() => {
-                        setAccessModalOpen(false);
-                        navigate(AppRoute.MySurveys);
-                    }}
-                    accessSurveyId={accessSurveyId}
-                />
             </div>
         </div>
     );
