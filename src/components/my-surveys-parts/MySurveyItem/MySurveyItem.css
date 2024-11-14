@@ -22,6 +22,6 @@
 .survey-buttons {
     display: flex;
     flex-wrap: wrap;
-
+    max-width: 30%;
   }
   
