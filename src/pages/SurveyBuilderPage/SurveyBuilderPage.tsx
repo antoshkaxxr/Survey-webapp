@@ -52,7 +52,11 @@ export function SurveyBuilderPage() {
                     const data = await response.json();
                     setSurveyTitle(data.Name);
                     setQuestions(data.Survey);
-                    setBackgroundImage(data.Theme);
+
+                    setBackgroundImage(data.BackgroundImage);
+                    setTextColor(data.TextColor)
+                    setBackgroundColor(data.BackgroundColor);
+                    setQuestionColor(data.QuestionColor);
                 } catch (error) {
                     console.error('Ошибка:', error);
                 }
