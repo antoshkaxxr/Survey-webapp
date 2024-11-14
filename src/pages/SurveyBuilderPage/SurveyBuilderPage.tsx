@@ -252,9 +252,10 @@ export function SurveyBuilderPage() {
                                 </Droppable>
                             </DragDropContext>
                         }
+                        <button className={'add-question-button'} onClick={() => setTypeModalOpen(true)}>Добавить вопрос</button>
+                        <button className={'save-survey-button'} onClick={handleSubmit}>Сохранить опрос</button>
                     </div>
-                    <button className={'add-question-button'} onClick={() => setTypeModalOpen(true)}>Добавить вопрос</button>
-                    <button className={'save-survey-button'} onClick={handleSubmit}>Сохранить опрос</button>
+                    
                     <QuestionTypeModal
                         isOpen={isTypeModalOpen}
                         onClose={() => setTypeModalOpen(false)}
