@@ -38,7 +38,7 @@ export function SurveyBuilderPage() {
     const [questionColor, setQuestionColor] = useState<string>('#FFFFFF');
     const [textColor, setTextColor] = useState<string>('#000000');
     const [backgroundUrl, setBackgroundUrl] = useState<string | undefined>(undefined);
-    
+
 
     useEffect(() => {
         if (id) {
@@ -201,9 +201,10 @@ export function SurveyBuilderPage() {
                     <ColorPanel selectedColor={questionColor} setSelectedColor={setQuestionColor} name='Цвет вопроса' />
                     <ColorPanel selectedColor={textColor} setSelectedColor={setTextColor} name='Цвет текста' />
                 </div>
-                <div className={'survey-window'}>
-                    <div className='cover' style={{ backgroundImage: backgroundImage ? `url(${backgroundUrl})` : undefined, backgroundSize: 'cover', height: backgroundImage ? 200 : 0 }}></div>
-                    <div className="questions-list" style={{ backgroundColor: backgroundColor, backgroundSize: 'cover' }}>
+                <div className={'survey-window'}  style={{ backgroundColor: backgroundColor, backgroundSize: 'cover' }}>
+                <div className='cover' style={{ backgroundImage: backgroundImage ? `url(${backgroundUrl})` : undefined, backgroundSize: 'cover', height: backgroundImage ? 200 : 0 }}></div>
+                    <div className="questions-list">
+                        
                         <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
                         {questions.length === 0 &&
                             <EmptyQuestionItem />
