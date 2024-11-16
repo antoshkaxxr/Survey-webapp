@@ -38,3 +38,7 @@
 .blue-button:hover {
     background-color: #0056b3;
 }
+
+.statistics-menu-container{
+    padding-right: 10%;
+}

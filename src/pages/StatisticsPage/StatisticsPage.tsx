@@ -74,7 +74,7 @@ export function StatisticsPage() {
             {!surveyData && <h3>Загружается...</h3>}
             {surveyData && !currQuestion &&
                 <div>
-                <div className={'builder-menu-container'}>
+                <div className={'statistics-menu-container'}>
                 {
                     email !== null &&
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", width: "100%" }}>
