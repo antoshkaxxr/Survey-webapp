@@ -4,7 +4,7 @@ import './SurveyPage.scss';
 import { ComponentMap } from "../../const/ComponentMap.ts";
 import { IP_ADDRESS } from "../../config.ts";
 import {UnavailableSurvey} from "../../components/survey-parts/UnavailableSurvey/UnavailableSurvey.tsx";
-import {sendGetResponseWhenLogged, sendChangingResponseWhenLogged, getEmail} from "../../sendResponseWhenLogged.ts";
+import {sendGetResponseWhenLogged, sendChangingResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
 import {getImage, deleteAllCookies} from "../../sendResponseWhenLogged.ts";
 import { AppRoute } from "../../const/AppRoute.ts";
 
@@ -30,7 +30,7 @@ export function SurveyPage() {
     useEffect(() => {
         const checkSurveyAccess = async () => {
             try {
-                const response = await sendGetResponseWhenLogged(`http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}/access`);
+                const response = await sendGetResponseWhenLogged(`http://${IP_ADDRESS}:8080/survey/${id}/access`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении доступа к опросу');
                 }
@@ -56,7 +56,7 @@ export function SurveyPage() {
         const fetchSurvey = async () => {
             try {
                 const response = await sendGetResponseWhenLogged(
-                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}`);
+                    `http://${IP_ADDRESS}:8080/survey/${id}`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
@@ -104,7 +104,7 @@ export function SurveyPage() {
             }
             const response = await sendChangingResponseWhenLogged(
                 'POST',
-                `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}/answer`,
+                `http://${IP_ADDRESS}:8080/survey/${id}/answer`,
                 answers
             );
 
