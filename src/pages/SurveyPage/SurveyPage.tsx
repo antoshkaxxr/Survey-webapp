@@ -30,7 +30,7 @@ export function SurveyPage() {
     useEffect(() => {
         const checkSurveyAccess = async () => {
             try {
-                const response = await sendGetResponseWhenLogged(`http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}/access`);
+                const response = await sendGetResponseWhenLogged(`http://${IP_ADDRESS}:8080/survey/${id}/access`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении доступа к опросу');
                 }
@@ -56,7 +56,7 @@ export function SurveyPage() {
         const fetchSurvey = async () => {
             try {
                 const response = await sendGetResponseWhenLogged(
-                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}`);
+                    `http://${IP_ADDRESS}:8080/survey/${id}`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
@@ -104,7 +104,7 @@ export function SurveyPage() {
             }
             const response = await sendChangingResponseWhenLogged(
                 'POST',
-                `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${id}/answer`,
+                `http://${IP_ADDRESS}:8080/survey/${id}/answer`,
                 answers
             );
 

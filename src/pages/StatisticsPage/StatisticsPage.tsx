@@ -1,6 +1,6 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getEmail, sendGetResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
+import {sendGetResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
 import {IP_ADDRESS} from "../../config.ts";
 import {ComponentMap} from "../../const/ComponentMap.ts";
 import {BaseStatistic} from "../../components/display-statistics/BaseStatics/BaseStatistic.tsx";
@@ -24,7 +24,7 @@ export function StatisticsPage() {
                 if (surveyData !== null)
                     return;
                 const response = await sendGetResponseWhenLogged(
-                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${surveyId}`);
+                    `http://${IP_ADDRESS}:8080/survey/${surveyId}`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
@@ -39,7 +39,7 @@ export function StatisticsPage() {
         const downloadDataStatistic = async () => {
             try {
                 const response = await sendGetResponseWhenLogged(
-                    `http://${IP_ADDRESS}:8080/user/${getEmail()}/survey-statistic/${surveyId}`);
+                    `http://${IP_ADDRESS}:8080/survey/${surveyId}/statistic`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }

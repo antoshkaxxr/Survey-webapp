@@ -2,7 +2,7 @@ import { useState } from 'react';
 import '../../survey-builder-parts/Modal.css';
 import './AccessModal.css';
 import {IP_ADDRESS} from "../../../config.ts";
-import {sendChangingResponseWhenLogged, getEmail} from "../../../sendResponseWhenLogged.ts";
+import {sendChangingResponseWhenLogged} from "../../../sendResponseWhenLogged.ts";
 
 interface AccessModalProps {
     isOpen: boolean;
@@ -40,7 +40,7 @@ export function AccessModal({ isOpen, onClose, accessSurveyId }: AccessModalProp
         console.log(requestBody);
 
         try {
-            const response = await sendChangingResponseWhenLogged('POST',`http://${IP_ADDRESS}:8080/user/${getEmail()}/survey/${accessSurveyId}/access`, requestBody);
+            const response = await sendChangingResponseWhenLogged('POST',`http://${IP_ADDRESS}:8080/survey/${accessSurveyId}/access`, requestBody);
 
             if (!response.ok) {
                 throw new Error('Ошибка при отправке данных');
