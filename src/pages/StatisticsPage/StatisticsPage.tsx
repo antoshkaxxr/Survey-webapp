@@ -1,9 +1,10 @@
-import {useParams} from "react-router-dom";
+import {useParams, Link} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {sendGetResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
+import {sendGetResponseWhenLogged, getEmail, deleteAllCookies} from "../../sendResponseWhenLogged.ts";
 import {IP_ADDRESS} from "../../config.ts";
 import {ComponentMap} from "../../const/ComponentMap.ts";
 import {BaseStatistic} from "../../components/display-statistics/BaseStatics/BaseStatistic.tsx";
+import { AppRoute } from "../../const/AppRoute.ts";
 import "./StatisticsPage.css"
 
 interface DisplayStatisticsPropsResponse{
@@ -66,10 +67,32 @@ export function StatisticsPage() {
         setCurrQuestion(questionInfo);
     }
 
+    const email = getEmail();
+
     return (
         <div>
             {!surveyData && <h3>Загружается...</h3>}
             {surveyData && !currQuestion &&
+                <div>
+                <div className={'builder-menu-container'}>
+                {
+                    email !== null &&
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", width: "100%" }}>
+                        <div style={{ display: "flex", marginRight: "20px" }}>
+                            <Link to={AppRoute.Root}>
+                                <button className="WelcomeTransparent-btn">Home</button>
+                            </Link>
+                            <Link to={AppRoute.MySurveys}>
+                                <button className="WelcomeTransparent-btn">My Surveys</button>
+                            </Link>
+                            <Link to={AppRoute.Login}>
+                                <button className="WelcomeTransparent-btn" onClick={deleteAllCookies}>Logout</button>
+                            </Link>
+                        </div>
+                        <h1>{email}</h1>
+                    </div>
+                }
+            </div>
                 <div className="table-container">
                     <table className="survey-table">
                         <thead>
@@ -100,6 +123,7 @@ export function StatisticsPage() {
                         })}
                         </tbody>
                     </table>
+                </div>
                 </div>
             }
             {currQuestion && !isLoadingStatistic && <div>Статистика загружается</div>}
