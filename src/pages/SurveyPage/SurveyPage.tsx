@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import './SurveyPage.scss';
 import { ComponentMap } from "../../const/ComponentMap.ts";
 import { IP_ADDRESS } from "../../config.ts";
 import {UnavailableSurvey} from "../../components/survey-parts/UnavailableSurvey/UnavailableSurvey.tsx";
 import {sendGetResponseWhenLogged, sendChangingResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
-import {getImage} from "../../sendResponseWhenLogged.ts";
+import {getImage, deleteAllCookies} from "../../sendResponseWhenLogged.ts";
+import { AppRoute } from "../../const/AppRoute.ts";
 
 interface SurveyData {
     Name: string;
@@ -51,8 +52,6 @@ export function SurveyPage() {
                 setOpenStatus(false);
             }
         };
-
-
 
         const fetchSurvey = async () => {
             try {
@@ -126,9 +125,29 @@ export function SurveyPage() {
         setTimeout(() => setReset(false), 0);
     };
 
-
+    const email = getEmail()
 
     return (
+        <div>
+            <div className={'builder-menu-container'}>
+                {
+                    email !== null &&
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", width: "100%" }}>
+                        <div style={{ display: "flex", marginRight: "20px" }}>
+                            <Link to={AppRoute.Root}>
+                                <button className="WelcomeTransparent-btn">Home</button>
+                            </Link>
+                            <Link to={AppRoute.MySurveys}>
+                                <button className="WelcomeTransparent-btn">My Surveys</button>
+                            </Link>
+                            <Link to={AppRoute.Login}>
+                                <button className="WelcomeTransparent-btn" onClick={deleteAllCookies}>Logout</button>
+                            </Link>
+                        </div>
+                        <h1>{email}</h1>
+                    </div>
+                }
+            </div>
         <div className={'survey-page-container'} style={{background: surveyData ? surveyData.BackgroundColor : undefined}}>
             {!openStatus ? (
                 <UnavailableSurvey
@@ -153,6 +172,7 @@ export function SurveyPage() {
                                     const QuestionComponent = ComponentMap[questionInfo.type]?.component;
                                     return (
                                         <div>
+                                            {questionInfo.necessarily && <div className={"warning-block"}>*</div>}
                                             <QuestionComponent
                                                 key={questionInfo.questionId}
                                                 questionInfo={questionInfo}
@@ -162,10 +182,10 @@ export function SurveyPage() {
                                                 backgroundColor={surveyData.BackgroundColor}
                                                 questionColor={surveyData.QuestionColor}
                                                 textColor={surveyData.TextColor}
+
+
                                             />
-                                            {questionInfo.necessarily && <div className={"warning-block"}>
-                                                Это обязательный вопрос!
-                                            </div>}
+
                                         </div>
                                     );
                                 })}
@@ -182,6 +202,7 @@ export function SurveyPage() {
                     )}
                 </>
             )}
+        </div>
         </div>
     );
 }
