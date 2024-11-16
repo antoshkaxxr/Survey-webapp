@@ -97,9 +97,9 @@ export function StatisticsPage() {
                     <table className="survey-table">
                         <thead>
                         <tr>
-                            <th>Имя вопроса</th>
+                            <th style={{ borderRadius: '10px 0 0 0' }}>Имя вопроса</th>
                             <th>Тип вопроса</th>
-                            <th>Кнопка</th>
+                            <th style={{ borderRadius: '0 10px 0 0' }}>Кнопка</th>
                         </tr>
                         </thead>
                         <tbody>
