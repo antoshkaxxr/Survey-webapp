@@ -81,6 +81,12 @@ export function SurveyPage() {
             return;
         }
 
+        for (const question of surveyData.Survey) {
+            if (!answers[question.questionId]) {
+                answers[question.questionId] = '';
+            }
+        }
+
         try {
             const response = await sendChangingResponseWhenLogged(
                 'POST',
