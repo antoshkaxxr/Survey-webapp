@@ -8,12 +8,12 @@ interface ExportProps {
 
 
 async function handleExport(surveyId: string, type: string, onClose:() => void) {
-
     const url = `http://localhost:8080/survey/${surveyId}/generate_${type}`;
     const methods : { [key: string]: (url: string) => Promise<Response> } = {
         'excel': sendGetSheetEcxelResponseWhenLogged,
         'pdf': sendGetSheetPdfResponseWhenLogged
-        }
+    };
+
     try {
         const response = await methods[type](url);
 

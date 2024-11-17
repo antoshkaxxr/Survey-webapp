@@ -47,11 +47,10 @@ export function StatisticsPage() {
                 const data = await response.json();
                 let propsDict = data.reduce((acc : any, item : DisplayStatisticsPropsResponse) => {
                     const { questionId, question, answers } = item as DisplayStatisticsPropsResponse;
-                    const propsDisplayStatistics : DisplayStatisticsProps = {
+                    acc[questionId] = {
                         "question": question,
                         "answers": answers
-                    }
-                    acc[questionId] = propsDisplayStatistics;
+                    };
                     return acc;
                 }, {});
                 setPropsDisplayStatisticsByIdQuestion(propsDict);

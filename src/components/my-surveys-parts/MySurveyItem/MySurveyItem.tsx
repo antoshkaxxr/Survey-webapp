@@ -15,13 +15,10 @@ interface MySurveyItemProps {
 }
 
 const copyToClipboard = (surveyId: string) => {
-
     navigator.clipboard.writeText(`http://localhost:3000/survey/${surveyId}`).then(() => {
         alert("Ссылка на опрос скопирована в буфер обмена!");
     });
 };
-
-
 
 export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModalOpen, setAccessSurveyId} : MySurveyItemProps) {
     const [isExportModalOpen, setExportModalOpen] = useState<boolean>(false);
@@ -90,6 +87,5 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModa
                     onClose={() => setExportModalOpen(false)}>
                 </ExportModal>}
         </div>
-)
-    ;
+    );
 }

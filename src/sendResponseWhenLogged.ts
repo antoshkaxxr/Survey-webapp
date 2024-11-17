@@ -10,7 +10,7 @@ export async function sendChangingResponseWhenLogged(method: string, url: string
             data: bodyObject
         })
     });
-    if(response.status === 403){
+    if (response.status === 403) {
         deleteAllCookies();
         window.location.reload();
     }
@@ -18,14 +18,13 @@ export async function sendChangingResponseWhenLogged(method: string, url: string
 }
 
 export async function sendGetResponseWhenLogged(url: string){
-
     const response = await fetch(url, {
         method: 'GET',
         headers: {
             'Authorization': "Bearer " + getCookie('Token')
         },
     });
-    if(response.status === 403){
+    if (response.status === 403) {
         console.log(response);
         deleteAllCookies();
         window.location.reload();
@@ -41,7 +40,7 @@ export async function sendGetSheetEcxelResponseWhenLogged(url: string){
             'Authorization': "Bearer " + getCookie('Token')
         },
     });
-    if(response.status === 403){
+    if (response.status === 403) {
         deleteAllCookies();
         window.location.reload();
     }
@@ -78,7 +77,7 @@ export async function getImage(key: string) {
 }
 
 export function getEmail(){
-    return getCookie("Email")
+    return getCookie("Email");
 }
 
 function getCookie(name: string) {
@@ -91,7 +90,6 @@ function getCookie(name: string) {
     }
     return null;
 }
-
 
 export function deleteAllCookies() {
     const cookies = document.cookie.split(';');

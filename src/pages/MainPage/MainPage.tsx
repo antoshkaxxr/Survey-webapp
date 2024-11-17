@@ -42,9 +42,7 @@ export function MainPage() {
                 <p>Information</p>
                 <p>Information</p>
                 <p>Information</p>
-
             </div>
-
         </>
     );
 }

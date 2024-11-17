@@ -125,7 +125,7 @@ export function SurveyPage() {
         setTimeout(() => setReset(false), 0);
     };
 
-    const email = getEmail()
+    const email = getEmail();
 
     return (
         <div>
@@ -148,31 +148,29 @@ export function SurveyPage() {
                     </div>
                 }
             </div>
-        <div className={'survey-page-container'} style={{background: surveyData ? surveyData.BackgroundColor : undefined}}>
-            {!openStatus ? (
-                <UnavailableSurvey
-                    message = {messageException}
-                />
-            ) : (
-                <>
-                    {surveyData && (
-                        <>
-                            <div
-                                className='header-img'
-                                style={{
-                                    backgroundImage: surveyData.BackgroundImage ? `url(${backgroundUrl})` : undefined,
-                                    backgroundSize: 'cover',
-                                    height: surveyData.BackgroundImage ? 200 : 0,
-                                }}
-                            >
-                            </div>
-                            <div className={'survey-content'}>
-                                <h1 className={'survey-page-title'}>{surveyData.Name}</h1>
-                                {surveyData.Survey.map((questionInfo) => {
-                                    const QuestionComponent = ComponentMap[questionInfo.type]?.component;
-                                    return (
-                                        <div>
-                                            {questionInfo.necessarily && <div className={"warning-block"}>*</div>}
+            <div className={'survey-page-container'} style={{background: surveyData ? surveyData.BackgroundColor : undefined}}>
+                {!openStatus ? (
+                    <UnavailableSurvey
+                        message = {messageException}
+                    />
+                ) : (
+                    <>
+                        {surveyData && (
+                            <>
+                                <div
+                                    className='header-img'
+                                    style={{
+                                        backgroundImage: surveyData.BackgroundImage ? `url(${backgroundUrl})` : undefined,
+                                        backgroundSize: 'cover',
+                                        height: surveyData.BackgroundImage ? 200 : 0,
+                                    }}
+                                >
+                                </div>
+                                <div className={'survey-content'}>
+                                    <h1 className={'survey-page-title'}>{surveyData.Name}</h1>
+                                    {surveyData.Survey.map((questionInfo) => {
+                                        const QuestionComponent = ComponentMap[questionInfo.type]?.component;
+                                        return (
                                             <QuestionComponent
                                                 key={questionInfo.questionId}
                                                 questionInfo={questionInfo}
@@ -182,27 +180,23 @@ export function SurveyPage() {
                                                 backgroundColor={surveyData.BackgroundColor}
                                                 questionColor={surveyData.QuestionColor}
                                                 textColor={surveyData.TextColor}
-
-
                                             />
-
-                                        </div>
-                                    );
-                                })}
-                                <div className={'survey-page-buttons'}>
-                                    <button className='send-button' onClick={handleSubmit}>
-                                        Отправить
-                                    </button>
-                                    <button className='delete-button' onClick={handleClear}>
-                                        Очистить всё
-                                    </button>
+                                        );
+                                    })}
+                                    <div className={'survey-page-buttons'}>
+                                        <button className='send-button' onClick={handleSubmit}>
+                                            Отправить
+                                        </button>
+                                        <button className='delete-button' onClick={handleClear}>
+                                            Очистить всё
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </>
-                    )}
-                </>
-            )}
-        </div>
+                            </>
+                        )}
+                    </>
+                )}
+            </div>
         </div>
     );
 }
