@@ -196,9 +196,7 @@ export function SurveyBuilderPage() {
                     </div>
                 }
             </div>
-
             <div className={'builder-container'}>
-
                 <div className={'theme-color'}>
                     <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} />
                     <ColorPanel selectedColor={backgroundColor} setSelectedColor={setBackgroundColor} name='Задний фон' />
@@ -208,7 +206,6 @@ export function SurveyBuilderPage() {
                 <div className={'survey-window'}  style={{ backgroundColor: backgroundColor, backgroundSize: 'cover' }}>
                 <div className='cover' style={{ backgroundImage: backgroundImage ? `url(${backgroundUrl})` : undefined, backgroundSize: 'cover', height: backgroundImage ? 200 : 0 }}></div>
                     <div className="questions-list">
-                        
                         <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
                         {questions.length === 0 &&
                             <EmptyQuestionItem />
@@ -259,7 +256,6 @@ export function SurveyBuilderPage() {
                         <button className={'add-question-button'} onClick={() => setTypeModalOpen(true)}>Добавить вопрос</button>
                         <button className={'save-survey-button'} onClick={handleSubmit}>Сохранить опрос</button>
                     </div>
-                    
                     <QuestionTypeModal
                         isOpen={isTypeModalOpen}
                         onClose={() => setTypeModalOpen(false)}

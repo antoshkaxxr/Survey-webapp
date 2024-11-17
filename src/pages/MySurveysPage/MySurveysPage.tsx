@@ -48,16 +48,14 @@ export function MySurveysPage() {
         return <div>Загрузка...</div>;
     }
 
-    const email = getEmail()
+    const email = getEmail();
 
     return (
-
-
         <div className="my-surveys-container">
             {
                 email !== null &&
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", width: "100%" }}>
-                    <div style={{ display: "flex", marginRight: "20px" }}> 
+                    <div style={{ display: "flex", marginRight: "20px" }}>
                         <Link to={AppRoute.Root}>
                             <button className="WelcomeTransparent-btn">Home</button>
                         </Link>

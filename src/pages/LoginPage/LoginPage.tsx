@@ -4,7 +4,6 @@ import {IP_ADDRESS} from "../../config.ts";
 import { useNavigate } from 'react-router-dom';
 import {AppRoute} from "../../const/AppRoute.ts";
 
-
 export function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -85,38 +84,6 @@ export function LoginPage() {
                     <button className="vk-login-submit" onClick={handleVkLogin}>VK</button>
                 </div>
             </div>
-
-
-            {/* ну можно попробовать но анимация скорей раздражает -_- */}
-            {/* <div className="login-box2">
-                <div className='main'>
-
-                        <h1 className="login-h1"> This is a login page</h1>
-                        <input
-                            className='login-input'
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <input
-                            className='login-input'
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <button className="login-submit" onClick={handleLogin}>Войти</button>
-
-                        <div className="social-login">
-                            <h2 className="login-h2">Или войдите через:</h2>
-                            <button className="google-login-submit" onClick={handleGoogleLogin}>Google</button>
-                            <button className="github-login-submit" onClick={handleGithubLogin}>GitHub</button>
-                            <button className="vk-login-submit" onClick={handleVkLogin}>VK</button>
-                        </div>
-
-                </div>
-            </div> */}
         </>
     );
 }
