@@ -1,35 +1,15 @@
-import {useState, ChangeEvent, useEffect} from 'react';
 import '../BaseQuestion/BaseQuestion.css';
 import './DateQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function DateQuestion({ questionInfo, onAnswerChange, isRequired,
-                               reset, backgroundColor, questionColor, textColor }: QuestionProps) {
-    const [answer, setAnswer] = useState<string>('');
-
-    const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const answer = event.target.value;
-        setAnswer(answer);
-        onAnswerChange(questionInfo.questionId, questionInfo.question, answer);
-    };
-
-    const handleClearDate = () => {
-        setAnswer('');
-        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
-    };
-
-    useEffect(() => {
-        if (reset) {
-            setAnswer('');
-        }
-    }, [reset]);
-
+export function DateQuestion({ questionInfo, answer, setAnswer,
+                               backgroundColor, questionColor, textColor }: QuestionProps) {
     return (
         <BaseQuestion
             question={questionInfo.question}
             answer={answer}
-            handleClear={handleClearDate}
-            isRequired={isRequired}
+            handleClear={() => setAnswer('')}
+            isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
         >
@@ -38,7 +18,7 @@ export function DateQuestion({ questionInfo, onAnswerChange, isRequired,
                 id={`${questionInfo.questionId}`}
                 className={'date-input'}
                 value={answer}
-                onChange={handleDateChange}
+                onChange={(event) => setAnswer(event.target.value)}
                 style={{background: backgroundColor}}
             />
         </BaseQuestion>

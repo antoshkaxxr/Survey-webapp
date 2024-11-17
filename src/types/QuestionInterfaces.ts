@@ -1,8 +1,7 @@
 interface QuestionProps {
     questionInfo: SurveyQuestion;
-    onAnswerChange: (questionId: string, question: string, answer: string) => void;
-    isRequired: boolean;
-    reset: boolean;
+    answer: string;
+    setAnswer: (p: string) => void;
     backgroundColor: string;
     questionColor: string;
     textColor: string;
@@ -13,7 +12,6 @@ interface SurveyQuestion {
     type: number;
     options?: string[];
     questionId: string;
-    necessarily: boolean
-    min?: number;
-    max?: number;
+    isRequired: boolean
+    ranges?: string[];
 }

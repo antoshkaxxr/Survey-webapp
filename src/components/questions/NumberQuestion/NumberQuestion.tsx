@@ -1,34 +1,14 @@
-import {useState, ChangeEvent, useEffect} from 'react';
 import './NumberQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function NumberQuestion({ questionInfo, onAnswerChange, isRequired,
-                                 reset, backgroundColor, questionColor, textColor }: QuestionProps) {
-    const [answer, setAnswer] = useState<string>('');
-
-    const handleNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const answerValue = event.target.value;
-        setAnswer(answerValue);
-        onAnswerChange(questionInfo.questionId, questionInfo.question, answerValue);
-    };
-
-    const handleClearNumber = () => {
-        setAnswer('');
-        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
-    };
-
-    useEffect(() => {
-        if (reset) {
-            setAnswer('');
-        }
-    }, [reset]);
-
+export function NumberQuestion({ questionInfo, answer, setAnswer,
+                                 backgroundColor, questionColor, textColor }: QuestionProps) {
     return (
         <BaseQuestion
             question={questionInfo.question}
             answer={answer}
-            handleClear={handleClearNumber}
-            isRequired={isRequired}
+            handleClear={() => setAnswer('')}
+            isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
         >
@@ -38,7 +18,7 @@ export function NumberQuestion({ questionInfo, onAnswerChange, isRequired,
                 className={'number-input'}
                 placeholder={'Введите число...'}
                 value={answer}
-                onChange={handleNumberChange}
+                onChange={(event) => setAnswer(event.target.value)}
                 style={{background: backgroundColor}}
             />
         </BaseQuestion>

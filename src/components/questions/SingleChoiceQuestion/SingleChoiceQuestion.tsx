@@ -1,34 +1,14 @@
-import { ChangeEvent, useEffect, useState } from 'react';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 import './SingleChoiceQuestion.css';
 
-export function SingleChoiceQuestion({ questionInfo, onAnswerChange, isRequired,
-                                       reset, questionColor, textColor }: QuestionProps) {
-    const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
-    const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const answer = event.target.value;
-        setSelectedOption(answer);
-        onAnswerChange(questionInfo.questionId, questionInfo.question, answer);
-    };
-
-    const handleClearSelection = () => {
-        setSelectedOption(null);
-        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
-    };
-
-    useEffect(() => {
-        if (reset) {
-            setSelectedOption(null);
-        }
-    }, [reset]);
-
+export function SingleChoiceQuestion({ questionInfo, answer, setAnswer,
+                                       questionColor, textColor }: QuestionProps) {
     return (
         <BaseQuestion
             question={questionInfo.question}
-            answer={selectedOption}
-            handleClear={handleClearSelection}
-            isRequired={isRequired}
+            answer={answer}
+            handleClear={() => setAnswer('')}
+            isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
         >
@@ -39,8 +19,8 @@ export function SingleChoiceQuestion({ questionInfo, onAnswerChange, isRequired,
                         className={'custom-radio'}
                         id={`${questionInfo.questionId}-option-${index}`}
                         value={option}
-                        checked={selectedOption === option}
-                        onChange={handleOptionChange}
+                        checked={answer === option}
+                        onChange={(event) => setAnswer(event.target.value)}
                     />
                     <span
                         className={'radio-value'}

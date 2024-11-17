@@ -1,55 +1,35 @@
-import {useState, ChangeEvent, useEffect} from 'react';
 import './SliderQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function SliderQuestion({ questionInfo, onAnswerChange, isRequired,
-                                 reset, questionColor, textColor }: QuestionProps) {
-    const [value, setValue] = useState<number>(questionInfo.min || 1);
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const newValue = Number(event.target.value);
-        setValue(newValue);
-        onAnswerChange(questionInfo.questionId, questionInfo.question, String(newValue));
-    };
-
-    const handleClearSelection = () => {
-        setValue(questionInfo.min || 1);
-        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
-    };
-
-    useEffect(() => {
-        if (reset) {
-            setValue(questionInfo.min || 1);
-        }
-    }, [reset, questionInfo.min]);
-
+export function SliderQuestion({ questionInfo, answer, setAnswer,
+                                 questionColor, textColor }: QuestionProps) {
     return (
         <BaseQuestion
             question={questionInfo.question}
-            answer={value}
-            handleClear={handleClearSelection}
-            isRequired={isRequired}
+            answer={answer}
+            handleClear={() => setAnswer('')}
+            isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
         >
             <div className="slider-container">
-                <span className="slider-label">{questionInfo.min}</span>
+                <span className="slider-label">{questionInfo.ranges![0]}</span>
                 <input
                     id={`${questionInfo.questionId}`}
                     className={'slider-input'}
                     type="range"
-                    min={questionInfo.min}
-                    max={questionInfo.max}
-                    value={value}
-                    onChange={handleChange}
+                    min={questionInfo.ranges![0]}
+                    max={questionInfo.ranges![1]}
+                    value={answer !== '' ? answer : questionInfo.ranges![0]}
+                    onChange={(event) => setAnswer(event.target.value)}
                 />
-                <span className="slider-label">{questionInfo.max}</span>
+                <span className="slider-label">{questionInfo.ranges![1]}</span>
             </div>
             <div
                 className={'slider-message'}
                 style={{color: textColor}}
             >
-                Выбранное значение: {value}
+                Выбранное значение: {answer}
             </div>
         </BaseQuestion>
     );

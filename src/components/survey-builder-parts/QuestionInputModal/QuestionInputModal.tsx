@@ -1,25 +1,29 @@
 import { useEffect, useState } from 'react';
 import '../Modal.css';
 import './QuestionInputModal.css';
-import { DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 
 type QuestionInputModalProps = {
     isOpen: boolean;
     onClose: () => void;
     questionType: number;
-    onSubmit: (question: string, options?: string[]) => void;
+    onSubmit: (newQuestion: SurveyQuestion) => void;
     initialQuestion?: string;
     initialOptions?: string[];
 }
 
 const optionQuestionTypes = [1, 2, 9];
 
-export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
-                                initialQuestion = 'Вопрос', initialOptions = [] }: QuestionInputModalProps) {
+const generateUniqueId = () => {
+    return '_' + Math.random().toString(36).substring(2, 9);
+};
 
-    const [question, setQuestion] = useState<string>(initialQuestion);
-    const [options, setOptions] = useState<string[]>(initialOptions.length > 0 ? initialOptions :
-        Array(1).fill('').map((_, index) => `Вариант ${index + 1}`));
+export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
+                                       initialQuestion = '', initialOptions = [] }: QuestionInputModalProps) {
+    const [question, setQuestion] = useState<string>('');
+    const [options, setOptions] = useState<string[]>([]);
+    const [ranges, setRanges] = useState<string[]>(['', '']);
+    const [isRequired, setIsRequired] = useState(false);
     const [isQuestionValid, setIsQuestionValid] = useState(true);
     const [areOptionsValid, setAreOptionsValid] = useState(true);
 
@@ -61,12 +65,21 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
 
     const handleSubmit = () => {
         if (isQuestionValid && (optionQuestionTypes.includes(questionType) ? areOptionsValid : true)) {
-            onSubmit(question, optionQuestionTypes.includes(questionType) ? options : undefined);
+            const newQuestion: SurveyQuestion = {
+                question,
+                type: questionType,
+                options: optionQuestionTypes.includes(questionType) ? options : undefined,
+                questionId: generateUniqueId(),
+                isRequired,
+                ranges: questionType === 10 ? ranges : undefined
+            };
+            onSubmit(newQuestion);
+            setIsRequired(false);
             onClose();
         }
     };
 
-    const onDragEnd = (result : DropResult) => {
+    const onDragEnd = (result: DropResult) => {
         if (!result.destination) return;
         const reorderedBoxes = Array.from(options);
         const [removed] = reorderedBoxes.splice(result.source.index, 1);
@@ -81,6 +94,12 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
 
     const hasDuplicates = (array: string[]) => {
         return array.length !== new Set(array.map(item => item.trim().toLowerCase())).size;
+    };
+
+    const handleRangeChange = (index: number, value: string) => {
+        const newRanges = [...ranges];
+        newRanges[index] = value;
+        setRanges(newRanges);
     };
 
     return (
@@ -99,6 +118,16 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder="Вопрос"
                 />
+                <label className={"radio-label"}>
+                    <input
+                        type="checkbox"
+                        id={`${question}-necessarily`}
+                        value={"Обязательный вопрос"}
+                        checked={isRequired}
+                        onChange={() => setIsRequired(!isRequired)}
+                    />
+                    <span>Обязательный вопрос</span>
+                </label>
                 {optionQuestionTypes.includes(questionType) && (
                     <>
                         <h2 className={'requested-action'}>
@@ -140,19 +169,42 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                         <div>
                             <button className={'add-button'} type="button" onClick={handleAddOption}>
                                 Добавить вариант
-                                </button>
+                            </button>
                         </div>
                     </>
                 )}
-<button
-                className={`save-button ${isQuestionValid && 
-                    (optionQuestionTypes.includes(questionType) ? areOptionsValid : true) && 
-                    !hasDuplicates(options) ? '' : 'disabled'}`}
-                onClick={handleSubmit}
-                disabled={hasDuplicates(options)} // Отключаем кнопку при наличии дубликатов
-            >
-                {initialQuestion ? 'Сохранить изменения' : 'Сохранить'}
-            </button>
+                {questionType === 10 && (
+                    <>
+                        <p>Минимум</p>
+                        <input
+                            type="number"
+                            className={'question-input'}
+                            value={ranges[0]}
+                            onChange={(e) => handleRangeChange(0, e.target.value)}
+                            placeholder="1"
+                        />
+                        <p>Максимум</p>
+                        <input
+                            type="number"
+                            className={'question-input'}
+                            value={ranges[1]}
+                            onChange={(e) => handleRangeChange(1, e.target.value)}
+                            placeholder="10"
+                        />
+                    </>
+                )}
+                <button
+                    className={`save-button ${isQuestionValid &&
+                    (optionQuestionTypes.includes(questionType) ? areOptionsValid : true) &&
+                    !hasDuplicates(options) &&
+                    (questionType === 10 ? ranges[0] !== '' && ranges[1] !== '' : true) ? '' : 'disabled'}`}
+                    onClick={handleSubmit}
+                    disabled={!isQuestionValid ||
+                        (optionQuestionTypes.includes(questionType) ? !areOptionsValid || hasDuplicates(options) : false) ||
+                        (questionType === 10 ? ranges[0] === '' || ranges[1] === '' : false)}
+                >
+                    {initialQuestion ? 'Сохранить изменения' : 'Сохранить'}
+                </button>
             </div>
         </div>
     );

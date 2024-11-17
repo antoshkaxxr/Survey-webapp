@@ -1,41 +1,21 @@
-import {useState, ChangeEvent, useEffect} from 'react';
 import './SelectQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function SelectQuestion({ questionInfo, onAnswerChange, isRequired,
-                                 reset, backgroundColor, questionColor, textColor }: QuestionProps) {
-    const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
-    const handleOptionChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        const option = event.target.value;
-        setSelectedOption(option);
-        onAnswerChange(questionInfo.questionId, questionInfo.question, option);
-    };
-
-    useEffect(() => {
-        if (reset) {
-            setSelectedOption(null);
-        }
-    }, [reset]);
-
-    const handleClearSelection = () => {
-        setSelectedOption(null);
-        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
-    };
-
+export function SelectQuestion({ questionInfo, answer, setAnswer,
+                                 backgroundColor, questionColor, textColor }: QuestionProps) {
     return (
         <BaseQuestion
             question={questionInfo.question}
-            answer={selectedOption}
-            handleClear={handleClearSelection}
-            isRequired={isRequired}
+            answer={answer}
+            handleClear={() => setAnswer('')}
+            isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
         >
             <select
                 className={'option-select'}
-                value={selectedOption || ''}
-                onChange={handleOptionChange}
+                value={answer}
+                onChange={(event) => setAnswer(event.target.value)}
                 style={{background: backgroundColor}}
             >
                 <option value="" disabled>Выберите ответ</option>
@@ -45,11 +25,6 @@ export function SelectQuestion({ questionInfo, onAnswerChange, isRequired,
                     </option>
                 ))}
             </select>
-            {selectedOption && (
-                <button onClick={handleClearSelection} className={'clear-button'}>
-                    Очистить выбор
-                </button>
-            )}
         </BaseQuestion>
     );
 }

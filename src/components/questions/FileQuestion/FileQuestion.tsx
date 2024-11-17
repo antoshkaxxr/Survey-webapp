@@ -1,10 +1,9 @@
-import {useState, ChangeEvent, useEffect} from 'react';
+import {useState, ChangeEvent} from 'react';
 import './FileQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function FileQuestion({ questionInfo, onAnswerChange, isRequired,
-                               reset, questionColor, textColor }: QuestionProps) {
-    const [file, setFile] = useState<File>();
+export function FileQuestion({ questionInfo, answer, setAnswer,
+                               questionColor, textColor }: QuestionProps) {
     const [error, setError] = useState('');
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -12,35 +11,24 @@ export function FileQuestion({ questionInfo, onAnswerChange, isRequired,
 
         if (selectedFile) {
             if (selectedFile.size > 10 * 1024 * 1024) {
-                if (file) {
-                    setFile(undefined);
+                if (answer) {
+                    setAnswer('');
                 }
                 setError('Размер файла не должен превышать 10 МБ.');
             } else {
-                setFile(selectedFile);
+                // Логика по загрузке файла в бакет!!!
                 setError('');
-                onAnswerChange(questionInfo.questionId, questionInfo.question, selectedFile.name);
+                setAnswer(selectedFile.name);
             }
         }
     }
 
-    const handleClearFile = () => {
-        setFile(undefined);
-        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
-    };
-
-    useEffect(() => {
-        if (reset) {
-            setFile(undefined);
-        }
-    }, [reset]);
-
     return (
         <BaseQuestion
             question={questionInfo.question}
-            answer={file}
-            handleClear={handleClearFile}
-            isRequired={isRequired}
+            answer={answer}
+            handleClear={() => setAnswer('')}
+            isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
         >
@@ -57,7 +45,7 @@ export function FileQuestion({ questionInfo, onAnswerChange, isRequired,
                 Выбрать файл
             </label>
             {error && <span className={'error-message'}>{error}</span>}
-            {file && <span className={'name-message'}>{file.name}</span>}
+            {answer !== '' && <span className={'name-message'}>{answer}</span>}
         </BaseQuestion>
     );
 }

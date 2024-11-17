@@ -1,14 +1,13 @@
 import {SingleChoiceQuestion} from "../SingleChoiceQuestion/SingleChoiceQuestion.tsx";
 
-export function YesNoQuestion({ questionInfo, onAnswerChange, isRequired,
-                                reset, backgroundColor, questionColor, textColor }: QuestionProps) {
+export function YesNoQuestion({ questionInfo, answer, setAnswer,
+                                backgroundColor, questionColor, textColor }: QuestionProps) {
     questionInfo.options = ['Да', 'Нет'];
     return (
         <SingleChoiceQuestion
             questionInfo={questionInfo}
-            onAnswerChange={onAnswerChange}
-            reset={reset}
-            isRequired={isRequired}
+            answer={answer}
+            setAnswer={setAnswer}
             backgroundColor={backgroundColor}
             questionColor={questionColor}
             textColor={textColor}

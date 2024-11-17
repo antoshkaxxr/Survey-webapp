@@ -1,37 +1,26 @@
-import {useEffect, useState} from 'react';
 import './MultipleChoiceQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, isRequired,
-                                         reset, questionColor, textColor }: QuestionProps) {
-    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-
+export function MultipleChoiceQuestion({ questionInfo, answer, setAnswer,
+                                         questionColor, textColor }: QuestionProps) {
     const handleOptionChange = (option: string) => {
-        const updatedOptions = selectedOptions.includes(option)
-            ? selectedOptions.filter(opt => opt !== option)
-            : [...selectedOptions, option];
+        const currentOptions: string[] = answer !== ''
+            ? answer.split('\n')
+            : [];
 
-        setSelectedOptions(updatedOptions);
-        onAnswerChange(questionInfo.questionId, questionInfo.question, updatedOptions.join('\n'));
+        const updatedOptions = currentOptions.includes(option)
+            ? currentOptions.filter(opt => opt !== option)
+            : [...currentOptions, option];
+
+        setAnswer(updatedOptions.join('\n'));
     };
-
-    const handleClearSelection = () => {
-        setSelectedOptions([]);
-        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
-    };
-
-    useEffect(() => {
-        if (reset) {
-            setSelectedOptions([]);
-        }
-    }, [reset]);
 
     return (
         <BaseQuestion
             question={questionInfo.question}
-            answer={selectedOptions}
-            handleClear={handleClearSelection}
-            isRequired={isRequired}
+            answer={answer}
+            handleClear={() => setAnswer('')}
+            isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
         >
@@ -42,7 +31,7 @@ export function MultipleChoiceQuestion({ questionInfo, onAnswerChange, isRequire
                         className={'custom-checkbox'}
                         id={`${questionInfo.questionId}-option-${index}`}
                         value={option}
-                        checked={selectedOptions.includes(option)}
+                        checked={answer.includes(option)}
                         onChange={() => handleOptionChange(option)}
                     />
                     <span

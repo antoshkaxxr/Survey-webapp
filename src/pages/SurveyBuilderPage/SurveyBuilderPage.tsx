@@ -39,7 +39,6 @@ export function SurveyBuilderPage() {
     const [textColor, setTextColor] = useState<string>('#000000');
     const [backgroundUrl, setBackgroundUrl] = useState<string | undefined>(undefined);
 
-
     useEffect(() => {
         if (id) {
             const fetchSurvey = async () => {
@@ -85,28 +84,7 @@ export function SurveyBuilderPage() {
         setTypeModalOpen(false);
     };
 
-    const handleSelectNecessarily = (i: number) => {
-        let newQuestions = [...questions]
-        newQuestions[i].necessarily = !questions[i].necessarily;
-        setQuestions(newQuestions);
-    };
-
-
-    const generateUniqueId = () => {
-        return '_' + Math.random().toString(36).substring(2, 9);
-    };
-
-    const handleSubmitQuestion = (question: string, options?: string[]) => {
-        const newQuestion = {
-            question,
-            type: selectedQuestionType,
-            options,
-            questionId: generateUniqueId(),
-            necessarily: false,
-            min: null as unknown as number,
-            max: null as unknown as number,
-        };
-
+    const handleSubmitQuestion = (newQuestion: SurveyQuestion) => {
         if (addIndex !== null) {
             const updatedQuestions = [...questions];
             updatedQuestions.splice(addIndex + 1, 0, newQuestion);
@@ -134,6 +112,8 @@ export function SurveyBuilderPage() {
             TextColor: textColor,
             Survey: questions
         };
+
+        console.log(data);
 
         try {
             let response;
@@ -228,8 +208,6 @@ export function SurveyBuilderPage() {
                                                                         type={question.type}
                                                                         textColor={textColor}
                                                                         initialOptions={questions[i].options}
-                                                                        necessarily={question.necessarily}
-                                                                        setNecessarily={() => { handleSelectNecessarily(i) }}
                                                                     />
                                                                 </div>
                                                                 <QuestionButtons

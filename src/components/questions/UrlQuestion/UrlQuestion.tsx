@@ -1,10 +1,9 @@
-import {useState, ChangeEvent, useEffect} from 'react';
+import {useState, ChangeEvent} from 'react';
 import './UrlQuestion.css';
 import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
 
-export function UrlQuestion({ questionInfo, onAnswerChange, isRequired,
-                              reset, backgroundColor, questionColor, textColor }: QuestionProps) {
-    const [url, setUrl] = useState('');
+export function UrlQuestion({ questionInfo, answer, setAnswer,
+                              backgroundColor, questionColor, textColor }: QuestionProps) {
     const [error, setError] = useState('');
 
     const validateUrl = (value: string) => {
@@ -21,35 +20,26 @@ export function UrlQuestion({ questionInfo, onAnswerChange, isRequired,
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newUrl = e.target.value;
-        setUrl(newUrl);
+        setAnswer(newUrl);
 
         if (!validateUrl(newUrl)) {
-            setError('Введите корректный URL');
+            setError('URL введён некорректно');
         } else {
             setError('');
-            onAnswerChange(questionInfo.questionId, questionInfo.question, newUrl);
         }
     };
 
     const handleClearUrl = () => {
-        setUrl('');
+        setAnswer('');
         setError('');
-        onAnswerChange(questionInfo.questionId, questionInfo.question, '');
     };
-
-    useEffect(() => {
-        if (reset) {
-            setUrl('');
-            setError('');
-        }
-    }, [reset]);
 
     return (
         <BaseQuestion
             question={questionInfo.question}
-            answer={url}
+            answer={answer}
             handleClear={handleClearUrl}
-            isRequired={isRequired}
+            isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
         >
@@ -57,11 +47,11 @@ export function UrlQuestion({ questionInfo, onAnswerChange, isRequired,
                 type={'url'}
                 id={`${questionInfo.questionId}`}
                 className={'url-input'}
-                value={url}
+                value={answer}
                 onChange={handleChange}
                 style={{background: backgroundColor}}
             />
-            {error && <span className='error-message'>{error}</span>}
+            {error && <span className='error-message' style={{color: textColor}}>{error}</span>}
         </BaseQuestion>
     );
 }

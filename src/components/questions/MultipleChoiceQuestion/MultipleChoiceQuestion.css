@@ -1,18 +1,17 @@
 .checkbox-label {
-    display: block; /* Занимает всю ширину родительского элемента */
+    display: flex;
     padding: 5px 0;
     font-size: 20px;
     cursor: pointer;
 }
 
 .custom-checkbox {
-    display: none; /* Убираем элемент из документного потока */
+    opacity: 0;
 }
 
 .checkbox-value {
     position: relative;
-    display: block; /* Занимает всю ширину родительского элемента */
-    word-wrap: break-word; /* Перенос слов по словам */
+    display: flex;
     align-items: center;
     padding: 5px 20px 5px 50px;
     border-radius: 0;
@@ -20,7 +19,6 @@
     font-weight: 400;
     font-style: normal;
     font-size: 18px;
-    /* margin-bottom: 10px; */
 }
 
 .checkbox-value:hover {
@@ -51,4 +49,3 @@
     background: #fff;
     border-radius: 0;
 }
-
