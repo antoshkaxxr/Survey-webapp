@@ -6,13 +6,4 @@ interface ParsedSurvey {
     }
 }
 
-interface SurveyData {
-    Name: string;
-    Theme: {
-        name: string;
-        theme: string;
-        url: string;
-    }
-    Survey: SurveyQuestion[];
-}
 

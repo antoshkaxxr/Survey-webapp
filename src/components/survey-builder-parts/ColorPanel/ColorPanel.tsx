@@ -4,7 +4,7 @@ import './ColorPanel.css';
 interface ColorProps {
     name: string;
     selectedColor: string;
-    setSelectedColor: React.Dispatch<React.SetStateAction<string>>;
+    setSelectedColor: (s: string) => void;
 }
 
 export function ColorPanel({ selectedColor, setSelectedColor, name }: ColorProps) {

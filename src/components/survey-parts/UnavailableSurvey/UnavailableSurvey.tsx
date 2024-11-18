@@ -1,9 +1,9 @@
 import './UnavailableSurvey.css';
 
-
 interface Message {
     message: string;
 }
+
 export function UnavailableSurvey({message}: Message) {
     return (
         <>
@@ -13,7 +13,7 @@ export function UnavailableSurvey({message}: Message) {
                 <p>{message}</p>
             </div>
             <div className={'unavailable-survey-img'}>
-            <img
+                <img
                     src={'/images/unavailable-survey.png'}
                     alt={'Опрос недоступен'}
                 />

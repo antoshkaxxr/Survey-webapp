@@ -1,13 +1,13 @@
 import {sendGetSheetEcxelResponseWhenLogged, sendGetSheetPdfResponseWhenLogged} from "../../../sendResponseWhenLogged.ts";
-import "./ExportModal.css"
+import "./ExportModal.css";
+
 interface ExportProps {
-    surveyId: string
-    surveyName: string
-    onClose:() => void
+    surveyId: string;
+    surveyName: string;
+    onClose: () => void;
 }
 
-
-async function handleExport(surveyId: string, type: string, onClose:() => void) {
+async function handleExport(surveyId: string, type: string, onClose: () => void) {
     const url = `http://localhost:8080/survey/${surveyId}/generate_${type}`;
     const methods : { [key: string]: (url: string) => Promise<Response> } = {
         'excel': sendGetSheetEcxelResponseWhenLogged,
@@ -48,7 +48,7 @@ export function ExportModal({surveyId, surveyName, onClose} : ExportProps) {
                         <h5>Выберете способ экспортировать статистику</h5>
                         <div className="export-buttons">
                             <button onClick={() => handleExport(surveyId, `excel`, onClose)}>
-                                Экспорт в эксель
+                                Экспорт в Excel
                             </button>
                             <button onClick={() => handleExport(surveyId, `pdf`, onClose)}>
                                 Экспорт в pdf
@@ -58,6 +58,5 @@ export function ExportModal({surveyId, surveyName, onClose} : ExportProps) {
                 </div>
             </div>
         </div>
-
     );
 }

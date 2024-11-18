@@ -12,7 +12,6 @@ import React from "react";
 
 function RequireAuth({ children } : { children: React.ReactNode }) {
     const email = getEmail();
-    console.log(email);
     if (email === null) {
         return <Navigate to="/login" replace />;
     }

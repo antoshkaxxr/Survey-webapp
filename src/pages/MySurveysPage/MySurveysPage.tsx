@@ -7,7 +7,6 @@ import { IP_ADDRESS } from "../../config.ts";
 import { AccessModal } from "../../components/modals/AccessModal/AccessModal.tsx";
 import { sendGetResponseWhenLogged, getEmail, deleteAllCookies } from "../../sendResponseWhenLogged.ts";
 
-
 interface Survey {
     id: string;
     survey: string;

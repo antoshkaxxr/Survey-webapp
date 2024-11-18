@@ -25,7 +25,6 @@ export function AccessModal({ isOpen, onClose, accessSurveyId }: AccessModalProp
         }
 
         if (accessSurveyId === null) return;
-        console.log(startDate, endDate);
 
         const status = selectedType === 1 ? "Active" : "Inactive";
         const isLimited = selectedType === 1 && timeLimited;
@@ -36,8 +35,6 @@ export function AccessModal({ isOpen, onClose, accessSurveyId }: AccessModalProp
             isLimited: isLimited,
             timeIntervals: timeIntervals
         };
-
-        console.log(requestBody);
 
         try {
             const response = await sendChangingResponseWhenLogged('POST',`http://${IP_ADDRESS}:8080/survey/${accessSurveyId}/access`, requestBody);

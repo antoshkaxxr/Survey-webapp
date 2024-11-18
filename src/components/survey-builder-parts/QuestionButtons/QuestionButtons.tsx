@@ -1,36 +1,45 @@
 import './QuestionButtons.css';
-import {EditButton} from "../EditButton/EditButton.tsx";
-import React from "react";
-// import {ArrowUp} from "../ArrowUp/ArrowUp.tsx";
-// import {ArrayDown} from "../ArrowDown/ArrowDown.tsx";
-import {DeleteButton} from "../DeleteButton/DeleteButton.tsx";
-import {AddButton} from "../AddButton/AddButton.tsx";
 
 interface QuestionButtonsProps {
     index: number;
-    setAddIndex: React.Dispatch<React.SetStateAction<number | null>>;
-    setEditIndex: React.Dispatch<React.SetStateAction<number | null>>;
-    setSelectedQuestionType: React.Dispatch<React.SetStateAction<number>>;
+    setAddIndex: (x: number | null) => void;
+    setEditIndex: (x: number | null) => void;
+    setSelectedQuestionType: (x: number) => void;
     questions: SurveyQuestion[];
-    setInputModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setTypeModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setQuestions: React.Dispatch<React.SetStateAction<SurveyQuestion[]>>;
+    setInputModalOpen: (x: boolean) => void;
+    setTypeModalOpen: (x: boolean) => void;
+    setQuestions: (x: SurveyQuestion[]) => void;
 }
 
 export function QuestionButtons({index, setAddIndex, setEditIndex, setSelectedQuestionType, questions,
                                     setInputModalOpen, setTypeModalOpen, setQuestions}: QuestionButtonsProps) {
+    const handleMoveDown = (index: number) => {
+        setAddIndex(index);
+        setTypeModalOpen(true);
+    };
+
+    const handleEditQuestion = (index: number) => {
+        setEditIndex(index);
+        setSelectedQuestionType(questions[index].type);
+        setInputModalOpen(true);
+    };
+
+    const handleDeleteQuestion = (index: number) => {
+        const updatedQuestions = questions.filter((_, i) => i !== index);
+        setQuestions(updatedQuestions);
+    };
+
     return (
         <div className={'question-buttons'}>
-            <AddButton index={index} setAddIndex={setAddIndex} setTypeModalOpen={setTypeModalOpen}></AddButton>
-            <EditButton
-                index={index} setEditIndex={setEditIndex}
-                setSelectedQuestionType={setSelectedQuestionType}
-                questions={questions}
-                setInputModalOpen={setInputModalOpen}
-            />
-            {/* <ArrowUp index={index} questions={questions} setQuestions={setQuestions} />
-            <ArrayDown index={index} questions={questions} setQuestions={setQuestions} /> */}
-            <DeleteButton index={index} questions={questions} setQuestions={setQuestions} />
+            <button onClick={() => handleMoveDown(index)}>
+                <img src="/icons/icon-add-question.svg" alt="Добавить новый вопрос перед этим"/>
+            </button>
+            <button onClick={() => handleEditQuestion(index)}>
+                <img src="/icons/edit.svg" alt="Редактировать"/>
+            </button>
+            <button onClick={() => handleDeleteQuestion(index)}>
+                <img src="/icons/trash-solid.svg" alt="Удалить"/>
+            </button>
         </div>
     );
 }
