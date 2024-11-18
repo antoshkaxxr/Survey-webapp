@@ -4,8 +4,12 @@
 }
 
 .color-input {
-    border: none;
-    height: 40px;
+    border: none;           
+    outline: none;         
+    box-shadow: none;     
+    height: 40px;          
+    background: transparent;
+    border-radius: 5px;
 }
 
 .color-hex {

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import './LoginPage.css';
-import {IP_ADDRESS} from "../../config.ts";
+import { IP_ADDRESS } from "../../config.ts";
 import { useNavigate } from 'react-router-dom';
-import {AppRoute} from "../../const/AppRoute.ts";
+import { AppRoute } from "../../const/AppRoute.ts";
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
@@ -28,8 +28,8 @@ export function LoginPage() {
                 throw new Error('Network response was not ok');
             }
 
-            document.cookie = "Token" + "=" + (result || "")  + "; path=/";
-            document.cookie = "Email" + "=" + (email || "")  + "; path=/";
+            document.cookie = "Token" + "=" + (result || "") + "; path=/";
+            document.cookie = "Email" + "=" + (email || "") + "; path=/";
             console.log('Success:', result);
             navigate(AppRoute.MySurveys);
         } catch (error) {
@@ -79,9 +79,27 @@ export function LoginPage() {
 
                 <div className="social-login">
                     <h2 className="login-h2">Или войдите через:</h2>
-                    <button className="google-login-submit" onClick={handleGoogleLogin}>Google</button>
-                    <button className="github-login-submit" onClick={handleGithubLogin}>GitHub</button>
-                    <button className="vk-login-submit" onClick={handleVkLogin}>VK</button>
+                    <button className="google-login-submit" onClick={handleGoogleLogin}>
+                        <img
+                            src="/icons/google-svgrepo-com.svg"
+                            alt="google"
+                            className="login-icon"
+                        />
+                    </button>
+                    <button className="github-login-submit" onClick={handleGithubLogin}>
+                        <img
+                            src="/icons/github-color-svgrepo-com.svg"
+                            alt="github"
+                            className="login-icon"
+                        />
+                    </button>
+                    <button className="vk-login-submit" onClick={handleVkLogin}>
+                        <img
+                            src="/icons/vk-svgrepo-com.svg"
+                            alt="github"
+                            className="login-icon"
+                        />
+                    </button>
                 </div>
             </div>
         </>
