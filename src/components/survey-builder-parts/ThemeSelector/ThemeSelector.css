@@ -1,26 +1,25 @@
 .theme-selector {
     margin-bottom: 20px;
-   }
-   
-   .theme-button {
+}
+
+.theme-button {
     outline: none;
 }
 
 .image-icon {
-    transition: transform 0.3s, filter 0.3s; /* Анимация для масштабирования и фильтра */
+    transition: transform 0.3s, filter 0.3s;
 }
 
 .theme-button:hover .image-icon {
-    transform: scale(1.1); /* Увеличиваем размер изображения */
-    filter: brightness(1.2); /* Немного увеличиваем яркость изображения */
+    transform: scale(1.1);
+    filter: brightness(1.2);
 }
 
 .theme-button:active .image-icon {
-    transform: scale(0.95); /* Уменьшаем изображение при нажатии */
+    transform: scale(0.95);
 }
 
-   
-   .theme-modal {
+.theme-modal {
     position: fixed;
     left: 0;
     top: 0;
@@ -30,38 +29,38 @@
     display: flex;
     justify-content: center;
     align-items: center;
-   }
-   
-   .theme-modal-content {
+}
+
+.theme-modal-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     text-align: center;
-   }
-   
-   .theme-options {
+}
+
+.theme-options {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 20px;
-   }
-   
-   .theme-option {
+}
+
+.theme-option {
     margin: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-   }
-   
-   .theme-option img {
+}
+
+.theme-option img {
     width: 100px;
     height: 100px;
     object-fit: cover;
     border-radius: 5px;
-   }
-   
-   .theme-option button {
+}
+
+.theme-option button {
     background-color: #4CAF50;
     color: white;
     padding: 8px 16px;
@@ -70,57 +69,56 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-   }
-   
-   .theme-option button:hover {
+}
+
+.theme-option button:hover {
     background-color: #45a049;
-   }
-   
-   .theme-option button.active {
+}
+
+.theme-option button.active {
     background-color: #218838;
-   }
-   
-   .cancel-button,
-   .confirm-button,
-   .remove-theme-button {
+}
+
+.cancel-button,
+.confirm-button,
+.remove-theme-button {
     margin-top: 20px;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-   }
-   
-   .cancel-button {
+}
+
+.cancel-button {
     background-color: #f44336;
     color: white;
-   }
-   
-   .cancel-button:hover {
+}
+
+.cancel-button:hover {
     background-color: #d32f2f;
-   }
-   
-   .confirm-button {
+}
+
+.confirm-button {
     background-color: #4CAF50;
     color: white;
-   }
-   
-   .confirm-button:hover {
+}
+
+.confirm-button:hover {
     background-color: #45a049;
-   }
+}
 
-   
-   
-   .confirm-button[disabled] {
+
+.confirm-button[disabled] {
     opacity: 0.5;
     cursor: not-allowed;
-   }
+}
 
-   .remove-theme-button{
+.remove-theme-button {
     background-color: #000;
-   }
-   .remove-theme-button[disabled] {
+}
+
+.remove-theme-button[disabled] {
     opacity: 0.5;
     cursor: not-allowed;
-   }
-   
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { QuestionTypeModal } from '../../components/survey-builder-parts/QuestionTypeModal/QuestionTypeModal.tsx';
-import { QuestionInputModal } from '../../components/survey-builder-parts/QuestionInputModal/QuestionInputModal.tsx';
+import { QuestionTypeModal } from '../../components/modals/QuestionTypeModal/QuestionTypeModal.tsx';
+import { QuestionInputModal } from '../../components/modals/QuestionInputModal/QuestionInputModal.tsx';
 import { Question } from '../../components/survey-builder-parts/Question/Question.tsx';
 import './SurveyBuilderPage.css';
 import { AppRoute } from "../../const/AppRoute.ts";

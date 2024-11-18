@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import '../../survey-builder-parts/Modal.css';
+import {useState} from 'react';
+import '../BaseModal/BaseModal.css';
 import './AccessModal.css';
 import {IP_ADDRESS} from "../../../config.ts";
 import {sendChangingResponseWhenLogged} from "../../../sendResponseWhenLogged.ts";
+import {BaseModal} from "../BaseModal/BaseModal.tsx";
 
 interface AccessModalProps {
     isOpen: boolean;
@@ -10,7 +11,7 @@ interface AccessModalProps {
     accessSurveyId: string | null;
 }
 
-export function AccessModal({ isOpen, onClose, accessSurveyId }: AccessModalProps) {
+export function AccessModal({isOpen, onClose, accessSurveyId}: AccessModalProps) {
     const [selectedType, setSelectedType] = useState<number | null>(null);
     const [timeLimited, setTimeLimited] = useState<boolean>(false);
     const [startDate, setStartDate] = useState<Date | null>(null);
@@ -37,7 +38,7 @@ export function AccessModal({ isOpen, onClose, accessSurveyId }: AccessModalProp
         };
 
         try {
-            const response = await sendChangingResponseWhenLogged('POST',`http://${IP_ADDRESS}:8080/survey/${accessSurveyId}/access`, requestBody);
+            const response = await sendChangingResponseWhenLogged('POST', `http://${IP_ADDRESS}:8080/survey/${accessSurveyId}/access`, requestBody);
 
             if (!response.ok) {
                 throw new Error('Ошибка при отправке данных');
@@ -68,70 +69,65 @@ export function AccessModal({ isOpen, onClose, accessSurveyId }: AccessModalProp
     }
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-                <button className="close-button" onClick={handleClose} aria-label="Закрыть">
-                    &times;
-                </button>
-                <h2 className={'requested-action'}>Настройте доступ к опросу</h2>
-                <div className="access-types-container">
-                    <div className="access-type">
-                        <label>
-                            <input
-                                type="radio"
-                                name="accessType"
-                                value={1}
-                                onChange={handleActiveChange}
-                            />
-                            Активный
-                        </label>
-                        {selectedType === 1 && (
-                            <>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={timeLimited}
-                                        onChange={handleTimeLimitChange}
-                                    />
-                                    Добавить ограничение по времени
-                                </label>
-                                {timeLimited && (
-                                    <div className="date-range-container">
-                                        <label>
-                                            Начало:
-                                            <input
-                                                type="datetime-local"
-                                                onChange={(e) => setStartDate(new Date(e.target.value))}
-                                            />
-                                        </label>
-                                        <label>
-                                            Конец:
-                                            <input
-                                                type="datetime-local"
-                                                onChange={(e) => setEndDate(new Date(e.target.value))}
-                                            />
-                                        </label>
-                                    </div>
-                                )}
-                            </>
-                        )}
-                    </div>
-                    <div className="access-type">
-                        <label>
-                            <input
-                                type="radio"
-                                name="accessType"
-                                value={0}
-                                onChange={() => setSelectedType(0)}
-                            />
-                            Неактивный
-                        </label>
-                    </div>
+        <BaseModal onClose={handleClose}>
+            <h2 className={'requested-action'}>Настройте доступ к опросу</h2>
+            <div className={'access-types-container'}>
+                <div className={'access-type'}>
+                    <label>
+                        <input
+                            type={'radio'}
+                            name={'accessType'}
+                            value={1}
+                            onChange={handleActiveChange}
+                        />
+                        Активный
+                    </label>
+                    {selectedType === 1 && (
+                        <>
+                            <label>
+                                <input
+                                    type={'checkbox'}
+                                    checked={timeLimited}
+                                    onChange={handleTimeLimitChange}
+                                />
+                                Добавить ограничение по времени
+                            </label>
+                            {timeLimited && (
+                                <div className={'date-range-container'}>
+                                    <label>
+                                        Начало:
+                                        <input
+                                            type={'datetime-local'}
+                                            onChange={(e) => setStartDate(new Date(e.target.value))}
+                                        />
+                                    </label>
+                                    <label>
+                                        Конец:
+                                        <input
+                                            type={'datetime-local'}
+                                            onChange={(e) => setEndDate(new Date(e.target.value))}
+                                        />
+                                    </label>
+                                </div>
+                            )}
+                        </>
+                    )}
                 </div>
-                <button className="select-button" onClick={handleSelect}>
-                    Выбрать
-                </button>
+                <div className={'access-type'}>
+                    <label>
+                        <input
+                            type={'radio'}
+                            name={'accessType'}
+                            value={0}
+                            onChange={() => setSelectedType(0)}
+                        />
+                        Неактивный
+                    </label>
+                </div>
             </div>
-        </div>
+            <button className={'select-button'} onClick={handleSelect}>
+                Выбрать
+            </button>
+        </BaseModal>
     );
 }
