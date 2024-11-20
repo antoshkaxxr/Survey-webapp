@@ -108,7 +108,6 @@
     background-color: #45a049;
 }
 
-
 .confirm-button[disabled] {
     opacity: 0.5;
     cursor: not-allowed;

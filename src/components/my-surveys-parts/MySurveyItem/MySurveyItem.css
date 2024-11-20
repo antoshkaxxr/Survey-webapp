@@ -1,27 +1,55 @@
 .survey-header {
     display: flex;
-    justify-content: space-between; /* Размещает элементы по краям */
-    align-items: center; /* Вертикальное выравнивание по центру */
-    
+    justify-content: space-between;
+    align-items: center;
 }
 
 .my-survey-title {
-    font-size: 24px; /* Размер шрифта */
-    font-weight: bold; /* Жирный шрифт */
-    color: #333; /* Цвет текста, можно изменить на желаемый */
-    max-width: 70%; /* Максимальная ширина заголовка */
-    overflow-wrap: break-word; /* Позволяет переносить слова на новую строку */
-    white-space: normal; /* Позволяет переносить текст */
-    margin: 0; /* Убираем отступы по умолчанию */
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    max-width: 70%;
+    overflow-wrap: break-word;
+    white-space: normal;
+    margin: 0;
 }
 
-.survey-buttons button {
-    margin-left: 8px;
+.survey-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.survey-container:hover {
+    transform: scale(1.02);
 }
 
 .survey-buttons {
     display: flex;
-    flex-wrap: wrap;
-    max-width: 30%;
-  }
-  
+    gap: 10px;
+}
+
+.survey-buttons button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.survey-buttons button:hover {
+    transform: scale(1.1);
+}
+
+.survey-buttons img {
+    width: 20px;
+    height: 20px;
+    transition: filter 0.2s;
+}
+
+.survey-buttons button:hover img {
+    filter: brightness(0.8);
+}

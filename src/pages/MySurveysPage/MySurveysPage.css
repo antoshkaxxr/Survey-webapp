@@ -15,52 +15,6 @@
     background-color: #45a049;
 }
 
-.survey-container {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    padding: 15px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-}
-
-.survey-container:hover {
-    transform: scale(1.02);
-}
-
-/* .survey-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-} */
-
-.survey-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.survey-buttons button {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.survey-buttons button:hover {
-    transform: scale(1.1);
-}
-
-.survey-buttons img {
-    width: 20px;
-    height: 20px;
-    transition: filter 0.2s;
-}
-
-.survey-buttons button:hover img {
-    filter: brightness(0.8);
-}
-
 .my-surveys-container {
     padding-left: 10%;
     padding-right: 10%;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { QuestionTypeModal } from '../../components/modals/QuestionTypeModal/QuestionTypeModal.tsx';
 import { QuestionInputModal } from '../../components/modals/QuestionInputModal/QuestionInputModal.tsx';
 import { Question } from '../../components/survey-builder-parts/Question/Question.tsx';
@@ -16,9 +16,7 @@ import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautif
 import {
     sendGetResponseWhenLogged,
     sendChangingResponseWhenLogged,
-    getEmail,
     getImage,
-    deleteAllCookies
 } from "../../sendResponseWhenLogged.ts";
 
 export function SurveyBuilderPage() {
@@ -153,29 +151,8 @@ export function SurveyBuilderPage() {
         setQuestions(reorderedQuestions);
     };
 
-    const email = getEmail();
-
     return (
         <div>
-            <div className={'builder-menu-container'}>
-                {
-                    email !== null &&
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", width: "100%" }}>
-                        <div style={{ display: "flex", marginRight: "20px" }}>
-                            <Link to={AppRoute.Root}>
-                                <button className="WelcomeTransparent-btn">Home</button>
-                            </Link>
-                            <Link to={AppRoute.MySurveys}>
-                                <button className="WelcomeTransparent-btn">My Surveys</button>
-                            </Link>
-                            <Link to={AppRoute.Login}>
-                                <button className="WelcomeTransparent-btn" onClick={deleteAllCookies}>Logout</button>
-                            </Link>
-                        </div>
-                        <h1>{email}</h1>
-                    </div>
-                }
-            </div>
             <div className={'builder-container'}>
                 <div className={'theme-color'}>
                     <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} />

@@ -1,76 +1,42 @@
 .questions-list {
     padding: 20px 0 20px 40px;
-  }
-  
-  .question-container-default {
+}
+
+.question-container-default {
     border: 2px solid black;
     padding-left: 25px;
     padding-right: 25px;
     border-radius: 5px;
-    width: 500px; /* Fixed width for the container */
-  }
-  
-  .question-container{
+    width: 500px;
+}
+
+.question-container {
     padding-left: 25px;
     padding-right: 25px;
     border-radius: 5px;
-    width: 500px; /* Fixed width for the container */
+    width: 500px;
     margin-bottom: 15px;
-  }
-  
-  .question-h3, .option-item {
-    word-wrap: break-word; /* Allows words to break within the container */
-    hyphens: auto; /* Enables automatic hyphenation for better word wrapping */
-    display:block; 
-  }
-  
-.option {
-  display: flex; 
 }
 
-.optionText{
-  display: block;
-  width: 80%;
+.question-h3, .option-item {
+    word-wrap: break-word;
+    hyphens: auto;
+    display: block;
+}
+
+.option {
+    display: flex;
+}
+
+.optionText {
+    display: block;
+    width: 80%;
 }
 
 .option-img {
-  margin-top: 5px;
-  width: 16px;
-  height: 16px;
-  margin-right: 4px;
-  vertical-align: middle;
-
-  
+    margin-top: 5px;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    vertical-align: middle;
 }
-
-
-.ThemeAndColor {
-    margin-right: 20px; /* Добавляем отступ справа для расстояния между блоками */
-}
-
-.SuveryWindow {
-    /* Убедитесь, что ширина SurveyWindow установлена для правильного отображения */
-    flex-grow: 1; /* Позволяем SurveyWindow занимать оставшееся пространство */
-}
-
-/* 
-.question-h3-theme1,
-.question-type-p-theme1 {
-    -webkit-text-stroke: 1px #0c0c0c;
-    color: #ffffff;
-}
-
-.question-container-theme2 {
-    border: 2px solid white;
-    outline: 2px solid black;
-    padding-left: 25px;
-    padding-right: 25px;
-    border-radius: 5px;
-    width: 90%;
-}
-
-.question-h3-theme2,
-.question-type-p-theme2 {
-    color: white;
-}
- */

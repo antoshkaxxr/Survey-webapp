@@ -92,7 +92,7 @@
 }
 
 .login-box2 {
-    user-select:none;
+    user-select: none;
     max-width: 300px;
     margin: 5rem auto;
     background-color: #282c34;
@@ -106,29 +106,32 @@
     text-align: center;
 
     .main {
-      display: flex;
-      flex-direction: column;
-      width: 90%;
-      padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        padding: 1rem;
     }
+
     ::before {
-      position: fixed;
-      content: "";
-      box-shadow: 0 0 100px 40px #ffffff08;
-      top: -10%;
-      left: -100%;
-      transform: rotate(-45deg);
-      height: 60rem;
-      transition: .7s all;
+        position: fixed;
+        content: "";
+        box-shadow: 0 0 100px 40px #ffffff08;
+        top: -10%;
+        left: -100%;
+        transform: rotate(-45deg);
+        height: 60rem;
+        transition: .7s all;
     }
-    &:hover{
-      box-shadow: 0 7px 50px 10px #000000aa;
-      transform: scale(1.015);
-      filter: brightness(1.3);
-      ::before{
-        filter: brightness(.5);
-        top: -100%;
-        left: 200%;
-      }
+
+    &:hover {
+        box-shadow: 0 7px 50px 10px #000000aa;
+        transform: scale(1.015);
+        filter: brightness(1.3);
+
+        ::before {
+            filter: brightness(.5);
+            top: -100%;
+            left: 200%;
+        }
     }
 }

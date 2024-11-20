@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { AppRoute } from "../../const/AppRoute.ts";
+import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
+import {AppRoute} from "../../const/AppRoute.ts";
 import './MySurveysPage.css';
-import { MySurveyItem } from "../../components/my-surveys-parts/MySurveyItem/MySurveyItem.tsx";
-import { IP_ADDRESS } from "../../config.ts";
-import { AccessModal } from "../../components/modals/AccessModal/AccessModal.tsx";
-import { sendGetResponseWhenLogged, getEmail, deleteAllCookies } from "../../sendResponseWhenLogged.ts";
+import {MySurveyItem} from "../../components/my-surveys-parts/MySurveyItem/MySurveyItem.tsx";
+import {IP_ADDRESS} from "../../config.ts";
+import {AccessModal} from "../../components/modals/AccessModal/AccessModal.tsx";
+import {sendGetResponseWhenLogged, getEmail} from "../../sendResponseWhenLogged.ts";
 
 interface Survey {
     id: string;
@@ -47,24 +47,8 @@ export function MySurveysPage() {
         return <div>Загрузка...</div>;
     }
 
-    const email = getEmail();
-
     return (
         <div className="my-surveys-container">
-            {
-                email !== null &&
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", width: "100%" }}>
-                    <div style={{ display: "flex", marginRight: "20px" }}>
-                        <Link to={AppRoute.Root}>
-                            <button className="WelcomeTransparent-btn">Home</button>
-                        </Link>
-                        <Link to={AppRoute.Login}>
-                                <button className="WelcomeTransparent-btn" onClick={deleteAllCookies}>Logout</button>
-                            </Link>
-                    </div>
-                    <h1>{email}</h1>
-                </div>
-            }
             <h1>Мои опросы</h1>
             <Link to={AppRoute.FormBuilder}>
                 <button className="create-survey-button">Создать новый опрос</button>

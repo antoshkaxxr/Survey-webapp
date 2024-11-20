@@ -9,6 +9,8 @@ import {MySurveysPage} from "../../pages/MySurveysPage/MySurveysPage.tsx";
 import {getEmail} from "../../sendResponseWhenLogged.ts";
 import {StatisticsPage} from "../../pages/StatisticsPage/StatisticsPage.tsx";
 import React from "react";
+import {Layout} from "../Layout/Layout.tsx";
+import {NotFoundPage} from "../../pages/NotFoundPage/NotFoundPage.tsx";
 
 function RequireAuth({ children } : { children: React.ReactNode }) {
     const email = getEmail();
@@ -35,18 +37,24 @@ export function App() {
                     path={AppRoute.Registration}
                     element={<RegistrationPage />}
                 />
-                <Route
-                    path={AppRoute.MySurveys}
-                    element={<RequireAuth><MySurveysPage /></RequireAuth>}
-                />
-                <Route
-                    path={AppRoute.FormBuilder}
-                    element={<RequireAuth><SurveyBuilderPage /></RequireAuth>}
-                />
-                <Route
-                    path={AppRoute.FormBuilderEdit}
-                    element={<RequireAuth><SurveyBuilderPage /></RequireAuth>}
-                />
+                <Route path="/" element={<Layout />}>
+                    <Route
+                        path={AppRoute.MySurveys}
+                        element={<RequireAuth><MySurveysPage /></RequireAuth>}
+                    />
+                    <Route
+                        path={AppRoute.FormBuilder}
+                        element={<RequireAuth><SurveyBuilderPage /></RequireAuth>}
+                    />
+                    <Route
+                        path={AppRoute.FormBuilderEdit}
+                        element={<RequireAuth><SurveyBuilderPage /></RequireAuth>}
+                    />
+                    <Route
+                        path={'*'}
+                        element={<NotFoundPage />}
+                    />
+                </Route>
                 <Route
                     path={AppRoute.SurveyId}
                     element={<RequireAuth><SurveyPage /></RequireAuth>}
