@@ -31,7 +31,8 @@
     left: 15px;
     width: 15px;
     height: 15px;
-    border: 2px solid black;
+    border: 2px solid ;
+    border-color: var(--text-color);
     outline: 0 solid #1a0aa9;
     transition: 0.1s;
     border-radius: 0;

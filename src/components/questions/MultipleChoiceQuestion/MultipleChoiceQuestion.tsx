@@ -24,7 +24,7 @@ export function MultipleChoiceQuestion({ questionInfo, answer, setAnswer,
             questionColor={questionColor}
             textColor={textColor}
         >
-            {questionInfo.options && questionInfo.options.map((option, index) => (
+             {questionInfo.options && questionInfo.options.map((option, index) => (
                 <label key={index} className={'checkbox-label'}>
                     <input
                         type="checkbox"
@@ -38,10 +38,11 @@ export function MultipleChoiceQuestion({ questionInfo, answer, setAnswer,
                         className={'checkbox-value'}
                         style={{color: textColor}}
                     >
-                        {option || `Вариант ${index + 1}`}
+                        {option ||`Вариант ${index + 1}`}
                     </span>
                 </label>
             ))}
+
         </BaseQuestion>
     );
 }
