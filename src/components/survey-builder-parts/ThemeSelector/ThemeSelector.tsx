@@ -165,7 +165,7 @@ export function ThemeSelector({backgroundImage, setBackgroundImage}: ThemeSelect
                         <button
                             className="remove-theme-button"
                             onClick={handleRemoveTheme}
-                            disabled={!haveImage && backgroundImage == undefined}
+                            disabled={!haveImage && backgroundImage === undefined}
                         >
                             <img
                                 src="/icons/trash-solid.svg"

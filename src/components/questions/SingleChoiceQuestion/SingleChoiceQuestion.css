@@ -21,9 +21,7 @@
     font-size: 18px;
 }
 
-.radio-value:hover {
-    background: rgba(38, 131, 243, 0.1);
-}
+
 
 .radio-value::before {
     content: "";
@@ -33,17 +31,19 @@
     height: 15px;
     border-radius: 50%;
     border: 2px solid ;
-    outline: 0 solid #1a0aa9;
+    outline: 0 solid ;
     transition: 0.1s;
 }
 
 .custom-radio:checked~.radio-value {
-    color: #10367e;
-    border-width: 5px;
-    background: rgba(14, 92, 195, 0.2);
+    border-width: 5px;  
+    
+}
+.radio-value:hover {
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .custom-radio:checked~.radio-value::before {
     outline-width: 5px;
-    background: #fff;
+    /* background: #fff; */
 }
