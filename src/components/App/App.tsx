@@ -54,15 +54,17 @@ export function App() {
                         path={'*'}
                         element={<NotFoundPage />}
                     />
+                    <Route
+                        path={AppRoute.SurveyId}
+                        element={<RequireAuth><SurveyPage /></RequireAuth>}
+                    />
+                    <Route
+                        path={AppRoute.StatisticId}
+                        element={<RequireAuth><StatisticsPage /></RequireAuth>}
+                    />
                 </Route>
-                <Route
-                    path={AppRoute.SurveyId}
-                    element={<RequireAuth><SurveyPage /></RequireAuth>}
-                />
-                <Route
-                    path={AppRoute.StatisticId}
-                    element={<RequireAuth><StatisticsPage /></RequireAuth>}
-                />
+                
+                
             </Routes>
         </BrowserRouter>
         </>
