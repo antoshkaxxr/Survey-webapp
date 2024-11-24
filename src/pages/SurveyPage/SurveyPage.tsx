@@ -122,7 +122,7 @@ export function SurveyPage() {
                                     }}
                                 />
                                 <div className={'survey-content'}>
-                                    <h1 className={'survey-page-title'}>{surveyData.Name}</h1>
+                                    <h1 className={'survey-page-title'}>{surveyData.Name || 'Без названия'}</h1>
                                     {surveyData.Survey.map(questionInfo => {
                                         const QuestionComponent = ComponentMap[questionInfo.type]?.component;
                                         return (
