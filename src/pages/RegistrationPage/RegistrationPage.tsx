@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './RegistrationPage.css';
-import {IP_ADDRESS} from "../../config.ts";
+import {BACK_ADDRESS} from "../../config.ts";
 import {AppRoute} from "../../const/AppRoute.ts";
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ export function RegistrationPage() {
 
     const handleRegistration = async () => {
         try {
-            const response = await fetch(`http://${IP_ADDRESS}:8080/user/registration`, {
+            const response = await fetch(`http://${BACK_ADDRESS}/user/registration`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

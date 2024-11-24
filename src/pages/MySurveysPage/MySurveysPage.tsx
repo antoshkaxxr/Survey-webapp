@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {AppRoute} from "../../const/AppRoute.ts";
 import './MySurveysPage.css';
 import {MySurveyItem} from "../../components/my-surveys-parts/MySurveyItem/MySurveyItem.tsx";
-import {IP_ADDRESS} from "../../config.ts";
+import {BACK_ADDRESS} from "../../config.ts";
 import {AccessModal} from "../../components/modals/AccessModal/AccessModal.tsx";
 import {sendGetResponseWhenLogged, getEmail} from "../../sendResponseWhenLogged.ts";
 
@@ -22,7 +22,7 @@ export function MySurveysPage() {
         const fetchSurveys = async () => {
             try {
                 const response = await sendGetResponseWhenLogged(
-                    `http://${IP_ADDRESS}:8080/surveys?email=${getEmail()}`);
+                    `http://${BACK_ADDRESS}/surveys?email=${getEmail()}`);
                 if (!response || !response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }

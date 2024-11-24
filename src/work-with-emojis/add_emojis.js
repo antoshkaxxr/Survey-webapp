@@ -39,7 +39,7 @@ function createParticle() {
 
     const str1 = '';
 
-    const str2 = '☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ℳ∑∭∬∳⊗⋉⋚⋕ꙬѼꙌꙞѮѩꙚѬ'
+    const str2 = '⚝⚹❄❅❆★☆✲✵✶❉✦✧'
 
 
 
@@ -49,7 +49,7 @@ function createParticle() {
 
     const generateRandomEmojis = (count) => Array.from({ length: count }, getRandomEmoji);
 
-    const words = generateRandomEmojis(20);
+    const words = generateRandomEmojis(10);
 
     class Particle {
       constructor(x, y, size, text) {
