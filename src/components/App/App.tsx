@@ -64,8 +64,6 @@ export function App() {
                         element={<RequireAuth><StatisticsPage /></RequireAuth>}
                     />
                 </Route>
-                
-                
             </Routes>
         </BrowserRouter>
         </>
