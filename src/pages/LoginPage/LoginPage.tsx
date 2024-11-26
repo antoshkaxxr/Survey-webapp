@@ -28,8 +28,9 @@ export function LoginPage() {
                 throw new Error('Network response was not ok');
             }
 
-            document.cookie = "Token" + "=" + (result || "") + "; path=/";
-            document.cookie = "Email" + "=" + (email || "") + "; path=/";
+            document.cookie = `Token=${result}; path=/`;
+            document.cookie = `Email=${email}; path=/`;
+
             console.log('Success:', result);
             navigate(AppRoute.MySurveys);
         } catch (error) {
