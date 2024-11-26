@@ -21,8 +21,6 @@
     font-size: 18px;
 }
 
-
-
 .radio-value::before {
     content: "";
     position: absolute;
@@ -30,15 +28,15 @@
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    border: 2px solid ;
-    outline: 0 solid ;
+    border: 2px solid;
+    outline: 0 solid;
     transition: 0.1s;
 }
 
 .custom-radio:checked~.radio-value {
-    border-width: 5px;  
-    
+    border-width: 5px;
 }
+
 .radio-value:hover {
     background-color: rgba(255, 255, 255, 0.7);
 }
