@@ -4,7 +4,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
   background: linear-gradient(to right, #FFDDC1, #dff6fb);
+
+  background-color: rgb(240, 240, 240);
+
+  background-color: rgb(229, 231, 235);
+
+  background: linear-gradient(to right, rgb(237, 220, 203), rgb(229, 231, 235));
+
+
 }
 
 
