@@ -9,7 +9,7 @@ import { SurveyTitle } from "../../components/survey-builder-parts/SurveyTitle/S
 import { ThemeSelector } from "../../components/survey-builder-parts/ThemeSelector/ThemeSelector.tsx";
 import { EmptyQuestionItem } from "../../components/survey-builder-parts/EmptyQuestionItem/EmptyQuestionItem.tsx";
 import { QuestionButtons } from "../../components/survey-builder-parts/QuestionButtons/QuestionButtons.tsx";
-import { IP_ADDRESS } from "../../config.ts";
+import { BACK_ADDRESS } from "../../config.ts";
 import { AccessModal } from "../../components/modals/AccessModal/AccessModal.tsx";
 import { ColorPanel } from '../../components/survey-builder-parts/ColorPanel/ColorPanel.tsx';
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
@@ -42,7 +42,7 @@ export function SurveyBuilderPage() {
             const fetchSurvey = async () => {
                 try {
                     const response = await sendGetResponseWhenLogged(
-                        `http://${IP_ADDRESS}:8080/survey/${id}`);
+                        `http://${BACK_ADDRESS}/survey/${id}`);
                     if (!response || !response.ok) {
                         throw new Error('Ошибка при загрузке опроса');
                     }
@@ -118,14 +118,14 @@ export function SurveyBuilderPage() {
             if (id) {
                 response = await sendChangingResponseWhenLogged(
                     'PATCH',
-                    `http://${IP_ADDRESS}:8080/survey/${id}`,
+                    `http://${BACK_ADDRESS}/survey/${id}`,
                     data
                 );
                 setAccessSurveyId(id);
             } else {
                 response = await sendChangingResponseWhenLogged(
                     'POST',
-                    `http://${IP_ADDRESS}:8080/survey`,
+                    `http://${BACK_ADDRESS}/survey`,
                     data
                 );
                 const retrievedId = await response.text();

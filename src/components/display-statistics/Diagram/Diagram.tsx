@@ -12,6 +12,7 @@ import {
     ChartOptions,
     ChartData
 } from 'chart.js';
+import "./Diagram.css"
 
 ChartJS.register(
     CategoryScale,
@@ -60,8 +61,8 @@ export function Diagram({ question, answers }: DisplayStatisticsProps) {
     };
 
     return (
-        <div>
-            <Bar
+        <div >
+            <Bar className="Diagram"
                 data={barChartData}
                 options={options}
             />

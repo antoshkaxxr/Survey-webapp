@@ -1,8 +1,8 @@
 import './MultipleChoiceQuestion.css';
-import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
+import { BaseQuestion } from "../BaseQuestion/BaseQuestion.tsx";
 
 export function MultipleChoiceQuestion({ questionInfo, answer, setAnswer,
-                                         questionColor, textColor }: QuestionProps) {
+    questionColor, textColor }: QuestionProps) {
     const handleOptionChange = (option: string) => {
         const currentOptions: string[] = answer !== ''
             ? answer.split('\n')
@@ -36,7 +36,7 @@ export function MultipleChoiceQuestion({ questionInfo, answer, setAnswer,
                     />
                     <span
                         className={'checkbox-value'}
-                        style={{color: textColor}}
+                        style={{ color: textColor }}
                     >
                         {option || `Вариант ${index + 1}`}
                     </span>

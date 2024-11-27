@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {AppRoute} from "../../../const/AppRoute.ts";
 import {Link, useNavigate} from "react-router-dom";
-import {IP_ADDRESS} from "../../../config.ts";
+import {BACK_ADDRESS, FRONT_ADDRESS} from "../../../config.ts";
 import {sendChangingResponseWhenLogged} from "../../../sendResponseWhenLogged.ts";
 import './MySurveyItem.css';
 import {ExportModal} from "../../modals/ExportModal/ExportModal.tsx";
@@ -15,7 +15,7 @@ interface MySurveyItemProps {
 }
 
 const copyToClipboard = (surveyId: string) => {
-    navigator.clipboard.writeText(`http://localhost:3000/survey/${surveyId}`).then(() => {
+    navigator.clipboard.writeText(`http://${FRONT_ADDRESS}/survey/${surveyId}`).then(() => {
         alert("Ссылка на опрос скопирована в буфер обмена!");
     });
 };
@@ -30,7 +30,7 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModa
         if (confirmDeletion) {
             try {
                 const response = await sendChangingResponseWhenLogged('DELETE',
-                    `http://${IP_ADDRESS}:8080/survey/${surveyId}`, {});
+                    `http://${BACK_ADDRESS}/survey/${surveyId}`, {});
 
                 if (!response || !response.ok) {
                     throw new Error('Ошибка при удалении опроса');

@@ -37,6 +37,10 @@ export function App() {
                     path={AppRoute.Registration}
                     element={<RegistrationPage />}
                 />
+                <Route
+                        path={AppRoute.SurveyId}
+                        element={<RequireAuth><SurveyPage /></RequireAuth>}
+                />
                 <Route path="/" element={<Layout />}>
                     <Route
                         path={AppRoute.MySurveys}
@@ -54,15 +58,12 @@ export function App() {
                         path={'*'}
                         element={<NotFoundPage />}
                     />
+                    
+                    <Route
+                        path={AppRoute.StatisticId}
+                        element={<RequireAuth><StatisticsPage /></RequireAuth>}
+                    />
                 </Route>
-                <Route
-                    path={AppRoute.SurveyId}
-                    element={<RequireAuth><SurveyPage /></RequireAuth>}
-                />
-                <Route
-                    path={AppRoute.StatisticId}
-                    element={<RequireAuth><StatisticsPage /></RequireAuth>}
-                />
             </Routes>
         </BrowserRouter>
         </>

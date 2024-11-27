@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import '../BaseModal/BaseModal.css';
 import './AccessModal.css';
-import {IP_ADDRESS} from "../../../config.ts";
+import {BACK_ADDRESS} from "../../../config.ts";
 import {sendChangingResponseWhenLogged} from "../../../sendResponseWhenLogged.ts";
 import {BaseModal} from "../BaseModal/BaseModal.tsx";
 
@@ -38,7 +38,7 @@ export function AccessModal({isOpen, onClose, accessSurveyId}: AccessModalProps)
         };
 
         try {
-            const response = await sendChangingResponseWhenLogged('POST', `http://${IP_ADDRESS}:8080/survey/${accessSurveyId}/access`, requestBody);
+            const response = await sendChangingResponseWhenLogged('POST', `http://${BACK_ADDRESS}/survey/${accessSurveyId}/access`, requestBody);
 
             if (!response.ok) {
                 throw new Error('Ошибка при отправке данных');

@@ -10,6 +10,6 @@ COPY . .
 EXPOSE 3000
 CMD ["npm", "start"]
 
-# docker build .
-# docker run -p 3000:3000  <id>
-# http://localhost:8000/
+# docker build -t front .
+# docker run --name front -p 3000:3000 front
+# http://localhost:3000/

@@ -24,14 +24,15 @@
     transition: transform 0.2s;
 }
 
-.survey-container:hover {
-    transform: scale(1.02);
+.survey-buttons button {
+    margin-left: 8px;
 }
 
 .survey-buttons {
     display: flex;
-    gap: 10px;
-}
+    flex-wrap: wrap;
+    /* max-width: 30%; */
+  }
 
 .survey-buttons button {
     background: transparent;

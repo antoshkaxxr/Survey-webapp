@@ -4,6 +4,7 @@ import {
 } from "../../../sendResponseWhenLogged.ts";
 import "./ExportModal.css";
 import {BaseModal} from "../BaseModal/BaseModal.tsx";
+import { BACK_ADDRESS } from "../../../config.ts";
 
 interface ExportProps {
     surveyId: string;
@@ -12,7 +13,7 @@ interface ExportProps {
 }
 
 async function handleExport(surveyId: string, type: string, onClose: () => void) {
-    const url = `http://localhost:8080/survey/${surveyId}/generate_${type}`;
+    const url = `http://${BACK_ADDRESS}/survey/${surveyId}/generate_${type}`;
     const methods: { [key: string]: (url: string) => Promise<Response> } = {
         'excel': sendGetSheetEcxelResponseWhenLogged,
         'pdf': sendGetSheetPdfResponseWhenLogged

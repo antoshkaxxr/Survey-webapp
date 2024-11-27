@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './LoginPage.css';
-import { IP_ADDRESS } from "../../config.ts";
+import { BACK_ADDRESS } from "../../config.ts";
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from "../../const/AppRoute.ts";
 
@@ -11,7 +11,7 @@ export function LoginPage() {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch(`http://${IP_ADDRESS}:8080/user/login`, {
+            const response = await fetch(`http://${BACK_ADDRESS}/user/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -28,8 +28,9 @@ export function LoginPage() {
                 throw new Error('Network response was not ok');
             }
 
-            document.cookie = "Token" + "=" + (result || "") + "; path=/";
-            document.cookie = "Email" + "=" + (email || "") + "; path=/";
+            document.cookie = `Token=${result}; path=/`;
+            document.cookie = `Email=${email}; path=/`;
+
             console.log('Success:', result);
             navigate(AppRoute.MySurveys);
         } catch (error) {

@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {sendGetResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
-import {IP_ADDRESS} from "../../config.ts";
+import {BACK_ADDRESS} from "../../config.ts";
 import {ComponentMap} from "../../const/ComponentMap.ts";
 import {BaseStatistic} from "../../components/display-statistics/BaseStatistics/BaseStatistic.tsx";
 import "./StatisticsPage.css"
@@ -35,7 +35,7 @@ export function StatisticsPage() {
                 if (surveyData !== null)
                     return;
                 const response = await sendGetResponseWhenLogged(
-                    `http://${IP_ADDRESS}:8080/survey/${surveyId}`);
+                    `http://${BACK_ADDRESS}/survey/${surveyId}`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
@@ -50,7 +50,7 @@ export function StatisticsPage() {
         const downloadDataStatistic = async () => {
             try {
                 const response = await sendGetResponseWhenLogged(
-                    `http://${IP_ADDRESS}:8080/survey/${surveyId}/statistic`);
+                    `http://${BACK_ADDRESS}/survey/${surveyId}/statistic`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }

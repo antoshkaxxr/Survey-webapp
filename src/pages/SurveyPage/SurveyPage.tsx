@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './SurveyPage.scss';
 import { ComponentMap } from "../../const/ComponentMap.ts";
-import { IP_ADDRESS } from "../../config.ts";
+import { BACK_ADDRESS } from "../../config.ts";
 import { UnavailableSurvey } from "../../components/survey-parts/UnavailableSurvey/UnavailableSurvey.tsx";
 import { sendGetResponseWhenLogged, sendChangingResponseWhenLogged } from "../../sendResponseWhenLogged.ts";
 import { getImage } from "../../sendResponseWhenLogged.ts";
@@ -27,7 +27,7 @@ export function SurveyPage() {
     useEffect(() => {
         const checkSurveyAccess = async () => {
             try {
-                const response = await sendGetResponseWhenLogged(`http://${IP_ADDRESS}:8080/survey/${id}/access`);
+                const response = await sendGetResponseWhenLogged(`http://${BACK_ADDRESS}/survey/${id}/access`);
                 if (!response.ok) throw new Error('Ошибка при получении доступа к опросу');
 
                 const accessData = await response.json();
@@ -47,7 +47,7 @@ export function SurveyPage() {
 
         const fetchSurvey = async () => {
             try {
-                const response = await sendGetResponseWhenLogged(`http://${IP_ADDRESS}:8080/survey/${id}`);
+                const response = await sendGetResponseWhenLogged(`http://${BACK_ADDRESS}/survey/${id}`);
                 if (!response.ok) throw new Error('Ошибка при получении данных опроса');
 
                 const data = await response.json();
@@ -89,7 +89,7 @@ export function SurveyPage() {
         try {
             const response = await sendChangingResponseWhenLogged(
                 'POST',
-                `http://${IP_ADDRESS}:8080/survey/${id}/answer`,
+                `http://${BACK_ADDRESS}/survey/${id}/answer`,
                 answers
             );
 
@@ -122,7 +122,7 @@ export function SurveyPage() {
                                     }}
                                 />
                                 <div className={'survey-content'}>
-                                    <h1 className={'survey-page-title'}>{surveyData.Name}</h1>
+                                    <h1 className={'survey-page-title'}>{surveyData.Name || 'Без названия'}</h1>
                                     {surveyData.Survey.map(questionInfo => {
                                         const QuestionComponent = ComponentMap[questionInfo.type]?.component;
                                         return (
