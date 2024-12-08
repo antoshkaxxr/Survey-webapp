@@ -32,3 +32,16 @@
     filter: grayscale(100%);
     cursor: not-allowed;
 }
+
+@media (max-width: 768px) {
+    .question-buttons {
+        display: inline-block;
+        margin-left: 0;
+        gap: 10px; 
+    }
+
+    .question-buttons button {
+        opacity: 1;
+        font-size: 16px;
+    }
+}
