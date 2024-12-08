@@ -1,13 +1,20 @@
-.table-container {
+.page-statistic {
+    height: 80%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 100vh;
+    justify-content: center;
+
+}
+
+.table-container {
+    overflow-y: auto;
 }
 
 .survey-table {
+
     border-collapse: collapse;
-    width: 500px;
+    width: 700px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     background-color: white;
@@ -41,4 +48,19 @@
 
 .statistics-menu-container{
     padding-right: 10%;
+}
+
+.fall-in {
+    animation: fallIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fallIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

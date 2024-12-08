@@ -1,33 +1,13 @@
 import { Bar } from "react-chartjs-2";
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineController,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
     ChartOptions,
     ChartData
 } from 'chart.js';
 import "./Diagram.css"
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineController,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-);
+
 
 export function Diagram({ question, answers }: DisplayStatisticsProps) {
-    console.log(question);
-    console.log(answers);
     const labels = answers.map((a) => a.variant);
     const data = answers.map((a) => a.amountSelected);
 
@@ -62,7 +42,7 @@ export function Diagram({ question, answers }: DisplayStatisticsProps) {
 
     return (
         <div >
-            <Bar className="Diagram"
+            <Bar className="diagram-statistic"
                 data={barChartData}
                 options={options}
             />
