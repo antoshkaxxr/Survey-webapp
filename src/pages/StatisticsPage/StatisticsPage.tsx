@@ -4,6 +4,7 @@ import {sendGetResponseWhenLogged} from "../../sendResponseWhenLogged.ts";
 import {BACK_ADDRESS} from "../../config.ts";
 import {ComponentMap} from "../../const/ComponentMap.ts";
 import {BaseStatistic} from "../../components/display-statistics/BaseStatistics/BaseStatistic.tsx";
+import Swal from 'sweetalert2';
 import "./StatisticsPage.css"
 
 interface DisplayStatisticsPropsResponse {
@@ -42,7 +43,11 @@ export function StatisticsPage() {
                 const data = await response.json();
                 setSurveyData(data);
             } catch (error) {
-                alert('Не удалось удалить опрос. Попробуйте снова.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка!',
+                    text: 'Не удалось получить данные опроса. Попробуйте снова.',
+                });
             }
         };
         downloadDataSurvey();
@@ -66,7 +71,11 @@ export function StatisticsPage() {
                 setPropsDisplayStatisticsByIdQuestion(propsDict);
                 setLoadingStatistic(true);
             } catch (error) {
-                alert('Не удалось удалить опрос. Попробуйте снова.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка!',
+                    text: 'Не удалось получить данные статистики. Попробуйте снова.',
+                });
             }
         };
         downloadDataStatistic();

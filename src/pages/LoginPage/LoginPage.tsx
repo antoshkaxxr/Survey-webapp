@@ -3,6 +3,7 @@ import './LoginPage.css';
 import { BACK_ADDRESS } from "../../config.ts";
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from "../../const/AppRoute.ts";
+import Swal from 'sweetalert2';
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
@@ -16,27 +17,50 @@ export function LoginPage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(
-                    {
-                        "email": email,
-                        "password": password,
-                    })
+                body: JSON.stringify({
+                    "email": email,
+                    "password": password,
+                })
             });
+    
             const result = await response.text();
-
+    
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
-            document.cookie = `Token=${result}; path=/`;
-            document.cookie = `Email=${email}; path=/`;
-
-            console.log('Success:', result);
-            navigate(AppRoute.MySurveys);
+    
+            // Успешный вход
+            if (result !== "") {
+                document.cookie = `Token=${result}; path=/`;
+                document.cookie = `Email=${email}; path=/`;
+    
+                console.log('Success:', result);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Успех!',
+                    text: 'Вы успешно вошли в систему!',
+                }).then(() => {
+                    navigate(AppRoute.MySurveys);
+                });
+            } else {
+                // Неправильный логин или пароль
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка!',
+                    text: 'Неправильный логин или пароль.',
+                });
+            }
+            
         } catch (error) {
             console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Ошибка!',
+                text: 'Произошла ошибка при входе в систему.',
+            });
         }
     };
+    
 
     const handleGoogleLogin = () => {
         // Логика для входа через Google
