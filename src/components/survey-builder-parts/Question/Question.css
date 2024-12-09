@@ -7,7 +7,7 @@
     padding-left: 25px;
     padding-right: 25px;
     border-radius: 5px;
-    width: 500px;
+    width: 500px auto;
 }
 
 .question-container {
@@ -39,4 +39,29 @@
     height: 16px;
     margin-right: 4px;
     vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    .questions-list {
+        padding: 10px; /* Уменьшение отступов на мобильных */
+    }
+
+    .question-container-default,
+    .question-container {
+        padding: 10px; /* Уменьшение внутреннего отступа для мобильных */
+        width: 90%; /* К контейнерам устанавливаем ширину 100% */
+        max-width: none; /* Убираем максимальную ширину на мобильных */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Добавление тени для улучшения визуала */
+    }
+
+    .option {
+        flex-direction: row; /* Горизонтальное расположение опций */
+        justify-content: flex-start; /* Выравнивание по левому краю */
+        margin-bottom: 10px; /* Отступ между опциями */
+    }
+
+    .optionText {
+        width: auto; /* Убираем фиксированную ширину для текста опции */
+        flex-grow: 1; /* Позволяем тексту занимать оставшееся пространство */
+    }
 }

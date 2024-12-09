@@ -5,6 +5,7 @@ import {BACK_ADDRESS, FRONT_ADDRESS} from "../../../config.ts";
 import {sendChangingResponseWhenLogged} from "../../../sendResponseWhenLogged.ts";
 import './MySurveyItem.css';
 import {ExportModal} from "../../modals/ExportModal/ExportModal.tsx";
+import Swal from 'sweetalert2';
 
 interface MySurveyItemProps {
     surveyId: string;
@@ -15,8 +16,19 @@ interface MySurveyItemProps {
 }
 
 const copyToClipboard = (surveyId: string) => {
-    navigator.clipboard.writeText(`http://${FRONT_ADDRESS}/survey/${surveyId}`).then(() => {
-        alert("Ссылка на опрос скопирована в буфер обмена!");
+    const url = `http://${FRONT_ADDRESS}/survey/${surveyId}`;
+    navigator.clipboard.writeText(url).then(() => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Ссылка скопирована!',
+            text: 'Ссылка на опрос скопирована в буфер обмена!',
+        });
+    }).catch(() => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Ошибка!',
+            text: 'Не удалось скопировать ссылку. Попробуйте снова.',
+        });
     });
 };
 
@@ -26,19 +38,39 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModa
 
 
     const handleDelete = async (surveyId: string) => {
-        const confirmDeletion = window.confirm("Вы уверены, что хотите удалить этот опрос?");
-        if (confirmDeletion) {
+        const result = await Swal.fire({
+            title: 'Вы уверены?',
+            text: "Вы не сможете вернуть этот опрос после удаления!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Да, удалить!',
+            cancelButtonText: 'Отмена'
+        });
+    
+        if (result.isConfirmed) {
             try {
                 const response = await sendChangingResponseWhenLogged('DELETE',
                     `http://${BACK_ADDRESS}/survey/${surveyId}`, {});
-
+    
                 if (!response || !response.ok) {
                     throw new Error('Ошибка при удалении опроса');
                 }
-
+    
                 setSurveyData((prevData) => prevData.filter(survey => survey.surveyId !== surveyId));
+    
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Успех!',
+                    text: 'Опрос успешно удален!',
+                });
             } catch (error) {
-                alert('Не удалось удалить опрос. Попробуйте снова.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка!',
+                    text: 'Не удалось удалить опрос. Попробуйте снова.',
+                });
             }
         }
     };

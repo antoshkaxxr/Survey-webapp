@@ -5,6 +5,7 @@ import { ComponentMap } from "../../const/ComponentMap.ts";
 import { BACK_ADDRESS } from "../../config.ts";
 import { UnavailableSurvey } from "../../components/survey-parts/UnavailableSurvey/UnavailableSurvey.tsx";
 import { sendGetResponseWhenLogged, sendChangingResponseWhenLogged } from "../../sendResponseWhenLogged.ts";
+import Swal from 'sweetalert2';
 import { getImage } from "../../sendResponseWhenLogged.ts";
 
 interface SurveyData {
@@ -67,38 +68,54 @@ export function SurveyPage() {
 
     const handleSubmit = async () => {
         if (!surveyData) {
-            alert("Ещё не загрузилось");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Внимание!',
+                text: 'Ещё не загрузилось',
+            });
             return;
         }
-
+    
         const missingRequiredAnswers = surveyData.Survey.filter(question =>
             question.isRequired && !answers[question.questionId]
         );
-
+    
         if (missingRequiredAnswers.length > 0) {
-            alert("Заполните все обязательные вопросы");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Внимание!',
+                text: 'Заполните все обязательные вопросы',
+            });
             return;
         }
-
+    
         for (const question of surveyData.Survey) {
             if (!answers[question.questionId]) {
                 answers[question.questionId] = '';
             }
         }
-
+    
         try {
             const response = await sendChangingResponseWhenLogged(
                 'POST',
                 `http://${BACK_ADDRESS}/survey/${id}/answer`,
                 answers
             );
-
+    
             if (!response.ok) throw new Error('Ошибка при отправке ответов');
-
-            alert('Ваши ответы успешно отправлены!');
+    
+            Swal.fire({
+                icon: 'success',
+                title: 'Успех!',
+                text: 'Ваши ответы успешно отправлены!',
+            });
         } catch (error) {
             console.error('Ошибка:', error);
-            alert('Произошла ошибка при отправке ответов. Попробуйте еще раз.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Ошибка!',
+                text: 'Произошла ошибка при отправке ответов. Попробуйте еще раз.',
+            });
         }
     };
 
