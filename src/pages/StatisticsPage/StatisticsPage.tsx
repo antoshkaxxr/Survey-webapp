@@ -112,8 +112,8 @@ export function StatisticsPage() {
                             return (
                                 <>
                                     <tr key={questionInfo.questionId}>
-                                        <td>{questionName}</td>
-                                        <td>{questionType}</td>
+                                        <td className="fixed-width-cell">{questionName}</td>
+                                        <td className="fixed-width-cell">{questionType}</td>
                                         <td>
                                             <button
                                                 className="blue-button"

@@ -54,6 +54,18 @@
     animation: fallIn 0.5s ease-in-out forwards;
 }
 
+.fixed-width-cell {
+    width: 200px; /* Adjust as needed */
+    word-break: break-word; /* Allows words to break within the cell */
+    overflow-wrap: break-word; /* For better cross-browser compatibility */
+}
+
+@media (max-width: 768px) {
+    .fixed-width-cell {
+        width: 150px; /* Smaller width for smaller screens */
+    }
+}
+
 @keyframes fallIn {
     0% {
         opacity: 0;
