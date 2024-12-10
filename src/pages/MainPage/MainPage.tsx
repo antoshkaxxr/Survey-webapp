@@ -1,5 +1,4 @@
 import './MainPage.css';
-import "../../work-with-emojis/add_emojis.js";
 import {AppRoute} from "../../const/AppRoute.ts";
 
 export function MainPage() {
