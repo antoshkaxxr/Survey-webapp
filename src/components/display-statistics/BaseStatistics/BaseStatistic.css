@@ -3,12 +3,48 @@
     flex-direction: column;
 }
 
+.buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
+
 .close-button-container {
-    align-self: flex-end;
-    margin-bottom: 10px;
     background: transparent;
     border: none;
     cursor: pointer;
+}
+
+.button-way-displayed-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.button-way-displayed {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.button-way-displayed:hover {
+    background-color: #ddd;
+}
+
+.button-way-displayed:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.button-way-displayed:active {
+    transform: translateY(1px);
 }
 
 .close-button-container img {

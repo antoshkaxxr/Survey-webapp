@@ -17,7 +17,7 @@ export function List({ question, answers }: DisplayStatisticsProps) {
             {labels.map(label => {
                 return (
                     <tr key={label}>
-                        <td>{label}</td>
+                        <td className="fixed-width-cell">{label}</td>
                     </tr>
                 );
             })}

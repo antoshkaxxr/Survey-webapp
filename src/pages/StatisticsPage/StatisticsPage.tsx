@@ -27,8 +27,16 @@ export function StatisticsPage() {
     const {surveyId} = useParams<{ surveyId: string }>();
     const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
     const [isLoadingStatistic, setLoadingStatistic] = useState<boolean>(false);
-    const [currQuestion, setCurrQuestion] = useState<SurveyQuestion | null>(null);
     const [propsDisplayStatisticsByIdQuestion, setPropsDisplayStatisticsByIdQuestion] = useState<Record<string, DisplayStatisticsProps>>({});
+    const [questionIdForViewStatistic, setQuestionIdForViewStatistic] = useState<string[]>(new Array<string>());
+
+    const handleOpenStatisticQuestion = (id : string ) => {
+        setQuestionIdForViewStatistic([...questionIdForViewStatistic, id]);
+    };
+    const handleCloseStatisticQuestion = (idToRemove : string) => {
+        setQuestionIdForViewStatistic(questionIdForViewStatistic.filter((id) => id !== idToRemove));
+    };
+
 
     useEffect(() => {
         const downloadDataSurvey = async () => {
@@ -60,6 +68,7 @@ export function StatisticsPage() {
                     throw new Error('Ошибка при получении данных опроса');
                 }
                 const data = await response.json();
+                console.log(data);
                 let propsDict = data.reduce((acc: any, item: DisplayStatisticsPropsResponse) => {
                     const {questionId, question, answers} = item as DisplayStatisticsPropsResponse;
                     acc[questionId] = {
@@ -81,59 +90,64 @@ export function StatisticsPage() {
         downloadDataStatistic();
     }, [surveyId, surveyData])
 
-    const loadStatistic = async (questionInfo: SurveyQuestion) => {
-        setCurrQuestion(questionInfo);
-    }
 
     return (
-        <div>
+        <div className="page-statistic">
+            <h1>{surveyData === null ? "" : surveyData.Name}</h1>
             {!surveyData && <h3>Загружается...</h3>}
-            {surveyData && !currQuestion &&
-                <div>
-                    <div className="table-container">
-                        <table className="survey-table">
-                            <thead>
-                            <tr>
-                                <th style={{borderRadius: '10px 0 0 0'}}>Имя вопроса</th>
-                                <th>Тип вопроса</th>
-                                <th style={{borderRadius: '0 10px 0 0'}}>Кнопка</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {surveyData.Survey.map(questionInfo => {
-                                const questionType = ComponentMap[questionInfo.type]?.name || "";
-                                const questionName = questionInfo.question;
-                                return (
+            {surveyData &&
+                <div className="table-container">
+                    <table className="survey-table">
+                        <thead>
+                        <tr>
+                            <th style={{borderRadius: '10px 0 0 0'}}>Имя вопроса</th>
+                            <th>Тип вопроса</th>
+                            <th style={{borderRadius: '0 10px 0 0'}}>Кнопка</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {surveyData.Survey.map(questionInfo => {
+                            const questionType = ComponentMap[questionInfo.type]?.name || "";
+                            const questionName = questionInfo.question;
+                            return (
+                                <>
                                     <tr key={questionInfo.questionId}>
-                                        <td>{questionName}</td>
-                                        <td>{questionType}</td>
+                                        <td className="fixed-width-cell">{questionName}</td>
+                                        <td className="fixed-width-cell">{questionType}</td>
                                         <td>
                                             <button
                                                 className="blue-button"
-                                                onClick={() => loadStatistic(questionInfo)}
+                                                onClick={() => handleOpenStatisticQuestion(questionInfo.questionId)}
                                             >
                                                 Статистика
                                             </button>
                                         </td>
                                     </tr>
-                                );
-                            })}
-                            </tbody>
-                        </table>
-                    </div>
+                                    {!isLoadingStatistic && questionIdForViewStatistic.includes(questionInfo.questionId) &&
+                                        <tr key={questionInfo.questionId + "_statistic"}>
+                                            <td>Статистика загружается</td>
+                                        </tr>
+                                    }
+                                    {isLoadingStatistic && questionIdForViewStatistic.includes(questionInfo.questionId) &&
+                                        <tr key={questionInfo.questionId + "_statistic"} className="fall-in">
+                                            <td colSpan={3}>
+                                                <BaseStatistic
+                                                    questionInfo={questionInfo}
+                                                    answers={propsDisplayStatisticsByIdQuestion[questionInfo.questionId].answers}
+                                                    onClose={() => {
+                                                        handleCloseStatisticQuestion(questionInfo.questionId);
+                                                    }}>
+                                                </BaseStatistic>
+                                            </td>
+                                        </tr>
+                                    }
+                                </>
+                            );
+                        })}
+                        </tbody>
+                    </table>
                 </div>
             }
-            {currQuestion && !isLoadingStatistic && <div>Статистика загружается</div>}
-            {currQuestion && isLoadingStatistic &&
-                <div>
-                    <BaseStatistic
-                        questionInfo={currQuestion}
-                        answers={propsDisplayStatisticsByIdQuestion[currQuestion.questionId].answers}
-                        onClose={() => {
-                            setCurrQuestion(null)
-                        }}>
-                    </BaseStatistic>
-                </div>}
         </div>
     );
 }

@@ -94,12 +94,17 @@ export function SurveyPage() {
                 answers[question.questionId] = '';
             }
         }
-    
+
+        let sortedAnswers : {[p: string]: string} = {};
+        surveyData.Survey.forEach(question => {
+            sortedAnswers[question.questionId] = answers[question.questionId]
+        });
+
         try {
             const response = await sendChangingResponseWhenLogged(
                 'POST',
                 `http://${BACK_ADDRESS}/survey/${id}/answer`,
-                answers
+                sortedAnswers
             );
     
             if (!response.ok) throw new Error('Ошибка при отправке ответов');
