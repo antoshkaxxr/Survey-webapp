@@ -1,12 +1,13 @@
-import {useState, ChangeEvent} from 'react';
+import { useState, ChangeEvent } from 'react';
 import './FileQuestion.css';
-import {BaseQuestion} from "../BaseQuestion/BaseQuestion.tsx";
+import { BaseQuestion } from "../BaseQuestion/BaseQuestion.tsx";
+import {uploadFileToBucket} from "../../../utils/uploadFile.ts";
 
-export function FileQuestion({ questionInfo, answer, setAnswer,
-                               questionColor, textColor }: QuestionProps) {
+export function FileQuestion({ questionInfo, answer, setAnswer, questionColor, textColor }: QuestionProps) {
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
 
         if (selectedFile) {
@@ -16,9 +17,18 @@ export function FileQuestion({ questionInfo, answer, setAnswer,
                 }
                 setError('Размер файла не должен превышать 10 МБ.');
             } else {
-                // Логика по загрузке файла в бакет!!!
-                setError('');
-                setAnswer(selectedFile.name);
+                setLoading(true);
+                try {
+                    const url = await uploadFileToBucket(selectedFile);
+                    if (url) {
+                        setAnswer(url);
+                        setError('');
+                    }
+                } catch (error) {
+                    setError('Произошла ошибка при загрузке файла');
+                } finally {
+                    setLoading(false);
+                }
             }
         }
     }
@@ -31,12 +41,13 @@ export function FileQuestion({ questionInfo, answer, setAnswer,
             isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
+            imageUrl={questionInfo.imageUrl}
         >
             <input
                 type="file"
                 id={`file-input-${questionInfo.questionId}`}
                 onChange={handleFileChange}
-                style={{display: 'none'}}
+                style={{ display: 'none' }}
             />
             <label
                 htmlFor={`file-input-${questionInfo.questionId}`}
@@ -44,6 +55,7 @@ export function FileQuestion({ questionInfo, answer, setAnswer,
             >
                 Выбрать файл
             </label>
+            {loading && <span className={'loading-message'}>Файл загружается...</span>}
             {error && <span className={'error-message'}>{error}</span>}
             {answer !== '' && <span className={'name-message'}>{answer}</span>}
         </BaseQuestion>

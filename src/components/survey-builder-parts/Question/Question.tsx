@@ -1,21 +1,28 @@
 import './Question.css';
 import { ComponentMap } from "../../../const/ComponentMap.ts";
 import { Checkbox, Select } from '../OptionImg/OptionImg.tsx';
+
 interface QuestionProps {
     question: string;
     type: number;
     textColor: string;
     initialOptions?: string[];
+    imageUrl?: string;
 }
 
 const optionQuestionTypes = [1, 2, 9];
 
-export function Question({ question, type, textColor, initialOptions }: QuestionProps) {
+export function Question({ question, type, textColor, initialOptions, imageUrl }: QuestionProps) {
     return (
         <div>
             <h2 className="question-h3" style={{ color: textColor }}>
                 {question}
             </h2>
+            {imageUrl && (
+                <div>
+                    <img src={imageUrl} alt="Картинка к вопросу" style={{ maxWidth: '100%', marginTop: '10px' }} />
+                </div>
+            )}
             <h3 className="question-type-p" style={{ color: textColor }}>
                 Тип вопроса: {ComponentMap[type].name}
             </h3>

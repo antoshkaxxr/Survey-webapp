@@ -1,12 +1,10 @@
 .question-border {
     position: relative;
-
     margin-bottom: 15px;
-
     padding-bottom: 20px;
     padding-top: 5px;
-
     border-radius: 25px;
+    background: #f0f0f0;
 }
 
 .question-wording {
@@ -15,10 +13,11 @@
     font-style: normal;
     font-size: 22px;
     margin-left: 25px;
-    white-space: normal; /* Позволяет переносить текст на новую строку */
-    word-wrap: break-word; /* Переносит длинные слова, если они не помещаются */
-    overflow-wrap: break-word; /* Добавляет дополнительный перенос слов при необходимости */
-    width: 80%; /* Задает ширину элемента, можно настроить по необходимостям */
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 80%;
+    color: #333;
 }
 
 .clear-button {
@@ -42,16 +41,19 @@
     text-decoration: none;
 }
 
-.clear-button-container{
+.clear-button-container {
     display: flex;
     height: 10px;
 }
 
+.image-container {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 20px;
+}
 
-
-
-
-
-
-
-
+.question-image {
+    max-width: 100%;
+    border-radius: 10px;
+    display: block;
+}

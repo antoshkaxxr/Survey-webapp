@@ -11,6 +11,7 @@ export function TextQuestion({ questionInfo, answer, setAnswer,
             isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
+            imageUrl={questionInfo.imageUrl}
         >
             <textarea
                 id={questionInfo.questionId}

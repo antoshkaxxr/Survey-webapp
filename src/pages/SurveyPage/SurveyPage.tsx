@@ -6,7 +6,7 @@ import { BACK_ADDRESS } from "../../config.ts";
 import { UnavailableSurvey } from "../../components/survey-parts/UnavailableSurvey/UnavailableSurvey.tsx";
 import { sendGetResponseWhenLogged, sendChangingResponseWhenLogged } from "../../sendResponseWhenLogged.ts";
 import Swal from 'sweetalert2';
-import { getImage } from "../../sendResponseWhenLogged.ts";
+import {Header} from "../../components/Header/Header.tsx";
 
 interface SurveyData {
     Name: string;
@@ -55,8 +55,7 @@ export function SurveyPage() {
                 setSurveyData(data);
 
                 if (data.BackgroundImage) {
-                    const imageUrl = await getImage(data.BackgroundImage.name);
-                    setBackgroundUrl(imageUrl);
+                    setBackgroundUrl(data.BackgroundImage.url);
                 }
             } catch (error) {
                 console.error('Ошибка:', error);
@@ -75,11 +74,11 @@ export function SurveyPage() {
             });
             return;
         }
-    
+
         const missingRequiredAnswers = surveyData.Survey.filter(question =>
             question.isRequired && !answers[question.questionId]
         );
-    
+
         if (missingRequiredAnswers.length > 0) {
             Swal.fire({
                 icon: 'warning',
@@ -88,7 +87,7 @@ export function SurveyPage() {
             });
             return;
         }
-    
+
         for (const question of surveyData.Survey) {
             if (!answers[question.questionId]) {
                 answers[question.questionId] = '';
@@ -106,9 +105,9 @@ export function SurveyPage() {
                 `http://${BACK_ADDRESS}/survey/${id}/answer`,
                 sortedAnswers
             );
-    
+
             if (!response.ok) throw new Error('Ошибка при отправке ответов');
-    
+
             Swal.fire({
                 icon: 'success',
                 title: 'Успех!',
@@ -128,6 +127,7 @@ export function SurveyPage() {
 
     return (
         <div>
+            <Header />
             <div className={'survey-page-container'} style={{ background: surveyData?.BackgroundColor }}>
                 {!openStatus ? (
                     <UnavailableSurvey message={messageException} />

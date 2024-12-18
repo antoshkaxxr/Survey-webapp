@@ -11,6 +11,7 @@ export function SingleChoiceQuestion({ questionInfo, answer, setAnswer,
             isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
+            imageUrl={questionInfo.imageUrl}
         >
             {questionInfo.options && questionInfo.options.map((option, index) => (
                 <label key={index} className={'radio-label'}>

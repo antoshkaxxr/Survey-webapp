@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from "react";
+import React, { useState } from "react";
 import './ThemeSelector.css';
-import {getImage} from "../../../sendResponseWhenLogged.ts";
+import { uploadFileToBucket } from "../../../utils/uploadFile.ts";
 
 interface ThemeSelectorProps {
     backgroundImage: Theme | null;
@@ -8,28 +8,17 @@ interface ThemeSelectorProps {
 }
 
 const themes: Theme[] = [
-    {title: 'Стандартная тема', name: 'default.jpg'},
-    {title: 'Небоскребы', name: 'theme1.jpg'},
-    {title: 'Водная гладь', name: 'theme2.jpg'},
+    { title: 'Стандартная тема', url: 'https://survey-app-bucket.storage.yandexcloud.net/default.jpg' },
+    { title: 'Небоскребы', url: 'https://survey-app-bucket.storage.yandexcloud.net/theme1.jpg' },
+    { title: 'Водная гладь', url: 'https://survey-app-bucket.storage.yandexcloud.net/theme2.jpg' },
 ];
 
-export function ThemeSelector({backgroundImage, setBackgroundImage}: ThemeSelectorProps) {
+export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSelectorProps) {
     const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
     const [haveImage, setHaveImage] = useState(false);
     const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
     const [customTheme, setCustomTheme] = useState<Theme | null>(null);
-    const [themeImages, setThemeImages] = useState<{ [key: string]: string | undefined }>({});
-
-    useEffect(() => {
-        const loadImages = async () => {
-            const images: { [key: string]: string | undefined } = {};
-            for (const theme of themes) {
-                images[theme.name] = await getImage(theme.name);
-            }
-            setThemeImages(images);
-        };
-        loadImages();
-    }, []);
+    const [uploadedFileName, setUploadedFileName] = useState<string | null>(null); // Состояние для хранения имени файла
 
     const handleOpenModal = () => {
         setIsThemeModalOpen(true);
@@ -53,42 +42,18 @@ export function ThemeSelector({backgroundImage, setBackgroundImage}: ThemeSelect
         const file = event.target.files?.[0];
         if (!file) return;
 
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = async () => {
-            const base64Data = reader.result?.toString().split(',')[1];
-            if (!base64Data) return;
-
-            const timestamp = new Date().getTime();
-            const randomId = Math.floor(Math.random() * 1000000);
-            const uniqueFileName = `${timestamp}_${randomId}_${file.name}`;
-
-            const fileData = {
-                name: uniqueFileName,
-                buffer: base64Data,
-            };
-
-            try {
-                const response = await fetch('https://functions.yandexcloud.net/d4e5uokosjfla9bphql4', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({file: fileData}),
-                });
-
-                if (response.ok) {
-                    const newTheme: Theme = {title: 'Кастомный фон', name: uniqueFileName};
-                    setCustomTheme(newTheme);
-                    setSelectedTheme(newTheme);
-                    console.log('Успех!');
-                } else {
-                    console.error('Error uploading file');
-                }
-            } catch (error) {
-                console.error('Error uploading file', error);
+        try {
+            const url = await uploadFileToBucket(file);
+            if (url) {
+                const newTheme: Theme = { title: 'Кастомный фон', url: url };
+                setCustomTheme(newTheme);
+                setSelectedTheme(newTheme);
+                setUploadedFileName(file.name); // Сохраняем имя файла
+                console.log('Успех!');
             }
-        };
+        } catch (error) {
+            console.error('Ошибка при загрузке файла', error);
+        }
     };
 
     const handleRemoveTheme = () => {
@@ -97,6 +62,7 @@ export function ThemeSelector({backgroundImage, setBackgroundImage}: ThemeSelect
         setCustomTheme(null);
         setIsThemeModalOpen(false);
         setHaveImage(false);
+        setUploadedFileName(null); // Сбрасываем имя файла
     };
 
     return (
@@ -106,12 +72,12 @@ export function ThemeSelector({backgroundImage, setBackgroundImage}: ThemeSelect
                     <button
                         className="theme-button"
                         onClick={handleOpenModal}
-                        style={{background: 'transparent', border: 'none', cursor: 'pointer'}}
+                        style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
                     >
                         <img
                             src="/icons/design-nib.svg"
                             alt="Изменить картинку"
-                            style={{width: '200px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s'}}
+                            style={{ width: '200px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s' }}
                             className="image-icon"
                         />
                     </button>
@@ -120,12 +86,12 @@ export function ThemeSelector({backgroundImage, setBackgroundImage}: ThemeSelect
                 <button
                     className="theme-button"
                     onClick={handleOpenModal}
-                    style={{background: 'transparent', border: 'none', cursor: 'pointer'}}
+                    style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
                 >
                     <img
                         src="/icons/media-image-plus.svg"
                         alt="Добавить картинку"
-                        style={{width: '200px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s'}}
+                        style={{ width: '200px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s' }}
                         className="image-icon"
                     />
                 </button>
@@ -137,7 +103,7 @@ export function ThemeSelector({backgroundImage, setBackgroundImage}: ThemeSelect
                         <div className="theme-options">
                             {themes.map((theme) => (
                                 <div key={theme.title} className="theme-option">
-                                    <img src={themeImages[theme.name]} alt={theme.name}/>
+                                    <img src={theme.url} alt={theme.url} />
                                     <button
                                         onClick={() => handleThemeChange(theme)}
                                         className={selectedTheme?.title === theme.title ? 'active' : ''}
@@ -148,32 +114,38 @@ export function ThemeSelector({backgroundImage, setBackgroundImage}: ThemeSelect
                             ))}
                         </div>
                         <div className="custom-upload">
+                            <p>Загрузить собственную тему</p>
+                            <label htmlFor="file-upload" className="custom-file-upload">
+                                <img src="/icons/upload-icon.svg" alt="Upload" />
+                                {uploadedFileName ? uploadedFileName : 'Выбрать файл'} {/* Отображаем имя файла или текст */}
+                            </label>
                             <input
+                                id="file-upload"
                                 type="file"
                                 accept="image/*"
                                 onChange={handleFileChange}
                             />
-                            <p>Загрузить собственный файл</p>
                         </div>
-                        <button className="cancel-button" onClick={() => setIsThemeModalOpen(false)}>
-                            Отмена
-                        </button>
-                        <button className="confirm-button" onClick={handleConfirmTheme}
-                                disabled={!selectedTheme && !customTheme}>
-                            Применить
-                        </button>
-                        <button
-                            className="remove-theme-button"
-                            onClick={handleRemoveTheme}
-                            disabled={!haveImage && backgroundImage === undefined}
-                        >
-                            <img
-                                src="/icons/trash-solid.svg"
-                                alt="Удалить картинку"
-                                style={{width: '30px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s'}}
-                                className="image-icon"
-                            />
-                        </button>
+                        <div className="modal-buttons">
+                            <button className="cancel-button" onClick={() => setIsThemeModalOpen(false)}>
+                                Отмена
+                            </button>
+                            <button className="confirm-button" onClick={handleConfirmTheme} disabled={!selectedTheme && !customTheme}>
+                                Применить
+                            </button>
+                            <button
+                                className="remove-theme-button"
+                                onClick={handleRemoveTheme}
+                                disabled={!haveImage && backgroundImage === undefined}
+                            >
+                                <img
+                                    src="/icons/trash-solid.svg"
+                                    alt="Удалить картинку"
+                                    style={{ width: '30px', filter: 'invert(1)', transition: 'transform 0.3s, filter 0.3s' }}
+                                    className="image-icon"
+                                />
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

@@ -16,7 +16,6 @@ import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautif
 import {
     sendGetResponseWhenLogged,
     sendChangingResponseWhenLogged,
-    getImage,
 } from "../../sendResponseWhenLogged.ts";
 
 export function SurveyBuilderPage() {
@@ -69,11 +68,7 @@ export function SurveyBuilderPage() {
             return;
         }
 
-        const updateUrl = async () => {
-            setBackgroundUrl(await getImage(backgroundImage.name));
-        }
-
-        updateUrl();
+        setBackgroundUrl(backgroundImage.url);
     }, [backgroundImage]);
 
     const handleSelectQuestionType = (type: number) => {
@@ -185,6 +180,7 @@ export function SurveyBuilderPage() {
                                                                         type={question.type}
                                                                         textColor={textColor}
                                                                         initialOptions={questions[i].options}
+                                                                        imageUrl={question.imageUrl}
                                                                     />
                                                                 </div>
                                                                 <QuestionButtons

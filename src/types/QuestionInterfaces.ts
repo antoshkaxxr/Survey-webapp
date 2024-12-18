@@ -14,4 +14,5 @@ interface SurveyQuestion {
     questionId: string;
     isRequired: boolean
     ranges?: string[];
+    imageUrl?: string;
 }

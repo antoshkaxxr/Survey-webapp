@@ -11,6 +11,7 @@ export function SliderQuestion({ questionInfo, answer, setAnswer,
             isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
+            imageUrl={questionInfo.imageUrl}
         >
             <div className="slider-container">
                 <span className="slider-label">{questionInfo.ranges![0]}</span>

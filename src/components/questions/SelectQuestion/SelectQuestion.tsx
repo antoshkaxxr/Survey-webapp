@@ -11,6 +11,7 @@ export function SelectQuestion({ questionInfo, answer, setAnswer,
             isRequired={questionInfo.isRequired}
             questionColor={questionColor}
             textColor={textColor}
+            imageUrl={questionInfo.imageUrl}
         >
             <select
                 className={'option-select'}

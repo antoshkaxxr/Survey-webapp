@@ -62,20 +62,6 @@ export async function sendGetSheetPdfResponseWhenLogged(url: string){
     return response;
 }
 
-export async function getImage(key: string) {
-    try {
-        const response = await fetch(`https://functions.yandexcloud.net/d4e5uokosjfla9bphql4?fileName=${encodeURIComponent(key)}`);
-        if (!response.ok) {
-            throw new Error('Ошибка при получении изображения');
-        }
-
-        const imageBlob = await response.blob();
-        return URL.createObjectURL(imageBlob);
-    } catch (error) {
-        console.error('Ошибка при получении изображения:', error);
-    }
-}
-
 export function getEmail(){
     return getCookie("Email");
 }

@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import {ChangeEvent, useEffect, useState} from 'react';
 import './QuestionInputModal.css';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import {BaseModal} from "../BaseModal/BaseModal.tsx";
+import { BaseModal } from "../BaseModal/BaseModal.tsx";
+import { uploadFileToBucket } from '../../../utils/uploadFile';
 
 type QuestionInputModalProps = {
     isOpen: boolean;
@@ -26,6 +27,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
     const [isRequired, setIsRequired] = useState(false);
     const [isQuestionValid, setIsQuestionValid] = useState(true);
     const [areOptionsValid, setAreOptionsValid] = useState(true);
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     useEffect(() => {
         if (isOpen) {
@@ -71,7 +73,8 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                 options: optionQuestionTypes.includes(questionType) ? options : undefined,
                 questionId: generateUniqueId(),
                 isRequired,
-                ranges: questionType === 10 ? ranges : undefined
+                ranges: questionType === 10 ? ranges : undefined,
+                imageUrl: imageUrl || undefined,
             };
             onSubmit(newQuestion);
             setIsRequired(false);
@@ -100,6 +103,20 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         const newRanges = [...ranges];
         newRanges[index] = value;
         setRanges(newRanges);
+    };
+
+    const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        try {
+            const url = await uploadFileToBucket(file);
+            if (url) {
+                setImageUrl(url);
+            }
+        } catch (error) {
+            console.error('Ошибка при загрузке файла', error);
+        }
     };
 
     return (
@@ -189,6 +206,20 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                     />
                 </>
             )}
+            <div>
+                <h2 className={'requested-action'}>Добавьте картинку к вопросу:</h2>
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                />
+                {imageUrl && (
+                    <div>
+                        <p>Загруженная картинка:</p>
+                        <img src={imageUrl} alt="Загруженная картинка" style={{ maxWidth: '100%', marginTop: '10px' }} />
+                    </div>
+                )}
+            </div>
             <button
                 className={`save-button ${isQuestionValid &&
                 (optionQuestionTypes.includes(questionType) ? areOptionsValid : true) &&
