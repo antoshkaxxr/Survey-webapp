@@ -5,7 +5,7 @@ import {BACK_ADDRESS, FRONT_ADDRESS} from "../../../config.ts";
 import {sendChangingResponseWhenLogged} from "../../../sendResponseWhenLogged.ts";
 import './MySurveyItem.css';
 import {ExportModal} from "../../modals/ExportModal/ExportModal.tsx";
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 interface MySurveyItemProps {
     surveyId: string;
@@ -18,17 +18,10 @@ interface MySurveyItemProps {
 const copyToClipboard = (surveyId: string) => {
     const url = `http://${FRONT_ADDRESS}/survey/${surveyId}`;
     navigator.clipboard.writeText(url).then(() => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Ссылка скопирована!',
-            text: 'Ссылка на опрос скопирована в буфер обмена!',
-        });
+        toast.success('Ссылка скопирована!')
+
     }).catch(() => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Ошибка!',
-            text: 'Не удалось скопировать ссылку. Попробуйте снова.',
-        });
+        toast.error('Не удалось скопировать ссылку!')
     });
 };
 
@@ -38,18 +31,9 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModa
 
 
     const handleDelete = async (surveyId: string) => {
-        const result = await Swal.fire({
-            title: 'Вы уверены?',
-            text: "Вы не сможете вернуть этот опрос после удаления!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Да, удалить!',
-            cancelButtonText: 'Отмена'
-        });
-    
-        if (result.isConfirmed) {
+        const confirmDelete = window.confirm('Вы уверены? Вы не сможете вернуть этот опрос после удаления!');
+
+    if (confirmDelete) {
             try {
                 const response = await sendChangingResponseWhenLogged('DELETE',
                     `http://${BACK_ADDRESS}/survey/${surveyId}`, {});
@@ -60,17 +44,9 @@ export function MySurveyItem({surveyId, surveyName, setSurveyData, setAccessModa
     
                 setSurveyData((prevData) => prevData.filter(survey => survey.surveyId !== surveyId));
     
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Успех!',
-                    text: 'Опрос успешно удален!',
-                });
+                toast.success('Опрос успешно удален!');
             } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ошибка!',
-                    text: 'Не удалось удалить опрос. Попробуйте снова.',
-                });
+                toast.error('Не удалось удалить опрос. Попробуйте снова.');
             }
         }
     };

@@ -1,11 +1,12 @@
-import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import {AppRoute} from "../../const/AppRoute.ts";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { AppRoute } from "../../const/AppRoute.ts";
 import './MySurveysPage.css';
-import {MySurveyItem} from "../../components/my-surveys-parts/MySurveyItem/MySurveyItem.tsx";
-import {BACK_ADDRESS} from "../../config.ts";
-import {AccessModal} from "../../components/modals/AccessModal/AccessModal.tsx";
-import {sendGetResponseWhenLogged, getEmail} from "../../sendResponseWhenLogged.ts";
+import { MySurveyItem } from "../../components/my-surveys-parts/MySurveyItem/MySurveyItem.tsx";
+import { BACK_ADDRESS } from "../../config.ts";
+import { AccessModal } from "../../components/modals/AccessModal/AccessModal.tsx";
+import { sendGetResponseWhenLogged, getEmail } from "../../sendResponseWhenLogged.ts";
+import { ToastContainer } from 'react-toastify';
 
 interface Survey {
     id: string;
@@ -67,6 +68,14 @@ export function MySurveysPage() {
                 isOpen={isAccessModalOpen}
                 onClose={() => setAccessModalOpen(false)}
                 accessSurveyId={accessSurveyId}
+            />
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000} // Уведомление будет закрываться через 3 секунды
+                hideProgressBar={true} // Скрыть индикатор прогресса
+                closeOnClick
+                pauseOnHover
+                draggable
             />
         </div>
     );

@@ -5,8 +5,8 @@ import { ComponentMap } from "../../const/ComponentMap.ts";
 import { BACK_ADDRESS } from "../../config.ts";
 import { UnavailableSurvey } from "../../components/survey-parts/UnavailableSurvey/UnavailableSurvey.tsx";
 import { sendGetResponseWhenLogged, sendChangingResponseWhenLogged } from "../../sendResponseWhenLogged.ts";
-import Swal from 'sweetalert2';
-import {Header} from "../../components/Header/Header.tsx";
+import { Header } from "../../components/Header/Header.tsx";
+import { ToastContainer, toast } from 'react-toastify';
 
 interface SurveyData {
     Name: string;
@@ -67,11 +67,7 @@ export function SurveyPage() {
 
     const handleSubmit = async () => {
         if (!surveyData) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Внимание!',
-                text: 'Ещё не загрузилось',
-            });
+            toast.warning('Ещё не загрузилось');
             return;
         }
 
@@ -80,11 +76,8 @@ export function SurveyPage() {
         );
 
         if (missingRequiredAnswers.length > 0) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Внимание!',
-                text: 'Заполните все обязательные вопросы',
-            });
+            toast.warning('Заполните все обязательные вопросы');
+
             return;
         }
 
@@ -94,7 +87,7 @@ export function SurveyPage() {
             }
         }
 
-        let sortedAnswers : {[p: string]: string} = {};
+        let sortedAnswers: { [p: string]: string } = {};
         surveyData.Survey.forEach(question => {
             sortedAnswers[question.questionId] = answers[question.questionId]
         });
@@ -107,19 +100,12 @@ export function SurveyPage() {
             );
 
             if (!response.ok) throw new Error('Ошибка при отправке ответов');
+            toast.success('Ваши ответы успешно отправлены!');
 
-            Swal.fire({
-                icon: 'success',
-                title: 'Успех!',
-                text: 'Ваши ответы успешно отправлены!',
-            });
         } catch (error) {
             console.error('Ошибка:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Ошибка!',
-                text: 'Произошла ошибка при отправке ответов. Попробуйте еще раз.',
-            });
+            toast.error('Произошла ошибка при отправке ответов. Попробуйте еще раз.');
+
         }
     };
 
@@ -173,6 +159,14 @@ export function SurveyPage() {
                     </>
                 )}
             </div>
+            <ToastContainer
+                position="bottom-right" // Устанавливаем позицию снизу справа
+                autoClose={3000} // Уведомление будет закрываться через 3 секунды
+                hideProgressBar={true} // Скрыть индикатор прогресса
+                closeOnClick
+                pauseOnHover
+                draggable
+            />
         </div>
     );
 }

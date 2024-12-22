@@ -3,7 +3,7 @@ import './RegistrationPage.css';
 import { BACK_ADDRESS } from "../../config.ts";
 import { AppRoute } from "../../const/AppRoute.ts";
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
 
 export function RegistrationPage() {
     const [email, setEmail] = useState<string>('');
@@ -25,20 +25,12 @@ export function RegistrationPage() {
 
     const handleRegistration = async () => {
         if (!validateEmail(email)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Ошибка!',
-                text: 'Введите корректный email.',
-            });
+            toast.error('Введите корректный email.');
             return;
         }
 
         if (!validatePassword(password)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Ошибка!',
-                text: 'Пароль должен содержать минимум 6 символов.',
-            });
+            toast.error('Пароль должен содержать минимум 6 символов.');
             return;
         }
 
@@ -61,29 +53,17 @@ export function RegistrationPage() {
             const result = await response.text();
 
             if (result === 'Пользователь с таким email уже существует') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ошибка!',
-                    text: 'Пользователь с таким email уже существует.',
-                });
+                toast.error('Пользователь с таким email уже существует.');
                 return;
             }
 
             console.log('Success:', result);
-            Swal.fire({
-                icon: 'success',
-                title: 'Успех!',
-                text: 'Вы успешно зарегистрированы!',
-            }).then(() => {
-                navigate(AppRoute.Login);
-            });
+            navigate(AppRoute.Login)
+            toast.success('Вы успешно зарегистрированы!')
+
         } catch (error) {
             console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Ошибка!',
-                text: 'Произошла ошибка при регистрации.',
-            });
+            toast.error('Произошла ошибка при регистрации.');
         }
     };
 
@@ -92,24 +72,34 @@ export function RegistrationPage() {
     };
 
     return (
-        <div className="registration-box">
-            <h1 className="registration-h1">Введите e-mail и пароль</h1>
-            <input
-                className='registration-input'
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+        <div>
+            <div className="registration-box">
+                <h1 className="registration-h1">Введите e-mail и пароль</h1>
+                <input
+                    className='registration-input'
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                    className='registration-input'
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <button className="registration-submit" onClick={handleRegistration}>Зарегистрироваться</button>
+                <button className="registration-submit" onClick={redirectOnLogin}>Уже зарегистрирован</button>
+            </div>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000} // Уведомление будет закрываться через 3 секунды
+                hideProgressBar={true} // Скрыть индикатор прогресса
+                closeOnClick
+                pauseOnHover
+                draggable
             />
-            <input
-                className='registration-input'
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button className="registration-submit" onClick={handleRegistration}>Зарегистрироваться</button>
-            <button className="registration-submit" onClick={redirectOnLogin}>Уже зарегистрирован</button>
         </div>
     );
 }
