@@ -3,7 +3,8 @@ import './LoginPage.css';
 import { BACK_ADDRESS } from "../../config.ts";
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from "../../const/AppRoute.ts";
-import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
@@ -35,29 +36,17 @@ export function LoginPage() {
                 document.cookie = `Email=${email}; path=/`;
     
                 console.log('Success:', result);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Успех!',
-                    text: 'Вы успешно вошли в систему!',
-                }).then(() => {
-                    navigate(AppRoute.MySurveys);
-                });
+                navigate(AppRoute.MySurveys);
+                toast.success('Вы успешно вошли в систему!');
+                
             } else {
                 // Неправильный логин или пароль
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ошибка!',
-                    text: 'Неправильный логин или пароль.',
-                });
+                toast.error('Неправильный логин или пароль.');
             }
             
         } catch (error) {
             console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Ошибка!',
-                text: 'Произошла ошибка при входе в систему.',
-            });
+            toast.error('Произошла ошибка при входе в систему.');
         }
     };
     
@@ -82,7 +71,7 @@ export function LoginPage() {
     };
 
     return (
-        <>
+        <div>
             <div className="login-box">
                 <h1 className="login-h1">Введите e-mail и пароль</h1>
                 <input
@@ -127,6 +116,14 @@ export function LoginPage() {
                     </button>
                 </div>
             </div>
-        </>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000} // Уведомление будет закрываться через 3 секунды
+                hideProgressBar={true} // Скрыть индикатор прогресса
+                closeOnClick
+                pauseOnHover
+                draggable
+            />
+        </div>
     );
 }
