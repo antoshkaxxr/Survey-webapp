@@ -66,7 +66,7 @@ export function getEmail(){
     return getCookie("Email");
 }
 
-function getCookie(name: string) {
+export function getCookie(name: string) {
     const cookieArr = document.cookie.split('; ');
     for (let i = 0; i < cookieArr.length; i++) {
         let cookiePair = cookieArr[i].split('=');

@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import './LoginPage.css';
 import { BACK_ADDRESS } from "../../config.ts";
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from "../../const/AppRoute.ts";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
+
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
@@ -22,18 +23,17 @@ export function LoginPage() {
                     "password": password,
                 })
             });
-    
             const result = await response.text();
-    
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-    
+
             // Успешный вход
             if (result !== "") {
                 document.cookie = `Token=${result}; path=/`;
                 document.cookie = `Email=${email}; path=/`;
-    
+
                 console.log('Success:', result);
                 Swal.fire({
                     icon: 'success',
@@ -50,7 +50,7 @@ export function LoginPage() {
                     text: 'Неправильный логин или пароль.',
                 });
             }
-            
+
         } catch (error) {
             console.error('Error:', error);
             Swal.fire({
@@ -60,10 +60,9 @@ export function LoginPage() {
             });
         }
     };
-    
 
     const handleGoogleLogin = () => {
-        // Логика для входа через Google
+        window.location.href = 'http://localhost:8080/auth/google';
         console.log('Login with Google');
     };
 
