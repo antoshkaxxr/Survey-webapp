@@ -23,33 +23,33 @@ export function LoginPage() {
                     "password": password,
                 })
             });
-    
+
             const result = await response.text();
-    
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-    
+
             // Успешный вход
             if (result !== "") {
                 document.cookie = `Token=${result}; path=/`;
                 document.cookie = `Email=${email}; path=/`;
-    
+
                 console.log('Success:', result);
                 navigate(AppRoute.MySurveys);
                 toast.success('Вы успешно вошли в систему!');
-                
+
             } else {
                 // Неправильный логин или пароль
                 toast.error('Неправильный логин или пароль.');
             }
-            
+
         } catch (error) {
             console.error('Error:', error);
             toast.error('Произошла ошибка при входе в систему.');
         }
     };
-    
+
 
     const handleGoogleLogin = () => {
         // Логика для входа через Google
@@ -118,8 +118,8 @@ export function LoginPage() {
             </div>
             <ToastContainer
                 position="bottom-right"
-                autoClose={3000} // Уведомление будет закрываться через 3 секунды
-                hideProgressBar={true} // Скрыть индикатор прогресса
+                autoClose={3000}
+                hideProgressBar={true}
                 closeOnClick
                 pauseOnHover
                 draggable

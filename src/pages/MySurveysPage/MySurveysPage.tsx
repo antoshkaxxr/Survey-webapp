@@ -71,8 +71,8 @@ export function MySurveysPage() {
             />
             <ToastContainer
                 position="bottom-right"
-                autoClose={3000} // Уведомление будет закрываться через 3 секунды
-                hideProgressBar={true} // Скрыть индикатор прогресса
+                autoClose={3000}
+                hideProgressBar={true}
                 closeOnClick
                 pauseOnHover
                 draggable

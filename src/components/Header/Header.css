@@ -1,3 +1,14 @@
 .menu-container {
     padding-right: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-container {
+}
+
+.logo {
+    height: 50px;
+    margin-left: 140px;
 }

@@ -10,6 +10,11 @@ export function Header() {
 
     return (
         <div className="menu-container">
+            <div className="logo-container">
+                <Link to={AppRoute.Root}>
+                    <img src={'/images/logo.png'} alt="Logo" className="logo" />
+                </Link>
+            </div>
             {email && (
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", width: "100%" }}>
                     <div style={{ display: "flex", marginRight: "20px" }}>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import './SurveyPage.scss';
 import { ComponentMap } from "../../const/ComponentMap.ts";
 import { BACK_ADDRESS } from "../../config.ts";
@@ -19,6 +19,9 @@ interface SurveyData {
 
 export function SurveyPage() {
     const { id } = useParams<{ id: string }>();
+    const [searchParams] = useSearchParams();
+    const isPreview = searchParams.get('preview') === 'true';
+
     const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
     const [openStatus, setOpenStatus] = useState<boolean>(true);
     const [backgroundUrl, setBackgroundUrl] = useState<string | undefined>(undefined);
@@ -77,7 +80,6 @@ export function SurveyPage() {
 
         if (missingRequiredAnswers.length > 0) {
             toast.warning('Заполните все обязательные вопросы');
-
             return;
         }
 
@@ -105,7 +107,6 @@ export function SurveyPage() {
         } catch (error) {
             console.error('Ошибка:', error);
             toast.error('Произошла ошибка при отправке ответов. Попробуйте еще раз.');
-
         }
     };
 
@@ -146,7 +147,12 @@ export function SurveyPage() {
                                         );
                                     })}
                                     <div className={'survey-page-buttons'}>
-                                        <button className='send-button' onClick={handleSubmit}>
+                                        <button
+                                            className='send-button'
+                                            onClick={handleSubmit}
+                                            disabled={isPreview}
+                                            title={isPreview ? "Кнопка недоступна в режиме предпросмотра" : ""}
+                                        >
                                             Отправить
                                         </button>
                                         <button className='delete-button' onClick={handleClear}>
@@ -160,9 +166,9 @@ export function SurveyPage() {
                 )}
             </div>
             <ToastContainer
-                position="bottom-right" // Устанавливаем позицию снизу справа
-                autoClose={3000} // Уведомление будет закрываться через 3 секунды
-                hideProgressBar={true} // Скрыть индикатор прогресса
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={true}
                 closeOnClick
                 pauseOnHover
                 draggable
