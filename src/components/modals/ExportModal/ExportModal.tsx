@@ -13,7 +13,7 @@ interface ExportProps {
 }
 
 async function handleExport(surveyId: string, type: string, onClose: () => void, setReportId: (id: string) => void) {
-    const url = `http://${BACK_ADDRESS}/survey/${surveyId}/generate_${type}`;
+    const url = `https://${BACK_ADDRESS}/survey/${surveyId}/generate_${type}`;
     try {
         toast.info('Началась загрузка отчета. Скоро начнется скачивание.', {
             position: 'bottom-right',
@@ -41,7 +41,7 @@ async function handleExport(surveyId: string, type: string, onClose: () => void,
 }
 
 async function checkReportStatus(surveyId: string, reportId: string, type: string, onClose: () => void) {
-    const url = `http://${BACK_ADDRESS}/survey/${surveyId}/report/${reportId.split('_')[0]}/try_get`;
+    const url = `https://${BACK_ADDRESS}/survey/${surveyId}/report/${reportId.split('_')[0]}/try_get`;
     try {
         const response = await fetch(url, {
             method: 'GET',

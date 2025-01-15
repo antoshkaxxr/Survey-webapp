@@ -11,6 +11,7 @@ import {StatisticsPage} from "../../pages/StatisticsPage/StatisticsPage.tsx";
 import React from "react";
 import {Layout} from "../Layout/Layout.tsx";
 import {NotFoundPage} from "../../pages/NotFoundPage/NotFoundPage.tsx";
+import {HelmetProvider} from "react-helmet-async";
 
 function RequireAuth({children}: { children: React.ReactNode }) {
     const email = getEmail();
@@ -22,7 +23,7 @@ function RequireAuth({children}: { children: React.ReactNode }) {
 
 export function App() {
     return (
-        <>
+        <HelmetProvider>
             <BrowserRouter>
                 <Routes>
                     <Route
@@ -36,10 +37,6 @@ export function App() {
                     <Route
                         path={AppRoute.Registration}
                         element={<RegistrationPage/>}
-                    />
-                    <Route
-                        path={AppRoute.SurveyId}
-                        element={<SurveyPage/>}
                     />
                     <Route path="/" element={<Layout/>}>
                         <Route
@@ -58,7 +55,10 @@ export function App() {
                             path={'*'}
                             element={<NotFoundPage/>}
                         />
-
+                        <Route
+                            path={AppRoute.SurveyId}
+                            element={<RequireAuth><SurveyPage/></RequireAuth>}
+                        />
                         <Route
                             path={AppRoute.StatisticId}
                             element={<RequireAuth><StatisticsPage/></RequireAuth>}
@@ -66,6 +66,6 @@ export function App() {
                     </Route>
                 </Routes>
             </BrowserRouter>
-        </>
+        </HelmetProvider>
     );
 }

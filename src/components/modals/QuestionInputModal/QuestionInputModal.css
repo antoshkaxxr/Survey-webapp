@@ -48,6 +48,58 @@
     background: #c0392b;
 }
 
+.radio-label-inp {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+}
+
+.radio-label-inp input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #3498db;
+    border-radius: 4px;
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.radio-label-inp input[type="checkbox"]:checked {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.radio-label-inp input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 2px;
+}
+
+.radio-label-inp span {
+    font-weight: 500;
+    color: #2c3e50;
+    transition: color 0.3s;
+}
+
+.radio-label-inp:hover input[type="checkbox"] {
+    border-color: #2980b9;
+}
+
+.radio-label-inp:hover span {
+    color: #2980b9;
+}
+
 .add-button {
     border: none;
     border-radius: 4px;
@@ -81,4 +133,20 @@
 .save-button.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.remove-image-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.remove-image-button:hover {
+    background-color: #cc0000;
 }

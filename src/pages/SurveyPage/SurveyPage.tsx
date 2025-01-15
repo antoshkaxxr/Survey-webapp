@@ -5,8 +5,9 @@ import { ComponentMap } from "../../const/ComponentMap.ts";
 import { BACK_ADDRESS } from "../../config.ts";
 import { UnavailableSurvey } from "../../components/survey-parts/UnavailableSurvey/UnavailableSurvey.tsx";
 import { sendGetResponseWhenLogged, sendChangingResponseWhenLogged } from "../../sendResponseWhenLogged.ts";
-import { Header } from "../../components/Header/Header.tsx";
 import { ToastContainer, toast } from 'react-toastify';
+import { Helmet } from "react-helmet-async";
+import {ThankYouPage} from "../ThankYouPage/ThankYouPage.tsx";
 
 interface SurveyData {
     Name: string;
@@ -27,11 +28,12 @@ export function SurveyPage() {
     const [backgroundUrl, setBackgroundUrl] = useState<string | undefined>(undefined);
     const [messageException, setMessageException] = useState<string>("");
     const [answers, setAnswers] = useState<{ [key: string]: string }>({});
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     useEffect(() => {
         const checkSurveyAccess = async () => {
             try {
-                const response = await sendGetResponseWhenLogged(`http://${BACK_ADDRESS}/survey/${id}/access`);
+                const response = await sendGetResponseWhenLogged(`https://${BACK_ADDRESS}/survey/${id}/access`);
                 if (!response.ok) throw new Error('Ошибка при получении доступа к опросу');
 
                 const accessData = await response.json();
@@ -51,7 +53,7 @@ export function SurveyPage() {
 
         const fetchSurvey = async () => {
             try {
-                const response = await sendGetResponseWhenLogged(`http://${BACK_ADDRESS}/survey/${id}`);
+                const response = await sendGetResponseWhenLogged(`https://${BACK_ADDRESS}/survey/${id}`);
                 if (!response.ok) throw new Error('Ошибка при получении данных опроса');
 
                 const data = await response.json();
@@ -97,13 +99,13 @@ export function SurveyPage() {
         try {
             const response = await sendChangingResponseWhenLogged(
                 'POST',
-                `http://${BACK_ADDRESS}/survey/${id}/answer`,
+                `https://${BACK_ADDRESS}/survey/${id}/answer`,
                 sortedAnswers
             );
 
             if (!response.ok) throw new Error('Ошибка при отправке ответов');
             toast.success('Ваши ответы успешно отправлены!');
-
+            setIsSubmitted(true);
         } catch (error) {
             console.error('Ошибка:', error);
             toast.error('Произошла ошибка при отправке ответов. Попробуйте еще раз.');
@@ -112,9 +114,15 @@ export function SurveyPage() {
 
     const handleClear = () => setAnswers({});
 
+    if (isSubmitted) {
+        return <ThankYouPage />;
+    }
+
     return (
         <div>
-            <Header />
+            <Helmet>
+                <title>{surveyData ? surveyData.Name : 'Загрузка'} - 66Бит.Опросы</title>
+            </Helmet>
             <div className={'survey-page-container'} style={{ background: surveyData?.BackgroundColor }}>
                 {!openStatus ? (
                     <UnavailableSurvey message={messageException} />

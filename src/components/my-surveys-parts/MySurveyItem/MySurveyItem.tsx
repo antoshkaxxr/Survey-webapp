@@ -7,6 +7,7 @@ import './MySurveyItem.css';
 import { ExportModal } from "../../modals/ExportModal/ExportModal.tsx";
 import { toast } from 'react-toastify';
 import { Tooltip } from "react-tooltip";
+import { DeleteConfirmationModal } from "../../modals/DeleteConfirmationModal/DeleteConfirmationModal.tsx";
 
 interface MySurveyItemProps {
     surveyId: string;
@@ -19,7 +20,7 @@ interface MySurveyItemProps {
 const copyToClipboard = (surveyId: string) => {
     const url = `https://${FRONT_ADDRESS}/survey/${surveyId}`;
     navigator.clipboard.writeText(url).then(() => {
-        toast.success('Ссылка скопирована!');
+        toast.success('Ссылка на опрос скопирована!');
     }).catch(() => {
         toast.error('Не удалось скопировать ссылку!');
     });
@@ -27,26 +28,25 @@ const copyToClipboard = (surveyId: string) => {
 
 export function MySurveyItem({ surveyId, surveyName, setSurveyData, setAccessModalOpen, setAccessSurveyId }: MySurveyItemProps) {
     const [isExportModalOpen, setExportModalOpen] = useState<boolean>(false);
+    const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
 
-    const handleDelete = async (surveyId: string) => {
-        const confirmDelete = window.confirm('Вы уверены? Вы не сможете вернуть этот опрос после удаления!');
+    const handleDelete = async () => {
+        try {
+            const response = await sendChangingResponseWhenLogged('DELETE',
+                `https://${BACK_ADDRESS}/survey/${surveyId}`, {});
 
-        if (confirmDelete) {
-            try {
-                const response = await sendChangingResponseWhenLogged('DELETE',
-                    `${BACK_ADDRESS}/survey/${surveyId}`, {});
-
-                if (!response || !response.ok) {
-                    throw new Error('Ошибка при удалении опроса');
-                }
-
-                setSurveyData((prevData) => prevData.filter(survey => survey.surveyId !== surveyId));
-
-                toast.success('Опрос успешно удален!');
-            } catch (error) {
-                toast.error('Не удалось удалить опрос. Попробуйте снова.');
+            if (!response || !response.ok) {
+                throw new Error('Ошибка при удалении опроса');
             }
+
+            setSurveyData((prevData) => prevData.filter(survey => survey.surveyId !== surveyId));
+
+            toast.success('Опрос успешно удален!');
+        } catch (error) {
+            toast.error('Не удалось удалить опрос. Попробуйте снова.');
+        } finally {
+            setDeleteModalOpen(false);
         }
     };
 
@@ -81,7 +81,7 @@ export function MySurveyItem({ surveyId, surveyName, setSurveyData, setAccessMod
                                 <img src="/icons/icon-edit.svg" alt="Редактировать" />
                             </button>
                         </Link>
-                        <button data-tooltip-id="tooltip" data-tooltip-content="Удалить" onClick={() => handleDelete(surveyId)}>
+                        <button data-tooltip-id="tooltip" data-tooltip-content="Удалить" onClick={() => setDeleteModalOpen(true)}>
                             <img src="/icons/icon-delete.svg" alt="Удалить" />
                         </button>
                     </div>
@@ -92,6 +92,12 @@ export function MySurveyItem({ surveyId, surveyName, setSurveyData, setAccessMod
                 surveyName={surveyName}
                 onClose={() => setExportModalOpen(false)}>
             </ExportModal>}
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onConfirm={handleDelete}
+                onCancel={() => setDeleteModalOpen(false)}
+                message={'Вы не сможете вернуть этот опрос после удаления!'}
+            />
             <Tooltip id="tooltip" place="top" />
         </div>
     );

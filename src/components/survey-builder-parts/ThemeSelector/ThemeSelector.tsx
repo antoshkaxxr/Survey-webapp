@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import './ThemeSelector.css';
 import { uploadFileToBucket } from "../../../utils/uploadFile.ts";
+import { Tooltip } from 'react-tooltip';
+import {toast, ToastContainer} from "react-toastify";
 
 interface ThemeSelectorProps {
     backgroundImage: Theme | null;
@@ -18,7 +20,7 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
     const [haveImage, setHaveImage] = useState(false);
     const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
     const [customTheme, setCustomTheme] = useState<Theme | null>(null);
-    const [uploadedFileName, setUploadedFileName] = useState<string | null>(null); // Состояние для хранения имени файла
+    const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
 
     const handleOpenModal = () => {
         setIsThemeModalOpen(true);
@@ -26,6 +28,7 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
 
     const handleThemeChange = (theme: Theme) => {
         setSelectedTheme(theme);
+        setHaveImage(true);
     };
 
     const handleConfirmTheme = () => {
@@ -42,17 +45,22 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
         const file = event.target.files?.[0];
         if (!file) return;
 
+        if (!file.type.startsWith('image/')) {
+            toast.error('Пожалуйста, загрузите файл изображения (например, JPEG, PNG)');
+            return;
+        }
+
         try {
             const url = await uploadFileToBucket(file);
             if (url) {
                 const newTheme: Theme = { title: 'Кастомный фон', url: url };
                 setCustomTheme(newTheme);
                 setSelectedTheme(newTheme);
-                setUploadedFileName(file.name); // Сохраняем имя файла
-                console.log('Успех!');
+                setUploadedFileName(file.name);
+                toast.success('Изображение успешно загружено')
             }
         } catch (error) {
-            console.error('Ошибка при загрузке файла', error);
+            toast.error('Ошибка при загрузке файла');
         }
     };
 
@@ -62,7 +70,7 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
         setCustomTheme(null);
         setIsThemeModalOpen(false);
         setHaveImage(false);
-        setUploadedFileName(null); // Сбрасываем имя файла
+        setUploadedFileName(null);
     };
 
     return (
@@ -117,7 +125,7 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
                             <p>Загрузить собственную тему</p>
                             <label htmlFor="file-upload" className="custom-file-upload">
                                 <img src="/icons/upload-icon.svg" alt="Upload" />
-                                {uploadedFileName ? uploadedFileName : 'Выбрать файл'} {/* Отображаем имя файла или текст */}
+                                {uploadedFileName ? uploadedFileName : 'Выбрать изображение'}
                             </label>
                             <input
                                 id="file-upload"
@@ -136,7 +144,9 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
                             <button
                                 className="remove-theme-button"
                                 onClick={handleRemoveTheme}
-                                disabled={!haveImage && backgroundImage === undefined}
+                                disabled={!haveImage}
+                                data-tooltip-id="remove-tooltip"
+                                data-tooltip-content="Удалить картинку"
                             >
                                 <img
                                     src="/icons/trash-solid.svg"
@@ -149,6 +159,15 @@ export function ThemeSelector({ backgroundImage, setBackgroundImage }: ThemeSele
                     </div>
                 </div>
             )}
+            <Tooltip id="remove-tooltip" place="bottom" style={{zIndex: "10000"}}/>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={true}
+                closeOnClick
+                pauseOnHover
+                draggable
+            />
         </div>
     );
 }

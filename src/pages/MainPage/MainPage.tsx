@@ -1,12 +1,28 @@
 import './MainPage.css';
 import { AppRoute } from "../../const/AppRoute.ts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus, faSignInAlt, faList, faPlusCircle, faChartBar, faUsers, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+    faUserPlus,
+    faSignInAlt,
+    faList,
+    faPlusCircle,
+    faChartBar,
+    faUsers,
+    faCheckCircle,
+    faEnvelope
+} from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom";
+import {Helmet} from "react-helmet-async";
+import {getEmail} from "../../sendResponseWhenLogged.ts";
 
 export function MainPage() {
+    const email = getEmail();
+
     return (
         <div className="main-page">
+            <Helmet>
+                <title>Главная - 66Бит.Опросы</title>
+            </Helmet>
             <div className="logo-container">
                 <Link to={AppRoute.Root}>
                     <img src={'/images/logo.png'} alt="Логотип" className="logo2" />
@@ -14,18 +30,17 @@ export function MainPage() {
             </div>
 
             <div className="WelcomeButton-container">
-                <Link to={AppRoute.Registration}>
+                {!email && <><Link to={AppRoute.Registration}>
                     <button className="WelcomeTransparent-btn">
-                        <FontAwesomeIcon icon={faUserPlus} style={{ marginRight: "8px" }} />
+                        <FontAwesomeIcon icon={faUserPlus} style={{marginRight: "8px"}}/>
                         Регистрация
                     </button>
-                </Link>
-                <Link to={AppRoute.Login}>
+                </Link><Link to={AppRoute.Login}>
                     <button className="WelcomeTransparent-btn">
-                        <FontAwesomeIcon icon={faSignInAlt} style={{ marginRight: "8px" }} />
+                        <FontAwesomeIcon icon={faSignInAlt} style={{marginRight: "8px"}}/>
                         Войти
                     </button>
-                </Link>
+                </Link></>}
                 <Link to={AppRoute.MySurveys}>
                     <button className="WelcomeTransparent-btn">
                         <FontAwesomeIcon icon={faList} style={{ marginRight: "8px" }} />
@@ -38,6 +53,12 @@ export function MainPage() {
                         Создать опрос
                     </button>
                 </Link>
+                {email &&
+                    <h2 style={{marginTop: "15px"}}>
+                        <FontAwesomeIcon icon={faEnvelope} style={{marginLeft: "15px", marginRight: "8px"}}/>
+                        {email}
+                    </h2>
+                }
             </div>
 
             <div className="welcome-section">

@@ -7,6 +7,7 @@ import { BACK_ADDRESS } from "../../config.ts";
 import { AccessModal } from "../../components/modals/AccessModal/AccessModal.tsx";
 import { sendGetResponseWhenLogged, getEmail } from "../../sendResponseWhenLogged.ts";
 import { ToastContainer } from 'react-toastify';
+import {Helmet} from "react-helmet-async";
 
 interface Survey {
     id: string;
@@ -23,7 +24,7 @@ export function MySurveysPage() {
         const fetchSurveys = async () => {
             try {
                 const response = await sendGetResponseWhenLogged(
-                    `http://${BACK_ADDRESS}/surveys?email=${getEmail()}`);
+                    `https://${BACK_ADDRESS}/surveys?email=${getEmail()}`);
                 if (!response || !response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
@@ -50,6 +51,9 @@ export function MySurveysPage() {
 
     return (
         <div className="my-surveys-container">
+            <Helmet>
+                <title>Мои опросы - 66Бит.Опросы</title>
+            </Helmet>
             <h1>Мои опросы</h1>
             <Link to={AppRoute.FormBuilder}>
                 <button className="create-survey-button">Создать новый опрос</button>
@@ -67,6 +71,7 @@ export function MySurveysPage() {
             <AccessModal
                 isOpen={isAccessModalOpen}
                 onClose={() => setAccessModalOpen(false)}
+                onConfirm={() => setAccessModalOpen(false)}
                 accessSurveyId={accessSurveyId}
             />
             <ToastContainer

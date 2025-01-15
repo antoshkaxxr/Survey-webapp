@@ -6,6 +6,7 @@ import { ComponentMap } from "../../const/ComponentMap.ts";
 import { BaseStatistic } from "../../components/display-statistics/BaseStatistics/BaseStatistic.tsx";
 import { toast, ToastContainer } from 'react-toastify';
 import "./StatisticsPage.css"
+import {Helmet} from "react-helmet-async";
 
 interface DisplayStatisticsPropsResponse {
     questionId: string;
@@ -44,7 +45,7 @@ export function StatisticsPage() {
                 if (surveyData !== null)
                     return;
                 const response = await sendGetResponseWhenLogged(
-                    `http://${BACK_ADDRESS}/survey/${surveyId}`);
+                    `https://${BACK_ADDRESS}/survey/${surveyId}`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
@@ -59,7 +60,7 @@ export function StatisticsPage() {
         const downloadDataStatistic = async () => {
             try {
                 const response = await sendGetResponseWhenLogged(
-                    `http://${BACK_ADDRESS}/survey/${surveyId}/statistic`);
+                    `https://${BACK_ADDRESS}/survey/${surveyId}/statistic`);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных опроса');
                 }
@@ -85,65 +86,68 @@ export function StatisticsPage() {
 
     return (
         <div className="page-statistic">
+            <Helmet>
+                <title>Статистика - 66Бит.Опросы</title>
+            </Helmet>
             <h1>{surveyData === null ? "" : surveyData.Name}</h1>
             {!surveyData && <h3>Загружается...</h3>}
             {surveyData &&
                 <div className="table-container">
                     <table className="survey-table">
                         <thead>
-                            <tr>
-                                <th style={{ borderRadius: '10px 0 0 0' }}>Имя вопроса</th>
-                                <th>Тип вопроса</th>
-                                <th style={{ borderRadius: '0 10px 0 0' }}>Кнопка</th>
-                            </tr>
+                        <tr>
+                            <th style={{ borderRadius: '10px 0 0 0' }}>Имя вопроса</th>
+                            <th>Тип вопроса</th>
+                            <th style={{ borderRadius: '0 10px 0 0' }}>Кнопка</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {surveyData.Survey.map(questionInfo => {
-                                const questionType = ComponentMap[questionInfo.type]?.name || "";
-                                const questionName = questionInfo.question;
-                                return (
-                                    <>
-                                        <tr key={questionInfo.questionId}>
-                                            <td className="fixed-width-cell">{questionName}</td>
-                                            <td className="fixed-width-cell">{questionType}</td>
-                                            <td>
-                                                <button
-                                                    className="blue-button"
-                                                    onClick={() => handleOpenStatisticQuestion(questionInfo.questionId)}
-                                                >
-                                                    Статистика
-                                                </button>
+                        {surveyData.Survey.map(questionInfo => {
+                            const questionType = ComponentMap[questionInfo.type]?.name || "";
+                            const questionName = questionInfo.question;
+                            return (
+                                <>
+                                    <tr key={questionInfo.questionId}>
+                                        <td className="fixed-width-cell">{questionName}</td>
+                                        <td className="fixed-width-cell">{questionType}</td>
+                                        <td>
+                                            <button
+                                                className="blue-button"
+                                                onClick={() => handleOpenStatisticQuestion(questionInfo.questionId)}
+                                            >
+                                                Статистика
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {!isLoadingStatistic && questionIdForViewStatistic.includes(questionInfo.questionId) &&
+                                        <tr key={questionInfo.questionId + "_statistic"}>
+                                            <td>Статистика загружается</td>
+                                        </tr>
+                                    }
+                                    {isLoadingStatistic && questionIdForViewStatistic.includes(questionInfo.questionId) &&
+                                        <tr key={questionInfo.questionId + "_statistic"} className="fall-in">
+                                            <td colSpan={3}>
+                                                <BaseStatistic
+                                                    questionInfo={questionInfo}
+                                                    answers={propsDisplayStatisticsByIdQuestion[questionInfo.questionId].answers}
+                                                    onClose={() => {
+                                                        handleCloseStatisticQuestion(questionInfo.questionId);
+                                                    }}>
+                                                </BaseStatistic>
                                             </td>
                                         </tr>
-                                        {!isLoadingStatistic && questionIdForViewStatistic.includes(questionInfo.questionId) &&
-                                            <tr key={questionInfo.questionId + "_statistic"}>
-                                                <td>Статистика загружается</td>
-                                            </tr>
-                                        }
-                                        {isLoadingStatistic && questionIdForViewStatistic.includes(questionInfo.questionId) &&
-                                            <tr key={questionInfo.questionId + "_statistic"} className="fall-in">
-                                                <td colSpan={3}>
-                                                    <BaseStatistic
-                                                        questionInfo={questionInfo}
-                                                        answers={propsDisplayStatisticsByIdQuestion[questionInfo.questionId].answers}
-                                                        onClose={() => {
-                                                            handleCloseStatisticQuestion(questionInfo.questionId);
-                                                        }}>
-                                                    </BaseStatistic>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </>
-                                );
-                            })}
+                                    }
+                                </>
+                            );
+                        })}
                         </tbody>
                     </table>
                 </div>
             }
             <ToastContainer
-                position="bottom-right" // Устанавливаем позицию снизу справа
-                autoClose={3000} // Уведомление будет закрываться через 3 секунды
-                hideProgressBar={true} // Скрыть индикатор прогресса
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={true}
                 closeOnClick
                 pauseOnHover
                 draggable

@@ -4,6 +4,7 @@ import { BACK_ADDRESS } from "../../config.ts";
 import { AppRoute } from "../../const/AppRoute.ts";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { Helmet } from "react-helmet-async";
 
 export function RegistrationPage() {
     const [email, setEmail] = useState<string>('');
@@ -19,7 +20,6 @@ export function RegistrationPage() {
     };
 
     const validatePassword = (password: string) => {
-        // Пример валидации: минимум 6 символов
         return password.length >= 6;
     };
 
@@ -35,7 +35,7 @@ export function RegistrationPage() {
         }
 
         try {
-            const response = await fetch(`http://${BACK_ADDRESS}/user/registration`, {
+            const response = await fetch(`https://${BACK_ADDRESS}/user/registration`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -47,7 +47,8 @@ export function RegistrationPage() {
             });
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                toast.error('Произошла ошибка при обращении к серверу');
+                return;
             }
 
             const result = await response.text();
@@ -57,12 +58,14 @@ export function RegistrationPage() {
                 return;
             }
 
-            console.log('Success:', result);
-            navigate(AppRoute.Login)
-            toast.success('Вы успешно зарегистрированы!')
+            toast.success('Вы успешно зарегистрированы!', {
+                autoClose: 2000,
+                onClose: () => {
+                    navigate(AppRoute.Login);
+                }
+            });
 
         } catch (error) {
-            console.error('Error:', error);
             toast.error('Произошла ошибка при регистрации.');
         }
     };
@@ -73,6 +76,9 @@ export function RegistrationPage() {
 
     return (
         <div>
+            <Helmet>
+                <title>Регистрация - 66Бит.Опросы</title>
+            </Helmet>
             <div className="registration-box">
                 <h1 className="registration-h1">Введите e-mail и пароль</h1>
                 <input
@@ -94,8 +100,8 @@ export function RegistrationPage() {
             </div>
             <ToastContainer
                 position="bottom-right"
-                autoClose={3000} // Уведомление будет закрываться через 3 секунды
-                hideProgressBar={true} // Скрыть индикатор прогресса
+                autoClose={3000}
+                hideProgressBar={true}
                 closeOnClick
                 pauseOnHover
                 draggable

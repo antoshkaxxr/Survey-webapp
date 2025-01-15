@@ -17,6 +17,8 @@ import {
     sendGetResponseWhenLogged,
     sendChangingResponseWhenLogged,
 } from "../../sendResponseWhenLogged.ts";
+import {Helmet} from "react-helmet-async";
+import {toast, ToastContainer} from "react-toastify";
 
 export function SurveyBuilderPage() {
     const { id } = useParams<{ id: string }>();
@@ -41,7 +43,7 @@ export function SurveyBuilderPage() {
             const fetchSurvey = async () => {
                 try {
                     const response = await sendGetResponseWhenLogged(
-                        `http://${BACK_ADDRESS}/survey/${id}`);
+                        `https://${BACK_ADDRESS}/survey/${id}`);
                     if (!response || !response.ok) {
                         throw new Error('Ошибка при загрузке опроса');
                     }
@@ -106,21 +108,19 @@ export function SurveyBuilderPage() {
             Survey: questions
         };
 
-        console.log(data);
-
         try {
             let response;
             if (id) {
                 response = await sendChangingResponseWhenLogged(
                     'PATCH',
-                    `http://${BACK_ADDRESS}/survey/${id}`,
+                    `https://${BACK_ADDRESS}/survey/${id}`,
                     data
                 );
                 setAccessSurveyId(id);
             } else {
                 response = await sendChangingResponseWhenLogged(
                     'POST',
-                    `http://${BACK_ADDRESS}/survey`,
+                    `https://${BACK_ADDRESS}/survey`,
                     data
                 );
                 const retrievedId = await response.text();
@@ -148,6 +148,9 @@ export function SurveyBuilderPage() {
 
     return (
         <div>
+            <Helmet>
+                <title>Конструктор опросов - 66Бит.Опросы</title>
+            </Helmet>
             <div className={'builder-container'}>
                 <div className={'theme-color'}>
                     <ThemeSelector backgroundImage={backgroundImage} setBackgroundImage={setBackgroundImage} />
@@ -156,7 +159,7 @@ export function SurveyBuilderPage() {
                     <ColorPanel selectedColor={textColor} setSelectedColor={setTextColor} name='Цвет текста' />
                 </div>
                 <div className={'survey-window'}  style={{ backgroundColor: backgroundColor, backgroundSize: 'cover' }}>
-                <div className='cover' style={{ backgroundImage: backgroundImage ? `url(${backgroundUrl})` : undefined, backgroundSize: 'cover', height: backgroundImage ? 200 : 0 }}></div>
+                    <div className='cover' style={{ backgroundImage: backgroundImage ? `url(${backgroundUrl})` : undefined, backgroundSize: 'cover', height: backgroundImage ? 200 : 0 }}></div>
                     <div className="questions-list">
                         <SurveyTitle surveyTitle={surveyTitle} setSurveyTitle={setSurveyTitle} />
                         {questions.length === 0 &&
@@ -171,10 +174,10 @@ export function SurveyBuilderPage() {
                                                 <Draggable key={question.questionId.toString()} draggableId={question.questionId.toString()} index={i}>
                                                     {(provided) => (
                                                         <div className="move-box"
-                                                            ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                             ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                                                             <div key={i} className="question-item">
                                                                 <div className='question-container'
-                                                                    style={{ backgroundColor: questionColor }}>
+                                                                     style={{ backgroundColor: questionColor }}>
                                                                     <Question
                                                                         question={question.question}
                                                                         type={question.type}
@@ -205,7 +208,7 @@ export function SurveyBuilderPage() {
                             </DragDropContext>
                         }
                         <button className={'add-question-button'} onClick={() => setTypeModalOpen(true)}>Добавить вопрос</button>
-                        <button className={'save-survey-button'} onClick={handleSubmit}>Сохранить опрос</button>
+                        <button className={'save-survey-button'} onClick={handleSubmit} disabled={questions.length === 0}>Сохранить опрос</button>
                     </div>
                     <QuestionTypeModal
                         isOpen={isTypeModalOpen}
@@ -227,12 +230,34 @@ export function SurveyBuilderPage() {
                         isOpen={isAccessModalOpen}
                         onClose={() => {
                             setAccessModalOpen(false);
-                            navigate(AppRoute.MySurveys);
+                            toast.success('Опрос сохранен, доступ по умолчанию "Неактивный"', {
+                                autoClose: 2000,
+                                onClose: () => {
+                                    navigate(AppRoute.MySurveys);
+                                }
+                            });
+                        }}
+                        onConfirm={() => {
+                            setAccessModalOpen(false);
+                            toast.success('Опрос успешно сохранен!', {
+                                autoClose: 2000,
+                                onClose: () => {
+                                    navigate(AppRoute.MySurveys);
+                                }
+                            });
                         }}
                         accessSurveyId={accessSurveyId}
                     />
                 </div>
             </div>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={true}
+                closeOnClick
+                pauseOnHover
+                draggable
+            />
         </div>
     );
 }

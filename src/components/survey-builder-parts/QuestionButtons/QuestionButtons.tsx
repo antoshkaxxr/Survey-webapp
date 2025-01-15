@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import './QuestionButtons.css';
+import {DeleteConfirmationModal} from "../../modals/DeleteConfirmationModal/DeleteConfirmationModal.tsx";
 
 interface QuestionButtonsProps {
     index: number;
@@ -13,6 +15,9 @@ interface QuestionButtonsProps {
 
 export function QuestionButtons({index, setAddIndex, setEditIndex, setSelectedQuestionType, questions,
                                     setInputModalOpen, setTypeModalOpen, setQuestions}: QuestionButtonsProps) {
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [questionToDeleteIndex, setQuestionToDeleteIndex] = useState<number | null>(null); // Состояние для хранения индекса вопроса
+
     const handleMoveDown = (index: number) => {
         setAddIndex(index);
         setTypeModalOpen(true);
@@ -25,21 +30,43 @@ export function QuestionButtons({index, setAddIndex, setEditIndex, setSelectedQu
     };
 
     const handleDeleteQuestion = (index: number) => {
-        const updatedQuestions = questions.filter((_, i) => i !== index);
-        setQuestions(updatedQuestions);
+        setQuestionToDeleteIndex(index);
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDelete = () => {
+        if (questionToDeleteIndex !== null) {
+            const updatedQuestions = questions.filter((_, i) => i !== questionToDeleteIndex);
+            setQuestions(updatedQuestions);
+        }
+        setIsDeleteModalOpen(false);
+        setQuestionToDeleteIndex(null);
+    };
+
+    const cancelDelete = () => {
+        setIsDeleteModalOpen(false);
+        setQuestionToDeleteIndex(null);
     };
 
     return (
-        <div className={'question-buttons'}>
-            <button onClick={() => handleMoveDown(index)}>
-                <img src="/icons/icon-add-question.svg" alt="Добавить новый вопрос перед этим"/>
-            </button>
-            <button onClick={() => handleEditQuestion(index)}>
-                <img src="/icons/edit.svg" alt="Редактировать"/>
-            </button>
-            <button onClick={() => handleDeleteQuestion(index)}>
-                <img src="/icons/trash-solid.svg" alt="Удалить"/>
-            </button>
-        </div>
+        <>
+            <div className={'question-buttons'}>
+                <button onClick={() => handleMoveDown(index)}>
+                    <img src="/icons/icon-add-question.svg" alt="Добавить новый вопрос перед этим"/>
+                </button>
+                <button onClick={() => handleEditQuestion(index)}>
+                    <img src="/icons/edit.svg" alt="Редактировать"/>
+                </button>
+                <button onClick={() => handleDeleteQuestion(index)}>
+                    <img src="/icons/trash-solid.svg" alt="Удалить"/>
+                </button>
+            </div>
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onConfirm={confirmDelete}
+                onCancel={cancelDelete}
+                message="Хотите удалить этот вопрос без возможности восстановления?"
+            />
+        </>
     );
 }

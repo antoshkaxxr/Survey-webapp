@@ -1,4 +1,4 @@
-import {ChangeEvent, useEffect, useState} from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import './QuestionInputModal.css';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { BaseModal } from "../BaseModal/BaseModal.tsx";
@@ -78,6 +78,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
             };
             onSubmit(newQuestion);
             setIsRequired(false);
+            setImageUrl(null);
             onClose();
         }
     };
@@ -119,8 +120,12 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
         }
     };
 
+    const handleRemoveImage = () => {
+        setImageUrl(null);
+    };
+
     return (
-        <BaseModal onClose={onClose}>
+        <BaseModal onClose={() => { onClose(); setImageUrl(null); }}>
             <h2 className={'requested-action'}>
                 {initialQuestion ? 'Отредактируйте вопрос:' : 'Введите вопрос:'}
             </h2>
@@ -131,7 +136,7 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                 onChange={(e) => setQuestion(e.target.value)}
                 placeholder="Вопрос"
             />
-            <label className={"radio-label"}>
+            <label className={"radio-label-inp"}>
                 <input
                     type="checkbox"
                     id={`${question}-necessarily`}
@@ -141,6 +146,32 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                 />
                 <span>Обязательный вопрос</span>
             </label>
+            <div className={'custom-upload'}>
+                <h2 className={'requested-action'}>Добавьте картинку к вопросу:</h2>
+                <label htmlFor="file-upload" className="custom-file-upload">
+                    <img src="/icons/upload-icon.svg" alt="Upload" />
+                    Выбрать изображение
+                </label>
+                <input
+                    id="file-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                />
+                {imageUrl && (
+                    <div>
+                        <p>Загруженная картинка:</p>
+                        <img src={imageUrl} alt="Загруженная картинка" style={{ maxWidth: '100%', marginTop: '10px' }} />
+                        <button
+                            type="button"
+                            onClick={handleRemoveImage}
+                            className="remove-image-button"
+                        >
+                            Удалить изображение
+                        </button>
+                    </div>
+                )}
+            </div>
             {optionQuestionTypes.includes(questionType) && (
                 <>
                     <h2 className={'requested-action'}>
@@ -206,20 +237,6 @@ export function QuestionInputModal({ isOpen, onClose, questionType, onSubmit,
                     />
                 </>
             )}
-            <div>
-                <h2 className={'requested-action'}>Добавьте картинку к вопросу:</h2>
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                />
-                {imageUrl && (
-                    <div>
-                        <p>Загруженная картинка:</p>
-                        <img src={imageUrl} alt="Загруженная картинка" style={{ maxWidth: '100%', marginTop: '10px' }} />
-                    </div>
-                )}
-            </div>
             <button
                 className={`save-button ${isQuestionValid &&
                 (optionQuestionTypes.includes(questionType) ? areOptionsValid : true) &&
